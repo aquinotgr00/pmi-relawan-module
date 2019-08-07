@@ -5,7 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateUrbanVillageRequest extends FormRequest
+class updateApprovedRequest extends FormRequest
 {
 	/**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,10 @@ class UpdateUrbanVillageRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {
+    {   
         return [
-            'subdistrict_id' => 'required|exists:subdistricts,id',
-            'name' => 'unique:urban_villages,name,' .$this->request->get('id'). ',id',
+            'approved' => 'required|boolean',
+            'reason_rejection' => Rule::requiredIf($this->input('approved') == 0),
         ];
     }
 

@@ -5,7 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateUrbanVillageRequest extends FormRequest
+class UpdateEventReportRequest extends FormRequest
 {
 	/**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,11 @@ class UpdateUrbanVillageRequest extends FormRequest
     public function rules()
     {
         return [
-            'subdistrict_id' => 'required|exists:subdistricts,id',
-            'name' => 'unique:urban_villages,name,' .$this->request->get('id'). ',id',
+            'title' => 'unique:event_reports,title,' .$this->report->id . ',id',
+            'description' => Rule::requiredIf(null !== $this->input('title')),
+            'image_file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'approved' => 'nullable|boolean',
+            'archived' => 'boolean',
         ];
     }
 
