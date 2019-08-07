@@ -20,4 +20,9 @@ class EventReport extends Model
     {
     	return $this->hasMany('BajakLautMalaka\PmiRelawan\EventActivity');
     }
+
+    public function urbanvillage()
+    {
+        return $this->belongsTo('BajakLautMalaka\PmiRelawan\UrbanVillage','urban_village_id','id');
+    }
 }
