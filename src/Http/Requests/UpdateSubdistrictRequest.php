@@ -25,9 +25,8 @@ class UpdateSubdistrictRequest extends FormRequest
     public function rules()
     {   
         return [
-            'id' => 'required',
             'city_id' => 'required|exists:cities,id',
-            'name' => 'unique:subdistricts,name,' .$this->request->get('id'). ',id',
+            'name' => 'unique:subdistricts,name,' .$this->subdistrict->id. ',id',
         ];
     }
 

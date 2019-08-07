@@ -77,17 +77,13 @@ class UrbanVillageApiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  UrbanVillage $village
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(UrbanVillage $village)
     {
-        $village = UrbanVillage::with('subdistrict.city.province')->find($id);
-        if (is_null($village)) {
-            return response()->fail($village);
-        }else{
-            return response()->success($village);
-        }
+        $village->subdistrict->city->province;
+        return response()->success($village);
     }
     /**
      * Update the specified resource in storage.
@@ -96,15 +92,11 @@ class UrbanVillageApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUrbanVillageRequest $request, int $id)
+    public function update(UpdateUrbanVillageRequest $request, UrbanVillage $village)
     {
-        $village = UrbanVillage::with('subdistrict.city.province')->find($id);
-        if (is_null($village)) {
-            return response()->fail($village);
-        }else{
-            $village->update($request->except('id','_token'));
-            return response()->success($village);
-        }
+        $village->update($request->except('_token','_method'));
+        $village->subdistrict->city->province;
+        return response()->success($village);
     }
 
     /**
@@ -113,14 +105,9 @@ class UrbanVillageApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy(UrbanVillage $village)
     {
-        $village = UrbanVillage::find($id);
-        if (is_null($village)) {
-            return response()->fail(['message'=> false]);
-        }else{
-            $village->delete();
-            return response()->success(['message'=> true]);
-        }
+        $village->delete();
+        return response()->success($village);
     }
 }

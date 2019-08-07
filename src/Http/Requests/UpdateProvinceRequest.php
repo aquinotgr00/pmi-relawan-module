@@ -25,8 +25,7 @@ class UpdateProvinceRequest extends FormRequest
     public function rules()
     {   
         return [
-            'id' => 'required',
-            'name' => 'unique:provinces,name,' .$this->request->get('id'). ',id',
+            'name' => 'unique:provinces,name,' .$this->province->id. ',id',
         ];
     }
 
