@@ -21,7 +21,7 @@ class UrbanVillageApiController extends Controller
         $village = $this->handleSearch($request,$village);
         $village = $this->handleOrder($request,$village);
         $village = $village->with('subdistrict.city.province');
-        $village = $village->get();
+        $village = $village->paginate();
         return response()->success($village);
     }
 

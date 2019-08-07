@@ -20,7 +20,7 @@ class ProvinceApiController extends Controller
         $province = $this->handleSearch($request,$province);
         $province = $this->handleOrder($request,$province);
         $province = $province->with('cities.subdistricts.urbanVillages');
-        $province = $province->get();
+        $province = $province->paginate();
         return response()->success($province);
     }
 

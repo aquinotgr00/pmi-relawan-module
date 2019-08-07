@@ -22,7 +22,7 @@ class CityApiController extends Controller
         $city = $this->handleOrder($request,$city);
         $city = $city->with('province');
         $city = $city->with('subdistricts');
-        $city = $city->get();
+        $city = $city->paginate();
         return response()->success($city);
     }
 

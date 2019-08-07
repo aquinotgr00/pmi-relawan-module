@@ -22,7 +22,7 @@ class SubdistrictApiController extends Controller
         $subdistrict = $this->handleOrder($request, $subdistrict);
         $subdistrict = $subdistrict->with('city.province');
         $subdistrict = $subdistrict->with('urbanVillages');
-        $subdistrict = $subdistrict->get();
+        $subdistrict = $subdistrict->paginate();
         return response()->success($subdistrict);
     }
 
