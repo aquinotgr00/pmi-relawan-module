@@ -25,6 +25,7 @@ class PmiRelawanServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $this->loadRoutes($router);
+        $this->loadViews();
     }
 
     /**
@@ -38,5 +39,22 @@ class PmiRelawanServiceProvider extends ServiceProvider
                ->group(function () {
                    $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
                });
+    }
+
+    /**
+     * Register any load view.
+     *
+     * @return void
+     */
+    private function loadViews()
+    {
+        $path = __DIR__.'/../resources/views';
+        $this->loadViewsFrom($path, 'volunteer');
+
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                $path => resource_path('views/bajaklautmalaka/volunteer'),
+            ], 'volunteer:views');
+        }
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
 Route::group(['as' => 'volunteers.'], function () {
-    Route::group(['prefix' => 'admin/volunteers', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
-        Route::get('list', 'VolunteerApiController@list')->name('list');
-        Route::post('update/{id}', 'VolunteerApiController@update')->name('update');
-        Route::get('delete/{id}', 'VolunteerApiController@delete')->name('delete');
-        Route::get('print', 'VolunteerApiController@print')->name('print');
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
+        Route::get('/', 'VolunteerApiController@index')->name('list');
+        Route::apiResource('volunteers', 'VolunteerApiController');
+        Route::get('export-volunteers/print', 'VolunteerApiController@print')->name('print');
+        Route::get('export-volunteers/print-profile/{volunteer}', 'VolunteerApiController@printProfile')->name('print-profile');
     });
 });
