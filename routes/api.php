@@ -15,9 +15,9 @@ Route::group(['prefix' => 'admin/member', 'as' => 'admin.', 'middleware' => 'aut
 });
 
 Route::group(['prefix' => 'admin/events', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
-    Route::put('/report/{report}', 'EventReportApiController@update')->name('event-report.update');
-    Route::delete('/report/{report}', 'EventReportApiController@destroy')->name('event-report.delete');
+    Route::apiResource('/report', 'EventReportApiController');
     Route::get('/report-only-transed', 'EventReportApiController@onlyTrashed')->name('event-report.only-transed');
+    Route::put('/partisipants/{partisipants}', 'EventPartisipantApiController@update')->name('event-partisipant.update');
 });        
 
 
@@ -37,7 +37,7 @@ Route::group(['prefix' => 'app/events', 'middleware'=>'auth:api'], function () {
 });
 
 Route::group(['prefix' => 'app/member'], function () {
-    Route::get('/type/', 'MemberTypeApiController@index')->name('member.type.list');
-    Route::get('/subtype/', 'SubMemberTypeApiController@index')->name('member.subtype.list');
-    Route::get('/unit/', 'UnitVolunteerApiController@index')->name('member.unit.list');
+    Route::get('/type', 'MemberTypeApiController@index')->name('member.type.list');
+    Route::get('/subtype', 'SubMemberTypeApiController@index')->name('member.subtype.list');
+    Route::get('/unit', 'UnitVolunteerApiController@index')->name('member.unit.list');
 });

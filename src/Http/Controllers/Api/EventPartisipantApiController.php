@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use BajakLautMalaka\PmiRelawan\EventPartisipant;
 use BajakLautMalaka\PmiRelawan\EventReport;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StorePartisipantRequest;
+use BajakLautMalaka\PmiRelawan\Http\Requests\UpdatePartisipantRequest;
 use Illuminate\Http\Request;
 
 class EventPartisipantApiController extends Controller
@@ -18,22 +19,40 @@ class EventPartisipantApiController extends Controller
     public function index(Request $request, EventPartisipant $partisipants)
     {
         $user               = auth()->user();
+        $partisipants       = $partisipants->where('volunteer_id',$user->id);
         $partisipants       = $this->handleRequestJoinStatus($request,$partisipants);
-        $partisipants       = $partisipants->where('volunteer_id',$user->id)->paginate();
-        foreach ($partisipants as $key => $value) {
-            $value->event;
+        
+        $events_id          = [];    
+        if ($partisipants->count() > 0) {
+            foreach ($partisipants->get() as $key => $value) {
+                $events_id[] = $value->event_report_id;
+            }
         }
-        return response()->success($partisipants);
+        $events             = EventReport::whereIn('id',$events_id)->where('approved',1);
+        $events             = $this->handleArchivedStatus($request,$events); 
+        $events             = $events->paginate();
+        return response()->success($events);
     }
 
     public function handleRequestJoinStatus(Request $request,$partisipants)
     {
         if ($request->has('j')) {
-            $partisipants = $partisipants->where('request_join',$request->j);
+
+            $partisipants = $partisipants->where('request_join',intval($request->j));
         }else{
             $partisipants = $partisipants->whereNull('request_join');    
         }
         return $partisipants;
+    }
+
+    public function handleArchivedStatus(Request $request,$events)
+    {
+        if ($request->has('ar')) {
+            $events = $events->where('archived',$request->ar);
+        }else{
+            $events = $events->where('archived',0);
+        }
+        return $events;
     }
 
     /**
@@ -54,19 +73,25 @@ class EventPartisipantApiController extends Controller
      */
     public function store(StorePartisipantRequest $request)
     {
-        $user    = auth()->user();
+        $user   = auth()->user();
+        $event  = EventReport::find($request->event_report_id);
+        if (!is_null($event)) {
+            if ($event->approved === 1) {
+                $partisipants = EventPartisipant::firstOrCreate(
+                    [
+                    'event_report_id' => $request->event_report_id 
+                    ],
+                    [
+                    'event_report_id' => $request->event_report_id,
+                    'volunteer_id' => $user->id
+                    ]
+                    );
 
-        $partisipants = EventPartisipant::firstOrCreate(
-            [
-                'event_report_id' => $request->event_report_id 
-            ],
-            [
-                'event_report_id' => $request->event_report_id,
-                'volunteer_id' => $user->id
-            ]
-        );
-        $partisipants->event;
-        return response()->success($partisipants);
+                $partisipants->event;
+                return response()->success($partisipants);
+            }
+        }
+        return response()->fail($event);
     }
 
     /**
@@ -98,9 +123,14 @@ class EventPartisipantApiController extends Controller
      * @param  \BajakLautMalaka\PmiRelawan\EventPartisipant  $partisipants
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EventPartisipant $partisipants)
+    public function update(UpdatePartisipantRequest $request, EventPartisipant $partisipants)
     {
-        //
+        $partisipants->request_join = $request->request_join;
+        $partisipants->admin_id     = auth()->user()->id;
+        $partisipants->save();
+        $partisipants->event;
+        return response()->success($partisipants);
+
     }
 
     /**

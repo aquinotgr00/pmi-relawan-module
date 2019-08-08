@@ -11,7 +11,6 @@ use Intervention\Image\Facades\Image;
 use BajakLautMalaka\PmiRelawan\EventReport;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreEventReportRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateEventReportRequest;
-use BajakLautMalaka\PmiRelawan\Http\Requests\updateApprovedRequest;
 
 class EventReportApiController extends Controller
 {
@@ -203,17 +202,6 @@ class EventReportApiController extends Controller
         }
     }
 
-    public function updateApproved(updateApprovedRequest $request,EventReport $report)
-    {
-        if ($request->has('reason_rejection')) {
-            $report->reason_rejection = $request->reason_rejection;
-        }
-        $report->approved = $request->approved;
-        $report->save();
-        $report->partisipants;
-        $report->activities;
-        return response()->success($report);
-    }
 
     public function onlyTrashed(Request $request, EventReport $report)
     {

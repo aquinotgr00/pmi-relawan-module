@@ -11,6 +11,8 @@ class EventReport extends Model
 
     protected $fillable = ['volunteer_id','title','description','type','location','image','image_file_name','emergency'];
 
+    protected $appends = ['members'];
+
     public function partisipants()
     {
     	return $this->hasMany('BajakLautMalaka\PmiRelawan\EventPartisipant');
@@ -24,5 +26,16 @@ class EventReport extends Model
     public function urbanvillage()
     {
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\UrbanVillage','urban_village_id','id');
+    }
+
+    public function getMembersAttribute()
+    {
+        $members = [];
+        if ($this->partisipants->count() > 0) {
+            foreach ($this->partisipants->where('request_join',1) as $key => $value) {
+                $members[] = $value;
+            }
+        }
+        return $members;
     }
 }

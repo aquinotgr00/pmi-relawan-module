@@ -5,7 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class updateApprovedRequest extends FormRequest
+class UpdateSubTypeRequest extends FormRequest
 {
 	/**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,10 @@ class updateApprovedRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {   
-        return [
-            'approved' => 'required|boolean',
-            'reason_rejection' => Rule::requiredIf($this->input('approved') == 0),
+    {           
+        return [            
+            'member_type_id' => 'required|exists:member_types,id',
+            'name' => 'unique:sub_member_types,name,' .$this->subtype->id. ',id',
         ];
     }
 

@@ -5,7 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateEventReportRequest extends FormRequest
+class StoreUnitRequest extends FormRequest
 {
 	/**
      * Determine if the user is authorized to make this request.
@@ -25,12 +25,9 @@ class UpdateEventReportRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'unique:event_reports,title,' .$this->report->id . ',id',
-            'description' => Rule::requiredIf(null !== $this->input('title')),
-            'image_file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'approved' => 'nullable|boolean',
-            'reason_rejection' => Rule::requiredIf($this->input('approved') == 0),
-            'archived' => 'boolean',
+            'city_id' => 'required|exists:cities,id',
+            'submember_type_id' => 'required|exists:sub_member_types,id',
+            'name' => 'required|unique:unit_volunteers',
         ];
     }
 

@@ -10,6 +10,11 @@ class SubMemberType extends Model
 
     public function type()
     {
-    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\MemberType');
+    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\MemberType','member_type_id','id');
+    }
+
+    public function units()
+    {
+    	return $this->hasMany('BajakLautMalaka\PmiRelawan\UnitVolunteer','submember_type_id','id');
     }
 }

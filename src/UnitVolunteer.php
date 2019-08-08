@@ -10,11 +10,11 @@ class UnitVolunteer extends Model
 
     public function subtype()
     {
-    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\SubMemberType');
+    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\SubMemberType','submember_type_id','id');
     }
 
     public function city()
     {
-    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\City');
+    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\City','city_id','id');
     }
 }
