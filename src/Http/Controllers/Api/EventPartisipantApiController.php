@@ -17,12 +17,23 @@ class EventPartisipantApiController extends Controller
      */
     public function index(Request $request, EventPartisipant $partisipants)
     {
-        $user            = auth()->user();
-        $partisipants    = $partisipants->where('volunteer_id',$user->id)->paginate();
+        $user               = auth()->user();
+        $partisipants       = $this->handleRequestJoinStatus($request,$partisipants);
+        $partisipants       = $partisipants->where('volunteer_id',$user->id)->paginate();
         foreach ($partisipants as $key => $value) {
             $value->event;
         }
         return response()->success($partisipants);
+    }
+
+    public function handleRequestJoinStatus(Request $request,$partisipants)
+    {
+        if ($request->has('j')) {
+            $partisipants = $partisipants->where('request_join',$request->j);
+        }else{
+            $partisipants = $partisipants->whereNull('request_join');    
+        }
+        return $partisipants;
     }
 
     /**

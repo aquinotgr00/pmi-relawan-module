@@ -18,7 +18,7 @@ class CreateEventPartisipantsTable extends Migration
             $table->unsignedInteger('event_report_id');
             $table->unsignedInteger('volunteer_id');
             $table->unsignedInteger('admin_id')->nullable();
-            $table->boolean('request_join')->default(false);
+            $table->boolean('request_join')->nullable();
             $table->timestamps();
         });
     }
