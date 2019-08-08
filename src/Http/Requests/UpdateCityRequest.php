@@ -23,11 +23,10 @@ class UpdateCityRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {   
+    {           
         return [
-            'id' => 'required',
             'province_id' => 'required|exists:provinces,id',
-            'name' => 'unique:cities,name,' .$this->request->get('id'). ',id',
+            'name' => 'unique:cities,name,' .$this->city->id. ',id',
         ];
     }
 

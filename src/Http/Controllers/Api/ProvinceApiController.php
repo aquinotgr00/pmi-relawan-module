@@ -61,34 +61,46 @@ class ProvinceApiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Province $province
      * @return \Illuminate\Http\Response
-     */
-    public function show(int $id)
+     */    
+    public function show(Province $province)
     {
-        $province = Province::with('cities.subdistricts.urbanVillages')->find($id);
-        if (is_null($province)) {
-            return response()->fail($province);
-        }else{
-            return response()->success($province);
+        if (isset($province->cities)) {
+            foreach ($province->cities as $key => $value) {
+                if (isset($value->subdistricts)) {
+                    foreach ($value->subdistricts as $index => $sub) {
+                        if (isset($sub->urbanVillages)) {
+                            $sub->urbanVillages;
+                        }
+                    }
+                }
+            }
         }
+        return response()->success($province);
     }
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Province $province
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProvinceRequest $request, int $id)
+    public function update(UpdateProvinceRequest $request, Province $province)
     {
-        $province = Province::with('cities.subdistricts.urbanVillages')->find($id);
-        if (is_null($province)) {
-            return response()->fail($province);
-        }else{
-            $province->update($request->except('id','_token'));
-            return response()->success($province);
+        $province->update($request->except('_token','_method'));
+        if (isset($province->cities)) {
+            foreach ($province->cities as $key => $value) {
+                if (isset($value->subdistricts)) {
+                    foreach ($value->subdistricts as $index => $sub) {
+                        if (isset($sub->urbanVillages)) {
+                            $sub->urbanVillages;
+                        }
+                    }
+                }
+            }
         }
+        return response()->success($province);
     }
 
     /**
@@ -97,22 +109,18 @@ class ProvinceApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy(Province $province)
     {
-        $province = Province::find($id);
-        if (is_null($province)) {
-            return response()->fail(['message'=> false]);
-        }else{
-            $message = 'deleted';
-            if ($province->cities->count() > 0) {
-                $message = 'please delete this items first :';
-                foreach ($province->cities as $key => $value) {
-                    $message .='['.$value->id.'] '.$value->name;
-                }
-            }else{
-                $province->delete();
+        $message = 'deleted';
+        if ($province->cities->count() > 0) {
+            $message = 'please delete this items first :';
+            foreach ($province->cities as $key => $value) {
+                $message .='['.$value->id.'] '.$value->name;
             }
             return response()->success(['message'=>$message]);
+        }else{
+            $province->delete();
+            return response()->success($province);
         }
     }
 }

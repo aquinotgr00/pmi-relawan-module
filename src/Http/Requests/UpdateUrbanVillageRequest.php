@@ -26,7 +26,7 @@ class UpdateUrbanVillageRequest extends FormRequest
     {
         return [
             'subdistrict_id' => 'required|exists:subdistricts,id',
-            'name' => 'unique:urban_villages,name,' .$this->request->get('id'). ',id',
+            'name' => 'unique:urban_villages,name,' .$this->village->id. ',id',
         ];
     }
 

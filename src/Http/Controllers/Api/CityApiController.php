@@ -80,14 +80,13 @@ class CityApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(City $city)
     {
-        $city = City::with('province')->find($id);
-        if (is_null($city)) {
-            return response()->fail($city);
-        }else{
-            return response()->success($city);
+        $city->province;
+        if (isset($city->subdistricts)) {
+            $city->subdistricts;
         }
+        return response()->success($city);
     }
     /**
      * Update the specified resource in storage.
@@ -96,15 +95,11 @@ class CityApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCityRequest $request, int $id)
+    public function update(UpdateCityRequest $request, City $city)
     {
-        $city = City::with('province')->find($id);
-        if (is_null($city)) {
-            return response()->fail($city);
-        }else{
-            $city->update($request->except('id','_token'));
-            return response()->success($city);
-        }
+        $city->update($request->except('id','_token','_method'));
+        $city->province;
+        return response()->success($city);
     }
 
     /**
@@ -113,22 +108,18 @@ class CityApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy(City $city)
     {
-        $city = City::find($id);
-        if (is_null($city)) {
-            return response()->fail(['message'=> false]);
-        }else{
-            $message = 'deleted';
-            if ($city->subdistricts->count() > 0) {
-                $message = 'please delete this items first :';
-                foreach ($city->subdistricts as $key => $value) {
-                    $message .='['.$value->id.'] '.$value->name;
-                }
-            }else{
-                $city->delete();
+        $message = 'deleted';
+        if ($city->subdistricts->count() > 0) {
+            $message = 'please delete this items first :';
+            foreach ($city->subdistricts as $key => $value) {
+                $message .='['.$value->id.'] '.$value->name;
             }
             return response()->success(['message'=>$message]);
+        }else{
+            $city->delete();
+            return response()->success($city);
         }
     }
 }
