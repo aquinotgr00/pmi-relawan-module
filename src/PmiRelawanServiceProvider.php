@@ -3,6 +3,7 @@
 namespace BajakLautMalaka\PmiRelawan;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Routing\RouteRegistrar as Router;
 
 class PmiRelawanServiceProvider extends ServiceProvider
@@ -22,13 +23,54 @@ class PmiRelawanServiceProvider extends ServiceProvider
      *
      * @return void
      */
+<<<<<<< HEAD
     public function boot(Router $router)
     {
+=======
+    public function boot(Factory $factory, Router $router)
+    {
+        $this->loadConfig();
+        $this->loadMigrationsAndFactories($factory);
+>>>>>>> b7b5f1d9c300065674c4ee33c5bc6a95a2d22b2c
         $this->loadRoutes($router);
         $this->loadViews();
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Register any load config.
+     *
+     * @return void
+     */
+    private function loadConfig()
+    {
+        $path = __DIR__ . '/../config/volunteer.php';
+        $this->mergeConfigFrom($path, 'volunteer');
+
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                $path => config_path('volunteer.php'),
+            ], 'volunteer:config');
+        }
+    }
+
+    /**
+     * Register any load migrations & factories from package volunteers.
+     *
+     * @return void
+     */
+    private function loadMigrationsAndFactories(Factory $factory): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+            $factory->load(__DIR__ . '/../database/factories');
+        }
+    }
+
+    /**
+>>>>>>> b7b5f1d9c300065674c4ee33c5bc6a95a2d22b2c
      * Register any load routes.
      */
     private function loadRoutes(Router $router): void
