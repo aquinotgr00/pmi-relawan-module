@@ -99,15 +99,14 @@ class SubdistrictApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSubdistrictRequest $request, int $id)
+    public function update(UpdateSubdistrictRequest $request, Subdistrict $subdistrict)
     {
-        $subdistrict = Subdistrict::with('city.province')->with('urbanVillages')->find($id);
-        if (is_null($subdistrict)) {
-            return response()->fail($subdistrict);
-        }else{
-            $subdistrict->update($request->except('id','_token'));
-            return response()->success($subdistrict);
+        $subdistrict->update($request->except('_token','_method'));
+        $subdistrict->city;
+        if (isset($subdistrict->urbanVillages)) {
+            $subdistrict->urbanVillages;
         }
+        return response()->success($subdistrict);
     }
 
     /**
@@ -116,22 +115,18 @@ class SubdistrictApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy(Subdistrict $subdistrict)
     {
-        $subdistrict = Subdistrict::find($id);
-        if (is_null($subdistrict)) {
-            return response()->fail(['message'=> false]);
-        }else{
-            $message = 'deleted';
-            if ($subdistrict->urbanVillages->count() > 0) {
-                $message = 'please delete this items first :';
-                foreach ($subdistrict->urbanVillages as $key => $value) {
-                    $message .='['.$value->id.'] '.$value->name;
-                }
-            }else{
-                $subdistrict->delete();
+        $message = 'deleted';
+        if ($subdistrict->urbanVillages->count() > 0) {
+            $message = 'please delete this items first :';
+            foreach ($subdistrict->urbanVillages as $key => $value) {
+                $message .='['.$value->id.'] '.$value->name;
             }
             return response()->success(['message'=>$message]);
+        }else{
+            $subdistrict->delete();
+            return response()->success($subdistrict);
         }
     }
 }
