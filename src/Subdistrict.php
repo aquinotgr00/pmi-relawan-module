@@ -13,8 +13,8 @@ class Subdistrict extends Model
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\City');
     }
 
-    public function urbanVillages()
+    public function villages()
     {
-    	return $this->hasMany('BajakLautMalaka\PmiRelawan\UrbanVillage');
+    	return $this->hasMany('BajakLautMalaka\PmiRelawan\Village');
     }
 }

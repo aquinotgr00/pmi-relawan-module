@@ -3,19 +3,19 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
-use BajakLautMalaka\PmiRelawan\UrbanVillage;
+use BajakLautMalaka\PmiRelawan\Village;
 use Illuminate\Http\Request;
-use BajakLautMalaka\PmiRelawan\Http\Requests\StoreUrbanVillageRequest;
-use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateUrbanVillageRequest;
+use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVillageRequest;
+use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateVillageRequest;
 
-class UrbanVillageApiController extends Controller
+class VillageApiController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, UrbanVillage $village)
+    public function index(Request $request, Village $village)
     {
         $village = $this->handleBySubId($request,$village);
         $village = $this->handleSearch($request,$village);
@@ -64,9 +64,9 @@ class UrbanVillageApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUrbanVillageRequest $request)
+    public function store(StoreVillageRequest $request)
     {
-        $village = UrbanVillage::create($request->except('_token'));
+        $village = Village::create($request->except('_token'));
         if (isset($village->subdistrict)) {
             $village->subdistrict;
             $village->subdistrict->city->province;
@@ -80,7 +80,7 @@ class UrbanVillageApiController extends Controller
      * @param  UrbanVillage $village
      * @return \Illuminate\Http\Response
      */
-    public function show(UrbanVillage $village)
+    public function show(Village $village)
     {
         $village->subdistrict->city->province;
         return response()->success($village);
@@ -92,7 +92,7 @@ class UrbanVillageApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUrbanVillageRequest $request, UrbanVillage $village)
+    public function update(UpdateVillageRequest $request, Village $village)
     {
         $village->update($request->except('_token','_method'));
         $village->subdistrict->city->province;
@@ -105,7 +105,7 @@ class UrbanVillageApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UrbanVillage $village)
+    public function destroy(Village $village)
     {
         $village->delete();
         return response()->success($village);
