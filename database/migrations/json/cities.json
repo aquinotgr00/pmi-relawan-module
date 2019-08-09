@@ -1,0 +1,60 @@
+{
+	"table": "cities",
+	"rows":
+	[
+		{
+			"id": 151,
+			"province_id": 1,
+			"name": "Jakarta Barat",
+			"type": "Kota",
+			"postal_code": "11220",
+			"created_at": "2018-03-04 11:57:40",
+			"updated_at": "2018-03-04 11:57:40"
+		},
+		{
+			"id": 152,
+			"province_id": 1,
+			"name": "Jakarta Pusat",
+			"type": "Kota",
+			"postal_code": "10540",
+			"created_at": "2018-03-04 11:57:40",
+			"updated_at": "2018-03-04 11:57:40"
+		},
+		{
+			"id": 153,
+			"province_id": 1,
+			"name": "Jakarta Selatan",
+			"type": "Kota",
+			"postal_code": "12230",
+			"created_at": "2018-03-04 11:57:40",
+			"updated_at": "2018-03-04 11:57:40"
+		},
+		{
+			"id": 154,
+			"province_id": 1,
+			"name": "Jakarta Timur",
+			"type": "Kota",
+			"postal_code": "13330",
+			"created_at": "2018-03-04 11:57:40",
+			"updated_at": "2018-03-04 11:57:40"
+		},
+		{
+			"id": 155,
+			"province_id": 1,
+			"name": "Jakarta Utara",
+			"type": "Kota",
+			"postal_code": "14140",
+			"created_at": "2018-03-04 11:57:40",
+			"updated_at": "2018-03-04 11:57:40"
+		},
+		{
+			"id": 189,
+			"province_id": 1,
+			"name": "Kepulauan Seribu",
+			"type": "Kabupaten",
+			"postal_code": "14550",
+			"created_at": "2018-03-04 11:57:41",
+			"updated_at": "2018-03-04 11:57:41"
+		}
+	]
+}

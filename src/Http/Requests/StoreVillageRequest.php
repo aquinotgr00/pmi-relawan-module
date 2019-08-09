@@ -5,7 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreUrbanVillageRequest extends FormRequest
+class StoreVillageRequest extends FormRequest
 {
 	/**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class StoreUrbanVillageRequest extends FormRequest
     {
         return [
             'subdistrict_id' => 'required|exists:subdistricts,id',
-            'name' => 'required|unique:urban_villages',
+            'name' => 'required|unique:villages',
         ];
     }
 
