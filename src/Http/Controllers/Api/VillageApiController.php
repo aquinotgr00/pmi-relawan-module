@@ -21,7 +21,7 @@ class VillageApiController extends Controller
         $village = $this->handleSearch($request,$village);
         $village = $this->handleOrder($request,$village);
         $village = $village->with('subdistrict.city.province');
-        $village = $village->get();
+        $village = $this->handlePaginate($request,$village);
         return response()->success($village);
     }
 
@@ -58,6 +58,17 @@ class VillageApiController extends Controller
         }
         return $village;
     }
+
+    public function handlePaginate(Request $request, $village)
+    {
+        if ($request->has('page')) {
+            $village = $village->paginate();
+        }else{
+            $village = $village->get();
+        }
+        return $village;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
