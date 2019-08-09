@@ -50,7 +50,7 @@ class VolunteerApiController extends Controller
     private function handleVolunteerCity(Request $request, $volunteer)
     {
         if ($request->has('c')) {
-            $volunteer = $volunteer->where('district', $request->c);
+            $volunteer = $volunteer->where('city', $request->c);
         }
         return $volunteer;
     }

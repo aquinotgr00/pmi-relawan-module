@@ -11,14 +11,15 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($volunteers as $volunteer)
+    @foreach($volunteers as $key => $volunteer)
+    @php $key++ @endphp
         <tr>
-            <td>{{ $volunteer->id }}</td>
+            <td>{{ $key }}</td>
             <td>{{ $volunteer->name }}</td>
             <td>{{ $volunteer->gender }}</td>
             <td>{{ $volunteer->type }}</td>
             <td>{{ $volunteer->sub_type }}</td>
-            <td>{{ $volunteer->district }}</td>
+            <td>{{ $volunteer->city }}</td>
             <td>{{ $volunteer->unit }}</td>
         </tr>
     @endforeach

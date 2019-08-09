@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td>Tempat, Tanggal Lahir</td>
-        <td>: {{ $volunteer->birth_place }}, {{ $volunteer->dob }}</td>
+        <td>: {{ $volunteer->birthplace }}, {{ $volunteer->dob }}</td>
     </tr>
     <tr>
         <td>Umur</td>
