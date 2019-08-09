@@ -17,16 +17,6 @@ class Volunteer extends Model
     'trainings', 'image', 'image_file', 'unit', 'type', 'sub_type'
     ];
 
-    /**
-     * volunteer belong to user.
-     * 
-     * @return belongsTo
-     */
-    public function getUser()
-    {
-        return $this->belongsTo('\App\User');
-    }
-
     public function getAgeAttribute()
     {
         return Carbon::parse($this->attributes['dob'])->age;
@@ -60,5 +50,15 @@ class Volunteer extends Model
     public static function getByKeyword(Type $var = null)
     {
         # code...
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+    
+    public function qualifications()
+    {
+        return $this->hasMany('BajakLautMalaka\PmiRelawan\Qualification');
     }
 }

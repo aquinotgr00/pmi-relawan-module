@@ -62,6 +62,21 @@ class VolunteerApiController extends Controller
         }
         return $volunteer;
     }
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(CreateVolunteer $request)
+    {
+        $path = $request->image->store('volunteers','public');
+        User::create($request->only('name','email','password'));
+        $volunteer = new Volunteer;
+        
+        return asset((Storage::url($path)));
+    }
 
     private function handleSearchKeyword(Request $request, $volunteer)
     {
