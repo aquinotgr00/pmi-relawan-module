@@ -23,22 +23,15 @@ class PmiRelawanServiceProvider extends ServiceProvider
      *
      * @return void
      */
-<<<<<<< HEAD
-    public function boot(Router $router)
-    {
-=======
     public function boot(Factory $factory, Router $router)
     {
         $this->loadConfig();
         $this->loadMigrationsAndFactories($factory);
->>>>>>> b7b5f1d9c300065674c4ee33c5bc6a95a2d22b2c
         $this->loadRoutes($router);
         $this->loadViews();
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Register any load config.
      *
      * @return void
@@ -70,7 +63,6 @@ class PmiRelawanServiceProvider extends ServiceProvider
     }
 
     /**
->>>>>>> b7b5f1d9c300065674c4ee33c5bc6a95a2d22b2c
      * Register any load routes.
      */
     private function loadRoutes(Router $router): void
