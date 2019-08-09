@@ -16,7 +16,7 @@ class CreateUnitVolunteersTable extends Migration
         Schema::create('unit_volunteers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('city_id');
-            $table->unsignedInteger('submember_type_id');
+            $table->unsignedInteger('membership_id');
             $table->string('name');
             $table->timestamps();
         });

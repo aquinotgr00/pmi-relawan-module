@@ -26,7 +26,7 @@ class StoreUnitRequest extends FormRequest
     {
         return [
             'city_id' => 'required|exists:cities,id',
-            'submember_type_id' => 'required|exists:sub_member_types,id',
+            'membership_id' => 'required|exists:memberships,id',
             'name' => 'required|unique:unit_volunteers',
         ];
     }

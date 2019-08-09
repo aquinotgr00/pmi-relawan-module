@@ -5,7 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateTypeRequest extends FormRequest
+class UpdateMembershipRequest extends FormRequest
 {
 	/**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,8 @@ class UpdateTypeRequest extends FormRequest
     public function rules()
     {           
         return [            
-            'name' => 'unique:member_types,name,' .$this->type->id. ',id',
+            'name' => 'required|unique:memberships,name,' .$this->membership->id. ',id',
+            'code' => 'unique:memberships,code,' .$this->membership->id. ',id',
         ];
     }
 

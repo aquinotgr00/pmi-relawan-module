@@ -5,7 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateSubTypeRequest extends FormRequest
+class UpdateVillageRequest extends FormRequest
 {
 	/**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,10 @@ class UpdateSubTypeRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {           
-        return [            
-            'member_type_id' => 'required|exists:member_types,id',
-            'name' => 'unique:sub_member_types,name,' .$this->subtype->id. ',id',
+    {
+        return [
+            'subdistrict_id' => 'required|exists:subdistricts,id',
+            'name' => 'unique:villages,name,' .$this->village->id. ',id',
         ];
     }
 

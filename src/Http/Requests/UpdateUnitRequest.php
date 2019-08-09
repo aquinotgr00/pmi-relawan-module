@@ -26,7 +26,7 @@ class UpdateUnitRequest extends FormRequest
     {           
         return [            
             'city_id' => 'required|exists:cities,id',
-            'submember_type_id' => 'required|exists:sub_member_types,id',
+            'membership_id' => 'required|exists:memberships,id',
             'name' => 'unique:unit_volunteers,name,' .$this->unit->id. ',id',
         ];
     }

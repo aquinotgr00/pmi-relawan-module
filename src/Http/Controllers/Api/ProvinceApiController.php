@@ -19,7 +19,7 @@ class ProvinceApiController extends Controller
     {
         $province = $this->handleSearch($request,$province);
         $province = $this->handleOrder($request,$province);
-        $province = $province->with('cities.subdistricts.urbanVillages');
+        $province = $province->with('cities.subdistricts.villages');
         $province = $province->paginate();
         return response()->success($province);
     }
@@ -54,7 +54,7 @@ class ProvinceApiController extends Controller
     public function store(StoreProvinceRequest $request)
     {
         $province = Province::create($request->except('_token'));
-        $province->with('cities.subdistricts.urbanVillages');
+        $province->with('cities.subdistricts.villages');
         return response()->success($province);
     }
 
@@ -70,8 +70,8 @@ class ProvinceApiController extends Controller
             foreach ($province->cities as $key => $value) {
                 if (isset($value->subdistricts)) {
                     foreach ($value->subdistricts as $index => $sub) {
-                        if (isset($sub->urbanVillages)) {
-                            $sub->urbanVillages;
+                        if (isset($sub->villages)) {
+                            $sub->villages;
                         }
                     }
                 }
@@ -93,8 +93,8 @@ class ProvinceApiController extends Controller
             foreach ($province->cities as $key => $value) {
                 if (isset($value->subdistricts)) {
                     foreach ($value->subdistricts as $index => $sub) {
-                        if (isset($sub->urbanVillages)) {
-                            $sub->urbanVillages;
+                        if (isset($sub->villages)) {
+                            $sub->villages;
                         }
                     }
                 }

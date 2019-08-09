@@ -20,7 +20,8 @@ class UnitVolunteerApiController extends Controller
         $unit = $this->handleByCityId($request,$unit);
         $unit = $this->handleBySubId($request,$unit);
         $unit = $this->handleOrder($request,$unit);
-        $unit = $unit->with('subtype');
+        $unit = $unit->with('membership');
+        $unit = $unit->with('city');
         $unit = $unit->paginate();
         return response()->success($unit);
     }
@@ -29,7 +30,7 @@ class UnitVolunteerApiController extends Controller
     {
         if ($request->has('s')) {
             $unit = $unit->where('name','like','%'.$request->s.'%')
-            ->orWhereHas('subtype', function ($query) use ($request) {
+            ->orWhereHas('membership', function ($query) use ($request) {
                 $query->where('name','like','%'.$request->s.'%');
             })
             ->orWhereHas('city', function ($query) use ($request) {
@@ -99,7 +100,7 @@ class UnitVolunteerApiController extends Controller
      */
     public function show(UnitVolunteer $unit)
     {
-        $unit->subtype->type;
+        $unit->membership->type;
         $unit->city;
         return response()->success($unit);
     }
@@ -125,7 +126,7 @@ class UnitVolunteerApiController extends Controller
     public function update(UpdateUnitRequest $request, UnitVolunteer $unit)
     {
         $unit->update($request->except('_token','_method'));
-        $unit->subtype->type;
+        $unit->membership->type;
         $unit->city;
         return response()->success($unit);
     }

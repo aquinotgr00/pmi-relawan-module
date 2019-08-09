@@ -29,7 +29,7 @@ class UpdateEventReportRequest extends FormRequest
             'description' => Rule::requiredIf(null !== $this->input('title')),
             'image_file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'approved' => 'nullable|boolean',
-            'reason_rejection' => Rule::requiredIf($this->input('approved') == 0),
+            'reason_rejection' => Rule::requiredIf((null !== $this->input('approved')) && ($this->input('approved') == 0)),
             'archived' => 'boolean',
         ];
     }

@@ -8,9 +8,9 @@ class UnitVolunteer extends Model
 {
     protected $guarded = [];
 
-    public function subtype()
+    public function membership()
     {
-    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\SubMemberType','submember_type_id','id');
+    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\Membership','membership_id','id');
     }
 
     public function city()

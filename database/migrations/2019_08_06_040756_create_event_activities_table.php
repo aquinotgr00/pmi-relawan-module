@@ -19,6 +19,7 @@ class CreateEventActivitiesTable extends Migration
             $table->unsignedInteger('volunteer_id');
             $table->string('comment');
             $table->string('comment_attachment')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

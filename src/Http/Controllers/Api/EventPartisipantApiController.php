@@ -16,6 +16,11 @@ class EventPartisipantApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request, EventPartisipant $partisipants)
     {
         $user               = auth()->user();
@@ -30,6 +35,8 @@ class EventPartisipantApiController extends Controller
         }
         $events             = EventReport::whereIn('id',$events_id)->where('approved',1);
         $events             = $this->handleArchivedStatus($request,$events); 
+        $events             = $this->handleSearch($request,$events);
+        $events             = $this->handleOrder($request,$events);
         $events             = $events->paginate();
         return response()->success($events);
     }
@@ -51,6 +58,32 @@ class EventPartisipantApiController extends Controller
             $events = $events->where('archived',$request->ar);
         }else{
             $events = $events->where('archived',0);
+        }
+        return $events;
+    }
+
+    public function handleSearch(Request $request,$events)
+    {
+        if ($request->has('s')) {
+            $events = $events->where('title','like','%'.$request->s.'%')
+            ->orWhere('description','like','%'.$request->s.'%')
+            ->orWhere('type','like','%'.$request->s.'%')
+            ->orWhere('location','like','%'.$request->s.'%');
+        }
+        return $events;
+    }
+
+    public function handleOrder(Request $request,$events)
+    {
+        if ($request->has('ob')) {
+            // sort direction (default = asc)
+            $sort_direction = 'asc';
+            if ($request->has('od')) {
+                if (in_array($request->od, ['asc', 'desc'])) {
+                    $sort_direction = $request->od;
+                }
+            }
+            $events = $events->orderBy($request->ob, $sort_direction);
         }
         return $events;
     }

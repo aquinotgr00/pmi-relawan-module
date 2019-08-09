@@ -21,10 +21,11 @@ class EventReportApiController extends Controller
      */
     public function index(Request $request,EventReport $report)
     {
-        $report = $this->handleApprovedStatus($request,$report);
         $report = $this->handleSearch($request,$report);
         $report = $this->handleOrder($request,$report);
+        $report = $this->handleApprovedStatus($request,$report);
         $report = $this->handleEmergencyStatus($request,$report);
+        $report = $this->handleArchivedStatus($request,$report);
         $report = $report->with('partisipants')->with('activities');
         $report = $report->paginate();
 
@@ -61,7 +62,8 @@ class EventReportApiController extends Controller
     {
         if ($request->has('ap')) {
             $report = $report->where('approved',$request->ap);
-        }else{
+            $report = $report->where('archived',0);
+        }elseif ($request->has('p')) {
             $report = $report->whereNull('approved');
         }
         return $report;
@@ -71,6 +73,14 @@ class EventReportApiController extends Controller
     {
         if ($request->has('e')) {
             $report = $report->where('emergency',$request->e);
+        }
+        return $report;
+    }
+
+    public function handleArchivedStatus(Request $request,$report)
+    {
+        if ($request->has('ar')) {
+            $report = $report->where('archived',$request->ar);
         }
         return $report;
     }

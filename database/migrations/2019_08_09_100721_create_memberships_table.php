@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubMemberTypesTable extends Migration
+class CreateMembershipsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateSubMemberTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_member_types', function (Blueprint $table) {
+        Schema::create('memberships', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('member_type_id');
+            $table->unsignedInteger('parent_id')->nullable();
             $table->string('name');
             $table->string('code')->nullable();
             $table->timestamps();
@@ -29,6 +29,6 @@ class CreateSubMemberTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_member_types');
+        Schema::dropIfExists('memberships');
     }
 }

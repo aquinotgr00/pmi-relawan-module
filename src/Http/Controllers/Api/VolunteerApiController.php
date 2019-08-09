@@ -3,10 +3,11 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
+use BajakLautMalaka\PmiRelawan\Volunteer;
 use Illuminate\Http\Request;
-use BajakLautMalaka\PmiRelawan\EventActivity;
+use Illuminate\Support\Facades\Storage;
 
-class EventActivityApiController extends Controller
+class VolunteerApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,44 +20,27 @@ class EventActivityApiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateVolunteer $request)
     {
-        //
+        $path = $request->image->store('volunteers','public');
+        User::create($request->only('name','email','password'));
+        $volunteer = new Volunteer;
+        
+        return asset((Storage::url($path)));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\EventActivity  $activities
+     * @param  \App\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function show(EventActivity $activities)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\EventActivity  $activities
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(EventActivity $activities)
+    public function show(Volunteer $volunteer)
     {
         //
     }
@@ -65,10 +49,10 @@ class EventActivityApiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\EventActivity  $activities
+     * @param  \BajakLautMalaka\PmiRelawan\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EventActivity $activities)
+    public function update(Request $request, Volunteer $volunteer)
     {
         //
     }
@@ -76,10 +60,10 @@ class EventActivityApiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\EventActivity  $activities
+     * @param  \App\Volunteer  $volunteer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EventActivity $activities)
+    public function destroy(Volunteer $volunteer)
     {
         //
     }

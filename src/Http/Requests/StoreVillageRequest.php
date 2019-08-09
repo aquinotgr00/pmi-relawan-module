@@ -5,7 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreSubTypeRequest extends FormRequest
+class StoreVillageRequest extends FormRequest
 {
 	/**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,8 @@ class StoreSubTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'member_type_id' => 'required|exists:member_types,id',
-            'name' => 'required|unique:sub_member_types',
+            'subdistrict_id' => 'required|exists:subdistricts,id',
+            'name' => 'required|unique:villages',
         ];
     }
 
