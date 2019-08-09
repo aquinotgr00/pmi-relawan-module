@@ -21,8 +21,8 @@ class SubdistrictApiController extends Controller
         $subdistrict = $this->handleSearch($request,$subdistrict);
         $subdistrict = $this->handleOrder($request, $subdistrict);
         $subdistrict = $subdistrict->with('city.province');
-        $subdistrict = $subdistrict->with('urbanVillages');
-        $subdistrict = $subdistrict->get();
+        $subdistrict = $subdistrict->with('villages');
+        $subdistrict = $this->handlePaginate($request, $subdistrict);
         return response()->success($subdistrict);
     }
 
@@ -61,6 +61,16 @@ class SubdistrictApiController extends Controller
         }
         return $subdistrict;
     }
+
+    public function handlePaginate(Request $request, $subdistrict)
+    {
+        if ($request->has('page')) {
+            $subdistrict = $subdistrict->paginate();
+        }else{
+            $subdistrict = $subdistrict->get();
+        }
+        return $subdistrict;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -85,7 +95,7 @@ class SubdistrictApiController extends Controller
      */
     public function show(int $id)
     {
-        $subdistrict = Subdistrict::with('city.province')->with('urbanVillages')->find($id);
+        $subdistrict = Subdistrict::with('city.province')->with('villages')->find($id);
         if (is_null($subdistrict)) {
             return response()->fail($subdistrict);
         }else{
@@ -103,8 +113,8 @@ class SubdistrictApiController extends Controller
     {
         $subdistrict->update($request->except('_token','_method'));
         $subdistrict->city;
-        if (isset($subdistrict->urbanVillages)) {
-            $subdistrict->urbanVillages;
+        if (isset($subdistrict->villages)) {
+            $subdistrict->villages;
         }
         return response()->success($subdistrict);
     }
@@ -118,9 +128,9 @@ class SubdistrictApiController extends Controller
     public function destroy(Subdistrict $subdistrict)
     {
         $message = 'deleted';
-        if ($subdistrict->urbanVillages->count() > 0) {
+        if ($subdistrict->villages->count() > 0) {
             $message = 'please delete this items first :';
-            foreach ($subdistrict->urbanVillages as $key => $value) {
+            foreach ($subdistrict->villages as $key => $value) {
                 $message .='['.$value->id.'] '.$value->name;
             }
             return response()->success(['message'=>$message]);

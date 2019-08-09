@@ -22,7 +22,7 @@ class CityApiController extends Controller
         $city = $this->handleOrder($request,$city);
         $city = $city->with('province');
         $city = $city->with('subdistricts');
-        $city = $city->get();
+        $city = $this->handlePaginate($request,$city);
         return response()->success($city);
     }
 
@@ -58,6 +58,16 @@ class CityApiController extends Controller
                 }
             }
             $city = $city->orderBy($request->ob, $sort_direction);
+        }
+        return $city;
+    }
+
+    public function handlePaginate(Request $request, $city)
+    {
+        if ($request->has('page')) {
+            $city = $city->paginate();
+        }else{
+            $city = $city->get();
         }
         return $city;
     }
