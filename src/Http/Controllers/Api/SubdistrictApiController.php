@@ -23,6 +23,13 @@ class SubdistrictApiController extends Controller
         $subdistrict = $subdistrict->with('city.province');
         $subdistrict = $subdistrict->with('villages');
         $subdistrict = $this->handlePaginate($request, $subdistrict);
+
+        $filtering  = collect([
+            'filter_city' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->get()
+        ]);
+        
+        $subdistrict = $filtering->merge($subdistrict);
+        
         return response()->success($subdistrict);
     }
 

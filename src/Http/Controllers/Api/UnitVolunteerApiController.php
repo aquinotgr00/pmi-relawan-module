@@ -43,7 +43,7 @@ class UnitVolunteerApiController extends Controller
     public function handleByCityId(Request $request,$unit)
     {
         if ($request->has('c_id')) {
-            $unit = $unit->where('city_id',$request->t_id);
+            $unit = $unit->where('city_id',$request->c_id);
         }
         return $unit;
     }
@@ -51,7 +51,7 @@ class UnitVolunteerApiController extends Controller
     public function handleBySubId(Request $request,$unit)
     {
         if ($request->has('s_id')) {
-            $unit = $unit->where('submember_type_id',$request->t_id);
+            $unit = $unit->where('submember_type_id',$request->s_id);
         }
         return $unit;
     }

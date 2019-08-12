@@ -3,8 +3,8 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
-use BajakLautMalaka\PmiRelawan\Village;
 use Illuminate\Http\Request;
+use BajakLautMalaka\PmiRelawan\Village;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVillageRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateVillageRequest;
 
@@ -18,10 +18,19 @@ class VillageApiController extends Controller
     public function index(Request $request, Village $village)
     {
         $village = $this->handleBySubId($request,$village);
+        $village = $this->handleByCityId($request,$village);
         $village = $this->handleSearch($request,$village);
         $village = $this->handleOrder($request,$village);
         $village = $village->with('subdistrict.city.province');
         $village = $this->handlePaginate($request,$village);
+
+        $filtering  = collect([
+            'filter_city' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->get(),
+            'filter_subdistrict' => \BajakLautMalaka\PmiRelawan\Subdistrict::getForFiltering($request),
+        ]);
+        
+        $village = $filtering->merge($village);
+
         return response()->success($village);
     }
 
@@ -41,6 +50,16 @@ class VillageApiController extends Controller
     {
         if ($request->has('s_id')) {
             $village = $village->where('subdistrict_id',$request->s_id);
+        }
+        return $village;
+    }
+
+    public function handleByCityId(Request $request,$village)
+    {
+        if ($request->has('c_id')) {
+            $village = $village->whereHas('subdistrict', function ($query) use ($request) {
+                $query->where('city_id','like','%'.$request->c_id.'%');
+            });
         }
         return $village;
     }
