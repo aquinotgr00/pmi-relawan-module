@@ -3,25 +3,34 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
-use BajakLautMalaka\PmiRelawan\UrbanVillage;
 use Illuminate\Http\Request;
-use BajakLautMalaka\PmiRelawan\Http\Requests\StoreUrbanVillageRequest;
-use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateUrbanVillageRequest;
+use BajakLautMalaka\PmiRelawan\Village;
+use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVillageRequest;
+use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateVillageRequest;
 
-class UrbanVillageApiController extends Controller
+class VillageApiController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, UrbanVillage $village)
+    public function index(Request $request, Village $village)
     {
         $village = $this->handleBySubId($request,$village);
+        $village = $this->handleByCityId($request,$village);
         $village = $this->handleSearch($request,$village);
         $village = $this->handleOrder($request,$village);
         $village = $village->with('subdistrict.city.province');
-        $village = $village->paginate();
+        $village = $this->handlePaginate($request,$village);
+
+        $filtering  = collect([
+            'filter_city' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->get(),
+            'filter_subdistrict' => \BajakLautMalaka\PmiRelawan\Subdistrict::getForFiltering($request),
+        ]);
+        
+        $village = $filtering->merge($village);
+
         return response()->success($village);
     }
 
@@ -45,6 +54,16 @@ class UrbanVillageApiController extends Controller
         return $village;
     }
 
+    public function handleByCityId(Request $request,$village)
+    {
+        if ($request->has('c_id')) {
+            $village = $village->whereHas('subdistrict', function ($query) use ($request) {
+                $query->where('city_id','like','%'.$request->c_id.'%');
+            });
+        }
+        return $village;
+    }
+
     public function handleOrder(Request $request, $village)
     {
         if ($request->has('ob')) {
@@ -58,15 +77,26 @@ class UrbanVillageApiController extends Controller
         }
         return $village;
     }
+
+    public function handlePaginate(Request $request, $village)
+    {
+        if ($request->has('page')) {
+            $village = $village->paginate();
+        }else{
+            $village = $village->get();
+        }
+        return $village;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUrbanVillageRequest $request)
+    public function store(StoreVillageRequest $request)
     {
-        $village = UrbanVillage::create($request->except('_token'));
+        $village = Village::create($request->except('_token'));
         if (isset($village->subdistrict)) {
             $village->subdistrict;
             $village->subdistrict->city->province;
@@ -80,7 +110,7 @@ class UrbanVillageApiController extends Controller
      * @param  UrbanVillage $village
      * @return \Illuminate\Http\Response
      */
-    public function show(UrbanVillage $village)
+    public function show(Village $village)
     {
         $village->subdistrict->city->province;
         return response()->success($village);
@@ -92,7 +122,7 @@ class UrbanVillageApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUrbanVillageRequest $request, UrbanVillage $village)
+    public function update(UpdateVillageRequest $request, Village $village)
     {
         $village->update($request->except('_token','_method'));
         $village->subdistrict->city->province;
@@ -105,7 +135,7 @@ class UrbanVillageApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UrbanVillage $village)
+    public function destroy(Village $village)
     {
         $village->delete();
         return response()->success($village);
