@@ -23,6 +23,6 @@ class RenameUrbanVillagesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::rename('villages', 'urban_villages');
     }
 }
