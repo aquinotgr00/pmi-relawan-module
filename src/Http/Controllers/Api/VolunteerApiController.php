@@ -5,11 +5,15 @@ namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 
+use App\User;
 use BajakLautMalaka\PmiRelawan\Volunteer;
+use BajakLautMalaka\PmiRelawan\Qualification;
+use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVolunteerRequest;
 
 class VolunteerApiController extends Controller
 {
@@ -69,13 +73,38 @@ class VolunteerApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateVolunteer $request)
+    public function store(StoreVolunteerRequest $request)
     {
-        $path = $request->image->store('volunteers','public');
-        User::create($request->only('name','email','password'));
-        $volunteer = new Volunteer;
+        $user = null;
+        $request->merge(['password' => bcrypt($request->password)]);
+        DB::transaction(function () use ($request, &$user) {
+            $user = User::create($request->only('name','email','password'));
+            $this->createVolunteer($request, $user);
+            //return asset((Storage::url($path)));
+        });
         
-        return asset((Storage::url($path)));
+        if($user) {
+            return response()->success([
+                'access_token'=>$user->createToken('PMI')->accessToken
+            ]);
+        }
+        
+    }
+    
+    private function createVolunteer(StoreVolunteerRequest $request, User $user)
+    {
+        $volunteer = new Volunteer;
+        $volunteer->fill($request->except('email','password','password_confirmation'));
+        $volunteer->image = $request->image->store('volunteers','public');
+        $volunteer->user_id = $user->id;
+        $volunteer->save();
+        $volunteer->qualifications()->saveMany(
+            collect($request->qualifications)->map(function($qualification, $key) {
+                return new Qualification([
+                    'description'=>$qualification['description'], 
+                    'category'=>$qualification['category']]) ;
+            })->all()
+        );
     }
 
     private function handleSearchKeyword(Request $request, $volunteer)
@@ -90,7 +119,7 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
-        return response()->success($volunteer);
+        return response()->success($volunteer->where('user_id',auth()->user()->id)->first());
     }
 
     public function print(Request $request, Volunteer $volunteers)
