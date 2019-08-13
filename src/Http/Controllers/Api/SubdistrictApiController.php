@@ -55,21 +55,6 @@ class SubdistrictApiController extends Controller
         }
         return $subdistrict;
     }
-
-    private function handleOrder(Request $request, $subdistrict)
-    {
-        if ($request->has('ob')) {
-            // sort direction (default = asc)
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-            }
-            $subdistrict = $subdistrict->orderBy($request->ob, $sort_direction);
-        }
-        return $subdistrict;
-    }
     /**
      * Store a newly created resource in storage.
      *

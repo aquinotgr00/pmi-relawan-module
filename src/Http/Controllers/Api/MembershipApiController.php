@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use BajakLautMalaka\PmiRelawan\Membership;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreMembershipRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateMembershipRequest;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class MembershipApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -29,20 +31,6 @@ class MembershipApiController extends Controller
         if ($request->has('s')) {
             $membership = $membership->where('name','like','%'.$request->s.'%')
             ->orWhere('code','like','%'.$request->s.'%');
-        }
-        return $membership;
-    }
-
-    private function handleOrder(Request $request, $membership)
-    {
-        if ($request->has('ob')) {
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-            }
-            $membership = $membership->orderBy($request->ob, $sort_direction);
         }
         return $membership;
     }

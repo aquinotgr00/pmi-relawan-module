@@ -58,20 +58,6 @@ class UnitVolunteerApiController extends Controller
         return $unit;
     }
 
-    private function handleOrder(Request $request, $unit)
-    {
-        if ($request->has('ob')) {
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-            }
-            $unit = $unit->orderBy($request->ob, $sort_direction);
-        }
-        return $unit;
-    }
-
     /**
      * Show the form for creating a new resource.
      *

@@ -65,20 +65,6 @@ class VillageApiController extends Controller
         }
         return $village;
     }
-
-    private function handleOrder(Request $request, $village)
-    {
-        if ($request->has('ob')) {
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-                $village = $village->orderBy($request->ob, $sort_direction);
-            }
-        }
-        return $village;
-    }
     
     /**
      * Store a newly created resource in storage.

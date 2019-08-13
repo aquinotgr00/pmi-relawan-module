@@ -34,19 +34,6 @@ class ProvinceApiController extends Controller
         return $province;
     }
 
-    private function handleOrder(Request $request, $province)
-    {
-        if ($request->has('ob')) {
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-                $province = $province->orderBy($request->ob, $sort_direction);
-            }
-        }
-        return $province;
-    }
     /**
      * Store a newly created resource in storage.
      *

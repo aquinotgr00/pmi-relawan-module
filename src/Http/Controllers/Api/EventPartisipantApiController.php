@@ -8,9 +8,11 @@ use BajakLautMalaka\PmiRelawan\EventReport;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StorePartisipantRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdatePartisipantRequest;
 use Illuminate\Http\Request;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class EventPartisipantApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -69,21 +71,6 @@ class EventPartisipantApiController extends Controller
             ->orWhere('description','like','%'.$request->s.'%')
             ->orWhere('type','like','%'.$request->s.'%')
             ->orWhere('location','like','%'.$request->s.'%');
-        }
-        return $events;
-    }
-
-    private function handleOrder(Request $request,$events)
-    {
-        if ($request->has('ob')) {
-            // sort direction (default = asc)
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-            }
-            $events = $events->orderBy($request->ob, $sort_direction);
         }
         return $events;
     }

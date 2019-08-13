@@ -9,11 +9,14 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Intervention\Image\Facades\Image;
 use BajakLautMalaka\PmiRelawan\EventReport;
+use BajakLautMalaka\PmiRelawan\Volunteer;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreEventReportRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateEventReportRequest;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class EventReportApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -39,21 +42,6 @@ class EventReportApiController extends Controller
             ->orWhere('description','like','%'.$request->s.'%')
             ->orWhere('type','like','%'.$request->s.'%')
             ->orWhere('location','like','%'.$request->s.'%');
-        }
-        return $report;
-    }
-
-    private function handleOrder(Request $request,$report)
-    {
-        if ($request->has('ob')) {
-            // sort direction (default = asc)
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-            }
-            $report = $report->orderBy($request->ob, $sort_direction);
         }
         return $report;
     }
@@ -104,11 +92,16 @@ class EventReportApiController extends Controller
     public function store(StoreEventReportRequest $request)
     {
         $this->handleUploadImage($request,'event-images');
-        $request->merge([
-            'volunteer_id' => auth()->user()->id
-        ]);
-        $event_reports = EventReport::create($request->except('imaga_file','_token'));
-        return response()->success($event_reports);
+        $volunteer = Volunteer::where('user_id',auth()->user()->id)->first();
+        if (!is_null($volunteer)) {
+            $request->merge([
+                'volunteer_id' => $volunteer->id
+                ]);
+            $event_reports = EventReport::create($request->except('imaga_file','_token'));
+            return response()->success($event_reports);
+        }else{
+            return response()->fail(['message' => 'gagal membuat event/laporan']);
+        }
     }
 
     /**
@@ -121,6 +114,9 @@ class EventReportApiController extends Controller
     {
         $report->partisipants;
         $report->activities;
+        if (isset($report->village)) {
+            $report->village->subdistrict->city->province;
+        }
         return response()->success($report);
     }
 
@@ -156,6 +152,9 @@ class EventReportApiController extends Controller
         }
         $report->partisipants;
         $report->activities;
+        if (isset($report->village)) {
+            $report->village->subdistrict->city->province;
+        }
         return response()->success($report);
     }
 

@@ -49,21 +49,6 @@ class CityApiController extends Controller
         }
         return $city;
     }
-
-    private function handleOrder(Request $request, $city)
-    {
-        if ($request->has('ob')) {
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-            }
-            $city = $city->orderBy($request->ob, $sort_direction);
-        }
-        return $city;
-    }
-    
     /**
      * Store a newly created resource in storage.
      *
