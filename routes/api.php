@@ -43,11 +43,13 @@ Route::prefix('app')->group(function () {
         Route::apiResource('/report', 'EventReportApiController');
         Route::apiResource('/partisipants', 'EventPartisipantApiController');
         Route::apiResource('/activities', 'EventActivityApiController');
+        Route::get('messages/{eventReport}', 'ChatApiController@list');
+        Route::post('message', 'ChatApiController@storeActivity');
     });
     
     Route::prefix('volunteer')->group(function() {
         Route::post('signup', 'VolunteerApiController@store');
         Route::get('profile', 'VolunteerApiController@show')->middleware('auth:api');
     });
-    
+
 });

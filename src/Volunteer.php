@@ -14,10 +14,15 @@ class Volunteer extends Model
 
     protected $fillable = [
         'name', 'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 
-        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'unit', 'membership'
+        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'unit', 'membership', 'user_id'
     ];
     
     protected $appends = ['image_url'];
+
+    public function user()
+    {
+        return $this->belongsTo('\App\User');
+    }
 
     public function getAgeAttribute()
     {
@@ -52,11 +57,6 @@ class Volunteer extends Model
     public static function getByKeyword(Type $var = null)
     {
         # code...
-    }
-    
-    public function user()
-    {
-        return $this->belongsTo('App\User');
     }
     
     public function qualifications()
