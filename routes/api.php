@@ -39,7 +39,7 @@ Route::prefix('app')->group(function () {
         Route::get('unit', 'UnitVolunteerApiController@index')->name('member.unit.list');
     });
 
-    Route::prefix('events')->group(function() {
+    Route::prefix('events')->middleware('auth:api')->group(function() {
         Route::apiResource('/report', 'EventReportApiController');
         Route::apiResource('/partisipants', 'EventPartisipantApiController');
         Route::apiResource('/activities', 'EventActivityApiController');

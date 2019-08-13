@@ -9,7 +9,7 @@ class EventReport extends Model
 {
 	use SoftDeletes;
 
-    protected $fillable = ['volunteer_id','title','description','type','location','image','image_file_name','emergency'];
+    protected $fillable = ['volunteer_id','title','description','type','location','image','image_file_name','emergency','village_id'];
 
     protected $appends = ['members'];
 
@@ -23,9 +23,9 @@ class EventReport extends Model
     	return $this->hasMany('BajakLautMalaka\PmiRelawan\EventActivity');
     }
 
-    public function urbanvillage()
+    public function village()
     {
-        return $this->belongsTo('BajakLautMalaka\PmiRelawan\UrbanVillage','urban_village_id','id');
+        return $this->belongsTo('BajakLautMalaka\PmiRelawan\Village','village_id','id');
     }
 
     public function getMembersAttribute()

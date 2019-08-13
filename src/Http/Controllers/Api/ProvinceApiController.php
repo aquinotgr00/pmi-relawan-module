@@ -7,9 +7,11 @@ use BajakLautMalaka\PmiRelawan\Province;
 use Illuminate\Http\Request;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreProvinceRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateProvinceRequest;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class ProvinceApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -19,12 +21,12 @@ class ProvinceApiController extends Controller
     {
         $province = $this->handleSearch($request,$province);
         $province = $this->handleOrder($request,$province);
-        $province = $province->with('cities.subdistricts.villages');
+        //$province = $province->with('cities.subdistricts.villages');
         $province = $this->handlePaginate($request,$province);
         return response()->success($province);
     }
 
-    public function handleSearch(Request $request,$province)
+    private function handleSearch(Request $request,$province)
     {
         if ($request->has('s')) {
             $province = $province->where('name','like','%'.$request->s.'%');
@@ -32,29 +34,6 @@ class ProvinceApiController extends Controller
         return $province;
     }
 
-    public function handleOrder(Request $request, $province)
-    {
-        if ($request->has('ob')) {
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-                $province = $province->orderBy($request->ob, $sort_direction);
-            }
-        }
-        return $province;
-    }
-
-    public function handlePaginate(Request $request, $province)
-    {
-        if ($request->has('page')) {
-            $province = $province->paginate();
-        }else{
-            $province = $province->get();
-        }
-        return $province;
-    }
     /**
      * Store a newly created resource in storage.
      *
@@ -64,7 +43,7 @@ class ProvinceApiController extends Controller
     public function store(StoreProvinceRequest $request)
     {
         $province = Province::create($request->except('_token'));
-        $province->with('cities.subdistricts.villages');
+        //$province->with('cities.subdistricts.villages');
         return response()->success($province);
     }
 
@@ -76,17 +55,7 @@ class ProvinceApiController extends Controller
      */    
     public function show(Province $province)
     {
-        if (isset($province->cities)) {
-            foreach ($province->cities as $key => $value) {
-                if (isset($value->subdistricts)) {
-                    foreach ($value->subdistricts as $index => $sub) {
-                        if (isset($sub->villages)) {
-                            $sub->villages;
-                        }
-                    }
-                }
-            }
-        }
+        $province->with('cities.subdistricts.villages');
         return response()->success($province);
     }
     /**
@@ -99,17 +68,6 @@ class ProvinceApiController extends Controller
     public function update(UpdateProvinceRequest $request, Province $province)
     {
         $province->update($request->except('_token','_method'));
-        if (isset($province->cities)) {
-            foreach ($province->cities as $key => $value) {
-                if (isset($value->subdistricts)) {
-                    foreach ($value->subdistricts as $index => $sub) {
-                        if (isset($sub->villages)) {
-                            $sub->villages;
-                        }
-                    }
-                }
-            }
-        }
         return response()->success($province);
     }
 
@@ -121,16 +79,13 @@ class ProvinceApiController extends Controller
      */
     public function destroy(Province $province)
     {
-        $message = 'deleted';
-        if ($province->cities->count() > 0) {
-            $message = 'please delete this items first :';
-            foreach ($province->cities as $key => $value) {
-                $message .='['.$value->id.'] '.$value->name;
-            }
-            return response()->success(['message'=>$message]);
-        }else{
+        try {
             $province->delete();
-            return response()->success($province);
+            return response()->success($province);    
+        } catch ( \Illuminate\Database\QueryException $e) {
+            $collection = collect(['message' => 'Error! provinsi memiliki sub item']);
+            $province   = $collection->merge($province);
+            return response()->fail($province);    
         }
     }
 }
