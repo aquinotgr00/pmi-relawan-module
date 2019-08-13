@@ -5,17 +5,19 @@ namespace BajakLautMalaka\PmiRelawan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class Volunteer extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'email', 'birth_place', 'dob', 'gender', 'religion',
-    'phone', 'blood', 'province', 'district', 'sub_district', 'awards', 'assignments',
-    'trainings', 'image', 'image_file', 'unit', 'type', 'sub_type', 'user_id'
+    protected $fillable = [
+        'name', 'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 
+        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'unit', 'membership', 'user_id'
     ];
+    
+    protected $appends = ['image_url'];
 
     public function user()
     {
@@ -60,5 +62,10 @@ class Volunteer extends Model
     public function qualifications()
     {
         return $this->hasMany('BajakLautMalaka\PmiRelawan\Qualification');
+    }
+    
+    public function getImageUrlAttribute()
+    {
+        return asset((Storage::url($this->image)));
     }
 }

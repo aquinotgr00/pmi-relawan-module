@@ -3,13 +3,10 @@
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
 
     Route::prefix('settings')->group(function() {
-        Route::apiResource('/province', 'ProvinceApiController');
-        Route::apiResource('/city', 'CityApiController');
-        Route::apiResource('/subdistrict', 'SubdistrictApiController');
-        Route::apiResource('/village', 'VillageApiController');
-    });
-
-    Route::prefix('member')->group(function() {
+        Route::apiResource('province', 'ProvinceApiController');
+        Route::apiResource('city', 'CityApiController');
+        Route::apiResource('subdistrict', 'SubdistrictApiController');
+        Route::apiResource('village', 'VillageApiController');
         Route::apiResource('membership', 'MembershipApiController');
         Route::apiResource('unit', 'UnitVolunteerApiController');
     });
@@ -33,14 +30,16 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
 
 Route::prefix('app')->group(function () {
 
-    Route::prefix('area')->group(function() {
+    Route::prefix('settings')->group(function() {
         Route::get('provinces', 'ProvinceApiController@index')->name('province.list');
         Route::get('cities', 'CityApiController@index')->name('city.list');
         Route::get('subdistricts', 'SubdistrictApiController@index')->name('subdistrict.list');
-        Route::get('urbanvillages', 'VillageApiController@index')->name('village.list');
+        Route::get('villages', 'VillageApiController@index')->name('village.list');
+        Route::get('membership', 'MembershipApiController@index')->name('membership.list');
+        Route::get('unit', 'UnitVolunteerApiController@index')->name('member.unit.list');
     });
 
-    Route::prefix('events')->group(function() {
+    Route::prefix('events')->middleware('auth:api')->group(function() {
         Route::apiResource('/report', 'EventReportApiController');
         Route::apiResource('/partisipants', 'EventPartisipantApiController');
         Route::apiResource('/activities', 'EventActivityApiController');
@@ -48,9 +47,9 @@ Route::prefix('app')->group(function () {
         Route::post('message', 'ChatApiController@storeActivity');
     });
     
-    Route::prefix('member')->group(function() {
-        Route::get('/membership', 'MembershipApiController@index')->name('membership.list');
-        Route::get('/unit', 'UnitVolunteerApiController@index')->name('member.unit.list');
+    Route::prefix('volunteer')->group(function() {
+        Route::post('signup', 'VolunteerApiController@store');
+        Route::get('profile', 'VolunteerApiController@show')->middleware('auth:api');
     });
 
 

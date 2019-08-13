@@ -8,9 +8,11 @@ use BajakLautMalaka\PmiRelawan\EventReport;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StorePartisipantRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdatePartisipantRequest;
 use Illuminate\Http\Request;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class EventPartisipantApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -41,7 +43,7 @@ class EventPartisipantApiController extends Controller
         return response()->success($events);
     }
 
-    public function handleRequestJoinStatus(Request $request,$partisipants)
+    private function handleRequestJoinStatus(Request $request,$partisipants)
     {
         if ($request->has('j')) {
 
@@ -52,7 +54,7 @@ class EventPartisipantApiController extends Controller
         return $partisipants;
     }
 
-    public function handleArchivedStatus(Request $request,$events)
+    private function handleArchivedStatus(Request $request,$events)
     {
         if ($request->has('ar')) {
             $events = $events->where('archived',$request->ar);
@@ -62,28 +64,13 @@ class EventPartisipantApiController extends Controller
         return $events;
     }
 
-    public function handleSearch(Request $request,$events)
+    private function handleSearch(Request $request,$events)
     {
         if ($request->has('s')) {
             $events = $events->where('title','like','%'.$request->s.'%')
             ->orWhere('description','like','%'.$request->s.'%')
             ->orWhere('type','like','%'.$request->s.'%')
             ->orWhere('location','like','%'.$request->s.'%');
-        }
-        return $events;
-    }
-
-    public function handleOrder(Request $request,$events)
-    {
-        if ($request->has('ob')) {
-            // sort direction (default = asc)
-            $sort_direction = 'asc';
-            if ($request->has('od')) {
-                if (in_array($request->od, ['asc', 'desc'])) {
-                    $sort_direction = $request->od;
-                }
-            }
-            $events = $events->orderBy($request->ob, $sort_direction);
         }
         return $events;
     }
