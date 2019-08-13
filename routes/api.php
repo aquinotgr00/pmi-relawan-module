@@ -52,6 +52,4 @@ Route::prefix('app')->group(function () {
         Route::get('profile', 'VolunteerApiController@show')->middleware('auth:api');
     });
 
-
-    Route::post('volunteer/signup', 'VolunteerApiController@store');
 });
