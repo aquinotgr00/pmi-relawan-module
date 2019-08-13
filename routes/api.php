@@ -44,12 +44,15 @@ Route::prefix('app')->group(function () {
         Route::apiResource('/report', 'EventReportApiController');
         Route::apiResource('/partisipants', 'EventPartisipantApiController');
         Route::apiResource('/activities', 'EventActivityApiController');
+        Route::get('messages/{eventReport}', 'ChatApiController@list');
+        Route::post('message', 'ChatApiController@storeActivity');
     });
     
     Route::prefix('member')->group(function() {
         Route::get('/membership', 'MembershipApiController@index')->name('membership.list');
         Route::get('/unit', 'UnitVolunteerApiController@index')->name('member.unit.list');
     });
+
 
     Route::post('volunteer/signup', 'VolunteerApiController@store');
 });
