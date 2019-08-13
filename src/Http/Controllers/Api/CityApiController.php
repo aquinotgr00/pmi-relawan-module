@@ -7,9 +7,11 @@ use BajakLautMalaka\PmiRelawan\City;
 use Illuminate\Http\Request;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreCityRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateCityRequest;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class CityApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +28,7 @@ class CityApiController extends Controller
         return response()->success($city);
     }
 
-    public function handleSearch(Request $request,$city)
+    private function handleSearch(Request $request,$city)
     {
         if ($request->has('s')) {
             $city = $city->where('name','like','%'.$request->s.'%')
@@ -40,7 +42,7 @@ class CityApiController extends Controller
         return $city;
     }
 
-    public function handleByProvinceId(Request $request,$city)
+    private function handleByProvinceId(Request $request,$city)
     {
         if ($request->has('p_id')) {
             $city = $city->where('province_id',$request->p_id);
@@ -48,7 +50,7 @@ class CityApiController extends Controller
         return $city;
     }
 
-    public function handleOrder(Request $request, $city)
+    private function handleOrder(Request $request, $city)
     {
         if ($request->has('ob')) {
             $sort_direction = 'asc';
@@ -61,16 +63,7 @@ class CityApiController extends Controller
         }
         return $city;
     }
-
-    public function handlePaginate(Request $request, $city)
-    {
-        if ($request->has('page')) {
-            $city = $city->paginate();
-        }else{
-            $city = $city->get();
-        }
-        return $city;
-    }
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -120,16 +113,13 @@ class CityApiController extends Controller
      */
     public function destroy(City $city)
     {
-        $message = 'deleted';
-        if ($city->subdistricts->count() > 0) {
-            $message = 'please delete this items first :';
-            foreach ($city->subdistricts as $key => $value) {
-                $message .='['.$value->id.'] '.$value->name;
-            }
-            return response()->success(['message'=>$message]);
-        }else{
+        try {
             $city->delete();
-            return response()->success($city);
+            return response()->success($city);    
+        } catch ( \Illuminate\Database\QueryException $e) {
+            $collection = collect(['message' => 'Error! Kabupaten/Kota memiliki sub item']);
+            $city       = $collection->merge($city);
+            return response()->fail($city);    
         }
     }
 }

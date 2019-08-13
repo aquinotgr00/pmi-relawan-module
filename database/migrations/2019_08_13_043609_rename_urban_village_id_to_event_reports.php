@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RenameUrbanVillagesTable extends Migration
+class RenameUrbanVillageIdToEventReports extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class RenameUrbanVillagesTable extends Migration
      */
     public function up()
     {
-        Schema::rename('urban_villages', 'villages');
+        Schema::table('event_reports', function (Blueprint $table) {
+            $table->renameColumn('urban_village_id', 'village_id');
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class RenameUrbanVillagesTable extends Migration
      */
     public function down()
     {
-        Schema::rename('villages', 'urban_villages');
+        Schema::table('event_reports', function (Blueprint $table) {
+            $table->renameColumn('village_id', 'urban_village_id');
+        });
     }
 }

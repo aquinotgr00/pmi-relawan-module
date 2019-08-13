@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use BajakLautMalaka\PmiRelawan\Village;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVillageRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateVillageRequest;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class VillageApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +36,7 @@ class VillageApiController extends Controller
         return response()->success($village);
     }
 
-    public function handleSearch(Request $request,$village)
+    private function handleSearch(Request $request,$village)
     {
         if ($request->has('s')) {
             $village = $village->where('name','like','%'.$request->s.'%')
@@ -46,7 +48,7 @@ class VillageApiController extends Controller
         return $village;
     }
 
-    public function handleBySubId(Request $request,$village)
+    private function handleBySubId(Request $request,$village)
     {
         if ($request->has('s_id')) {
             $village = $village->where('subdistrict_id',$request->s_id);
@@ -54,7 +56,7 @@ class VillageApiController extends Controller
         return $village;
     }
 
-    public function handleByCityId(Request $request,$village)
+    private function handleByCityId(Request $request,$village)
     {
         if ($request->has('c_id')) {
             $village = $village->whereHas('subdistrict', function ($query) use ($request) {
@@ -64,7 +66,7 @@ class VillageApiController extends Controller
         return $village;
     }
 
-    public function handleOrder(Request $request, $village)
+    private function handleOrder(Request $request, $village)
     {
         if ($request->has('ob')) {
             $sort_direction = 'asc';
@@ -77,17 +79,7 @@ class VillageApiController extends Controller
         }
         return $village;
     }
-
-    public function handlePaginate(Request $request, $village)
-    {
-        if ($request->has('page')) {
-            $village = $village->paginate();
-        }else{
-            $village = $village->get();
-        }
-        return $village;
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *

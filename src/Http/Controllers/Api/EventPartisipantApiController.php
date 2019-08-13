@@ -41,7 +41,7 @@ class EventPartisipantApiController extends Controller
         return response()->success($events);
     }
 
-    public function handleRequestJoinStatus(Request $request,$partisipants)
+    private function handleRequestJoinStatus(Request $request,$partisipants)
     {
         if ($request->has('j')) {
 
@@ -52,7 +52,7 @@ class EventPartisipantApiController extends Controller
         return $partisipants;
     }
 
-    public function handleArchivedStatus(Request $request,$events)
+    private function handleArchivedStatus(Request $request,$events)
     {
         if ($request->has('ar')) {
             $events = $events->where('archived',$request->ar);
@@ -62,7 +62,7 @@ class EventPartisipantApiController extends Controller
         return $events;
     }
 
-    public function handleSearch(Request $request,$events)
+    private function handleSearch(Request $request,$events)
     {
         if ($request->has('s')) {
             $events = $events->where('title','like','%'.$request->s.'%')
@@ -73,7 +73,7 @@ class EventPartisipantApiController extends Controller
         return $events;
     }
 
-    public function handleOrder(Request $request,$events)
+    private function handleOrder(Request $request,$events)
     {
         if ($request->has('ob')) {
             // sort direction (default = asc)

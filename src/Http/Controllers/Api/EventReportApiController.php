@@ -32,7 +32,7 @@ class EventReportApiController extends Controller
         return response()->success($report);
     }
 
-    public function handleSearch(Request $request,$report)
+    private function handleSearch(Request $request,$report)
     {
         if ($request->has('s')) {
             $report = $report->where('title','like','%'.$request->s.'%')
@@ -43,7 +43,7 @@ class EventReportApiController extends Controller
         return $report;
     }
 
-    public function handleOrder(Request $request,$report)
+    private function handleOrder(Request $request,$report)
     {
         if ($request->has('ob')) {
             // sort direction (default = asc)
@@ -58,7 +58,7 @@ class EventReportApiController extends Controller
         return $report;
     }
 
-    public function handleApprovedStatus(Request $request,$report)
+    private function handleApprovedStatus(Request $request,$report)
     {
         if ($request->has('ap')) {
             $report = $report->where('approved',$request->ap);
@@ -69,7 +69,7 @@ class EventReportApiController extends Controller
         return $report;
     }
 
-    public function handleEmergencyStatus(Request $request,$report)
+    private function handleEmergencyStatus(Request $request,$report)
     {
         if ($request->has('e')) {
             $report = $report->where('emergency',$request->e);
@@ -77,7 +77,7 @@ class EventReportApiController extends Controller
         return $report;
     }
 
-    public function handleArchivedStatus(Request $request,$report)
+    private function handleArchivedStatus(Request $request,$report)
     {
         if ($request->has('ar')) {
             $report = $report->where('archived',$request->ar);
@@ -104,6 +104,9 @@ class EventReportApiController extends Controller
     public function store(StoreEventReportRequest $request)
     {
         $this->handleUploadImage($request,'event-images');
+        $request->merge([
+            'volunteer_id' => auth()->user()->id
+        ]);
         $event_reports = EventReport::create($request->except('imaga_file','_token'));
         return response()->success($event_reports);
     }
@@ -168,7 +171,7 @@ class EventReportApiController extends Controller
         return response()->success($report);
     }
 
-    public function handleUploadImage(Request $request,string $hashName)
+    private function handleUploadImage(Request $request,string $hashName)
     {
         if ($request->hasFile('image_file')) {
 
@@ -200,7 +203,7 @@ class EventReportApiController extends Controller
         }
     }
 
-    public function handleChangeImage(Request $request,$report,string $hashName)
+    private function handleChangeImage(Request $request,$report,string $hashName)
     {
         if ($request->hasFile('image_file')) {
             $file_name  = $report->image_file_name;
