@@ -7,9 +7,11 @@ use BajakLautMalaka\PmiRelawan\Subdistrict;
 use Illuminate\Http\Request;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreSubdistrictRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateSubdistrictRequest;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class SubdistrictApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -23,10 +25,17 @@ class SubdistrictApiController extends Controller
         $subdistrict = $subdistrict->with('city.province');
         $subdistrict = $subdistrict->with('villages');
         $subdistrict = $this->handlePaginate($request, $subdistrict);
+
+        $filtering  = collect([
+            'filter_city' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->get()
+        ]);
+        
+        $subdistrict = $filtering->merge($subdistrict);
+        
         return response()->success($subdistrict);
     }
 
-    public function handleSearch(Request $request,$subdistrict)
+    private function handleSearch(Request $request,$subdistrict)
     {
         if ($request->has('s')) {
             $subdistrict = $subdistrict->where('name','like','%'.$request->s.'%')
@@ -39,7 +48,7 @@ class SubdistrictApiController extends Controller
         return $subdistrict;
     }
 
-    public function handleByCityId(Request $request,$subdistrict)
+    private function handleByCityId(Request $request,$subdistrict)
     {
         if ($request->has('c_id')) {
             $subdistrict = $subdistrict->where('city_id',$request->c_id);
@@ -47,7 +56,7 @@ class SubdistrictApiController extends Controller
         return $subdistrict;
     }
 
-    public function handleOrder(Request $request, $subdistrict)
+    private function handleOrder(Request $request, $subdistrict)
     {
         if ($request->has('ob')) {
             // sort direction (default = asc)
@@ -58,16 +67,6 @@ class SubdistrictApiController extends Controller
                 }
             }
             $subdistrict = $subdistrict->orderBy($request->ob, $sort_direction);
-        }
-        return $subdistrict;
-    }
-
-    public function handlePaginate(Request $request, $subdistrict)
-    {
-        if ($request->has('page')) {
-            $subdistrict = $subdistrict->paginate();
-        }else{
-            $subdistrict = $subdistrict->get();
         }
         return $subdistrict;
     }
@@ -93,14 +92,13 @@ class SubdistrictApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(Subdistrict $subdistrict)
     {
-        $subdistrict = Subdistrict::with('city.province')->with('villages')->find($id);
-        if (is_null($subdistrict)) {
-            return response()->fail($subdistrict);
-        }else{
-            return response()->success($subdistrict);
+        if (isset($subdistrict->villages)) {
+            $subdistrict->villages;
         }
+        $subdistrict->city->province;
+        return response()->success($subdistrict);
     }
     /**
      * Update the specified resource in storage.
@@ -127,16 +125,13 @@ class SubdistrictApiController extends Controller
      */
     public function destroy(Subdistrict $subdistrict)
     {
-        $message = 'deleted';
-        if ($subdistrict->villages->count() > 0) {
-            $message = 'please delete this items first :';
-            foreach ($subdistrict->villages as $key => $value) {
-                $message .='['.$value->id.'] '.$value->name;
-            }
-            return response()->success(['message'=>$message]);
-        }else{
+        try {
             $subdistrict->delete();
-            return response()->success($subdistrict);
+            return response()->success($subdistrict);    
+        } catch ( \Illuminate\Database\QueryException $e) {
+            $collection     = collect(['message' => 'Error! Kecamatan memiliki sub item']);
+            $subdistrict    = $collection->merge($subdistrict);
+            return response()->fail($subdistrict);    
         }
     }
 }

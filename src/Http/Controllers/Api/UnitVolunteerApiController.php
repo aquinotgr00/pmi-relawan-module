@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use BajakLautMalaka\PmiRelawan\UnitVolunteer;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreUnitRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateUnitRequest;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class UnitVolunteerApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -22,11 +24,11 @@ class UnitVolunteerApiController extends Controller
         $unit = $this->handleOrder($request,$unit);
         $unit = $unit->with('membership');
         $unit = $unit->with('city');
-        $unit = $unit->paginate();
+        $unit = $this->handlePaginate($request, $unit);
         return response()->success($unit);
     }
 
-    public function handleSearch(Request $request,$unit)
+    private function handleSearch(Request $request,$unit)
     {
         if ($request->has('s')) {
             $unit = $unit->where('name','like','%'.$request->s.'%')
@@ -40,23 +42,23 @@ class UnitVolunteerApiController extends Controller
         return $unit;
     }
 
-    public function handleByCityId(Request $request,$unit)
+    private function handleByCityId(Request $request,$unit)
     {
         if ($request->has('c_id')) {
-            $unit = $unit->where('city_id',$request->t_id);
+            $unit = $unit->where('city_id',$request->c_id);
         }
         return $unit;
     }
 
-    public function handleBySubId(Request $request,$unit)
+    private function handleBySubId(Request $request,$unit)
     {
         if ($request->has('s_id')) {
-            $unit = $unit->where('submember_type_id',$request->t_id);
+            $unit = $unit->where('submember_type_id',$request->s_id);
         }
         return $unit;
     }
 
-    public function handleOrder(Request $request, $unit)
+    private function handleOrder(Request $request, $unit)
     {
         if ($request->has('ob')) {
             $sort_direction = 'asc';
@@ -100,7 +102,12 @@ class UnitVolunteerApiController extends Controller
      */
     public function show(UnitVolunteer $unit)
     {
-        $unit->membership->type;
+        if (isset($unit->membership->parentMember)) {
+            $unit->membership->parentMember;
+        }
+        if (isset($unit->membership->subMember)) {
+            $unit->membership->subMember;
+        }
         $unit->city;
         return response()->success($unit);
     }
@@ -126,7 +133,12 @@ class UnitVolunteerApiController extends Controller
     public function update(UpdateUnitRequest $request, UnitVolunteer $unit)
     {
         $unit->update($request->except('_token','_method'));
-        $unit->membership->type;
+        if (isset($unit->membership->parentMember)) {
+            $unit->membership->parentMember;
+        }
+        if (isset($unit->membership->subMember)) {
+            $unit->membership->subMember;
+        }
         $unit->city;
         return response()->success($unit);
     }
@@ -139,7 +151,13 @@ class UnitVolunteerApiController extends Controller
      */
     public function destroy(UnitVolunteer $unit)
     {
-        $unit->delete();
-        return response()->success($unit);
+        try {
+            $unit->delete();
+            return response()->success($unit);    
+        } catch ( \Illuminate\Database\QueryException $e) {
+            $collection = collect(['message' => 'Error! Unit masih memiliki anggota']);
+            $unit       = $collection->merge($unit);
+            return response()->fail($unit);    
+        }
     }
 }

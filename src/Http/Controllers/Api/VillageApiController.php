@@ -3,13 +3,15 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
-use BajakLautMalaka\PmiRelawan\Village;
 use Illuminate\Http\Request;
+use BajakLautMalaka\PmiRelawan\Village;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVillageRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateVillageRequest;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
 class VillageApiController extends Controller
 {
+    use RelawanTrait;
     /**
      * Display a listing of the resource.
      *
@@ -18,14 +20,23 @@ class VillageApiController extends Controller
     public function index(Request $request, Village $village)
     {
         $village = $this->handleBySubId($request,$village);
+        $village = $this->handleByCityId($request,$village);
         $village = $this->handleSearch($request,$village);
         $village = $this->handleOrder($request,$village);
         $village = $village->with('subdistrict.city.province');
         $village = $this->handlePaginate($request,$village);
+
+        $filtering  = collect([
+            'filter_city' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->get(),
+            'filter_subdistrict' => \BajakLautMalaka\PmiRelawan\Subdistrict::getForFiltering($request),
+        ]);
+        
+        $village = $filtering->merge($village);
+
         return response()->success($village);
     }
 
-    public function handleSearch(Request $request,$village)
+    private function handleSearch(Request $request,$village)
     {
         if ($request->has('s')) {
             $village = $village->where('name','like','%'.$request->s.'%')
@@ -37,7 +48,7 @@ class VillageApiController extends Controller
         return $village;
     }
 
-    public function handleBySubId(Request $request,$village)
+    private function handleBySubId(Request $request,$village)
     {
         if ($request->has('s_id')) {
             $village = $village->where('subdistrict_id',$request->s_id);
@@ -45,7 +56,17 @@ class VillageApiController extends Controller
         return $village;
     }
 
-    public function handleOrder(Request $request, $village)
+    private function handleByCityId(Request $request,$village)
+    {
+        if ($request->has('c_id')) {
+            $village = $village->whereHas('subdistrict', function ($query) use ($request) {
+                $query->where('city_id','like','%'.$request->c_id.'%');
+            });
+        }
+        return $village;
+    }
+
+    private function handleOrder(Request $request, $village)
     {
         if ($request->has('ob')) {
             $sort_direction = 'asc';
@@ -58,17 +79,7 @@ class VillageApiController extends Controller
         }
         return $village;
     }
-
-    public function handlePaginate(Request $request, $village)
-    {
-        if ($request->has('page')) {
-            $village = $village->paginate();
-        }else{
-            $village = $village->get();
-        }
-        return $village;
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *

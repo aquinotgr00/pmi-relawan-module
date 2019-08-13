@@ -19,12 +19,12 @@ class MembershipApiController extends Controller
     {
         $membership = $this->handleSearch($request,$membership);
         $membership = $this->handleOrder($request,$membership);
-        $membership = $this->handelByParent($request,$membership);
+        $membership = $this->handleByParent($request,$membership);
         $membership = $membership->paginate();
         return response()->success($membership);
     }
 
-    public function handleSearch(Request $request,$membership)
+    private function handleSearch(Request $request,$membership)
     {
         if ($request->has('s')) {
             $membership = $membership->where('name','like','%'.$request->s.'%')
@@ -33,7 +33,7 @@ class MembershipApiController extends Controller
         return $membership;
     }
 
-    public function handleOrder(Request $request, $membership)
+    private function handleOrder(Request $request, $membership)
     {
         if ($request->has('ob')) {
             $sort_direction = 'asc';
@@ -47,7 +47,7 @@ class MembershipApiController extends Controller
         return $membership;
     }
 
-    public function handelByParent(Request $request, $membership)
+    private function handleByParent(Request $request, $membership)
     {
         if ($request->has('p_id')) {
             $membership = $membership->where('parent_id',$request->p_id);
@@ -92,6 +92,10 @@ class MembershipApiController extends Controller
      */
     public function show(Membership $membership)
     {
+        if (isset($membership->subMember->units)) {
+            $membership->subMember;
+            $membership->subMember->units;
+        }
         return response()->success($membership);
     }
 
@@ -116,13 +120,10 @@ class MembershipApiController extends Controller
     public function update(UpdateMembershipRequest $request, Membership $membership)
     {
         $membership->update($request->except('_token','_method'));
-        if (isset($membership->subMember)) {
+        
+        if (isset($membership->subMember->units)) {
             $membership->subMember;
-            foreach ($membership->subMember as $key => $value) {
-                if (isset($value->units)) {
-                    $value->units;
-                }
-            }
+            $membership->subMember->units;
         }
         return response()->success($membership);
     }
