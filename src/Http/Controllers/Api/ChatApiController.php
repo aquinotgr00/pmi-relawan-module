@@ -17,7 +17,7 @@ class ChatApiController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function list(EventReport $eventReport)
+    public function showActivities(EventReport $eventReport)
     {
         $eventReport->activities;
         return response()->success($eventReport);
