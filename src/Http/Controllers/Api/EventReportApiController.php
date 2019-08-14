@@ -74,16 +74,6 @@ class EventReportApiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -118,17 +108,6 @@ class EventReportApiController extends Controller
             $report->village->subdistrict->city->province;
         }
         return response()->success($report);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \BajakLautMalaka\PmiRelawan\EventReport  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(EventReport $report)
-    {
-        //
     }
 
     /**

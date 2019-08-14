@@ -5,6 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -119,7 +120,7 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
-        return response()->success($volunteer->where('user_id',auth()->user()->id)->first());
+        return response()->success($volunteer->where('user_id',Auth::id())->first());
     }
 
     public function print(Request $request, Volunteer $volunteers)
