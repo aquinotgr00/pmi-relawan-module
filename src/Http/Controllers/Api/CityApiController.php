@@ -70,10 +70,11 @@ class CityApiController extends Controller
      */
     public function show(City $city)
     {
+        
         $city->province;
-        if (isset($city->subdistricts)) {
+        /*if (isset($city->subdistricts)) {
             $city->subdistricts;
-        }
+        }*/
         return response()->success($city);
     }
     /**

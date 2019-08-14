@@ -79,10 +79,11 @@ class SubdistrictApiController extends Controller
      */
     public function show(Subdistrict $subdistrict)
     {
-        if (isset($subdistrict->villages)) {
-            $subdistrict->villages;
-        }
         $subdistrict->city->province;
+        $selection  = collect([
+            'selection' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->get()
+        ]);
+        $subdistrict = $selection->merge($subdistrict);
         return response()->success($subdistrict);
     }
     /**
