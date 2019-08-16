@@ -42,8 +42,7 @@ Route::prefix('app')->group(function () {
     Route::prefix('events')->middleware('auth:api')->group(function() {
         Route::apiResource('/report', 'EventReportApiController');
         Route::apiResource('/partisipants', 'EventPartisipantApiController');
-        Route::apiResource('/activities', 'EventActivityApiController');
-        Route::get('messages/{eventReport}', 'ChatApiController@list');
+        Route::get('messages/{eventReport}', 'ChatApiController@showActivities');
         Route::post('message', 'ChatApiController@storeActivity');
     });
     
