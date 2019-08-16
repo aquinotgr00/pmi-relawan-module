@@ -5,6 +5,7 @@ namespace BajakLautMalaka\PmiRelawan;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Routing\RouteRegistrar as Router;
+use Illuminate\Support\Facades\Broadcast;
 
 class PmiRelawanServiceProvider extends ServiceProvider
 {
@@ -29,6 +30,7 @@ class PmiRelawanServiceProvider extends ServiceProvider
         $this->loadMigrationsAndFactories($factory);
         $this->loadRoutes($router);
         $this->loadViews();
+        $this->loadBroadcast();
     }
 
     /**
@@ -90,5 +92,12 @@ class PmiRelawanServiceProvider extends ServiceProvider
                 $path => resource_path('views/bajaklautmalaka/volunteer'),
             ], 'volunteer:views');
         }
+    }
+
+    private function loadBroadcast()
+    {
+        Broadcast::routes(['middleware' => ['auth:api', 'cors']]);
+
+        require base_path('routes/channels.php'); 
     }
 }
