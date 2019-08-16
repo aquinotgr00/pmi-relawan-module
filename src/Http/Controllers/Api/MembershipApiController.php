@@ -107,8 +107,7 @@ class MembershipApiController extends Controller
      */
     public function update(UpdateMembershipRequest $request, Membership $membership)
     {
-        $membership->update($request->except('_token','_method'));
-        
+        $membership->update($request->only('name','code'));
         if (isset($membership->subMember->units)) {
             $membership->subMember;
             $membership->subMember->units;
