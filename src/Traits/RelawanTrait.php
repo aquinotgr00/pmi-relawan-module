@@ -29,4 +29,10 @@ trait RelawanTrait
 		}
 		return $city;
 	}
+
+	public function setLeadingZeroCode($number,$length)
+	{
+		$code   = str_pad($number,$length,"0",STR_PAD_LEFT);
+		return $code;
+	}
 }

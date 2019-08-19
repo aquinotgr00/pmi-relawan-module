@@ -22,7 +22,7 @@ class MembershipApiController extends Controller
         $membership = $this->handleSearch($request,$membership);
         $membership = $this->handleOrder($request,$membership);
         $membership = $this->handleByParent($request,$membership);
-        $membership = $membership->paginate();
+        $membership = $this->handlePaginate($request,$membership);        
         return response()->success($membership);
     }
 
@@ -68,6 +68,10 @@ class MembershipApiController extends Controller
      */
     public function store(StoreMembershipRequest $request)
     {
+        $code    = Membership::getCode();
+        $request->merge([
+            'code' => $code 
+        ]);
         $membership = Membership::create($request->except('_token'));
         return response()->success($membership);
     }
@@ -121,9 +125,16 @@ class MembershipApiController extends Controller
      * @param  \App\Membership  $membership
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Membership $Membership)
+    public function destroy(Membership $membership)
     {
-        $membership->delete();
+        $membership = $membership->delete();
+        return response()->success($membership);
+    }
+
+    public function parentMembers(Request $request,Membership $membership)
+    {
+        $membership = $membership->whereNull('parent_id');
+        $membership = $this->handlePaginate($request,$membership);        
         return response()->success($membership);
     }
 }

@@ -3,9 +3,13 @@
 namespace BajakLautMalaka\PmiRelawan;
 
 use Illuminate\Database\Eloquent\Model;
+use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
+use DB;
 
 class Membership extends Model
 {
+    use RelawanTrait;
+
 	protected $guarded = [];
 
     public function parentMember() {
@@ -19,5 +23,15 @@ class Membership extends Model
     public function units()
     {
     	return $this->hasMany('BajakLautMalaka\PmiRelawan\UnitVolunteer', 'membership_id', 'id');
+    }
+
+    public static function getCode()
+    {
+        $statement  = DB::select("SHOW TABLE STATUS LIKE 'memberships'");
+        $number     = $statement[0]->Auto_increment;
+        $length     = 2;
+        $obj        = new Membership;
+        $code       = $obj->setLeadingZeroCode($number,$length);
+        return $code;
     }
 }
