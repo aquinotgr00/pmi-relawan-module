@@ -19,36 +19,85 @@ class MembershipApiController extends Controller
      */
     public function index(Request $request,Membership $membership)
     {
+        $membership = $this->handleByLevel($request,$membership);
         $membership = $this->handleSearch($request,$membership);
         $membership = $this->handleOrder($request,$membership);
-        $membership = $this->handleByParent($request,$membership);
-        $membership = $membership->paginate();
-        return response()->success($membership);
-    }
+        $membership = $membership->with('parentMember');
+        $membership = $this->handlePaginate($request,$membership);
 
-    private function handleSearch(Request $request,$membership)
-    {
-        if ($request->has('s')) {
-            $membership = $membership->where('name','like','%'.$request->s.'%')
-            ->orWhere('code','like','%'.$request->s.'%');
-        }
-        return $membership;
-    }
+        $data = [];
+        foreach ($membership as $key => $value) {
 
-    private function handleByParent(Request $request, $membership)
-    {
-        if ($request->has('p_id')) {
-            $membership = $membership->where('parent_id',$request->p_id);
-            $membership = $membership->with('parentMember');
-        }elseif ($request->has('sub')) {
-            $membership = $membership->where('parent_id','<>',NULL);
-            $membership = $membership->with('parentMember');
+            if ($value->subMember->count() > 0) {
+                $parent = collect([
+                    'circular' => $value->name,
+                    'id' => $value->id,
+                    'parent_id' => $value->parent_id,
+                    'name' => $value->name,
+                    'code' => $value->code,
+                    'created_at' => $value->created_at,
+                    'updated_at' => $value->updated_at,
+                    ]);
+                array_push($data, $parent);
+                foreach ($value->subMember as $index => $sub) {
+                    $member     = $value->name;
+                    $member    .=" > ".$sub->name;
+                    $obj = collect(['circular' => $member]);
+                    $sub = $obj->merge($sub);
+                    $data[] = $sub;
+                }
+
+            }else{
+              $data[] = collect([
+                'circular' => $value->name,
+                'id' => $value->id,
+                'parent_id' => $value->parent_id,
+                'name' => $value->name,
+                'code' => $value->code,
+                'created_at' => $value->created_at,
+                'updated_at' => $value->updated_at,
+                ]);
+          }
+
+
+      }
+
+      $ori          = collect($membership);
+      if (isset($ori['data'])) {
+        $mixed       = collect(['data'=>$data]);
+        $membership  = $ori->merge($mixed);
+      }else{
+        $membership  = collect($data);
+      }
+      return response()->success($membership);
+  }
+
+  private function handleSearch(Request $request,$membership)
+  {
+    if ($request->has('s')) {
+        $membership = $membership->where('name','like','%'.$request->s.'%')
+        ->orWhereHas('subMember', function ($query) use ($request) {
+            $query->where('name','like','%'.$request->s.'%');
+        })
+        ->orWhere('code','like','%'.$request->s.'%');
+    }
+    return $membership;
+}
+
+private function handleByLevel(Request $request,$membership)
+{
+    if ($request->has('l')) {
+        if ($request->l > 0) {
+            $membership = $membership->where('parent_id',$request->l);
         }else{
-            $membership = $membership->whereNull('parent_id');
-            $membership = $membership->with('subMember');
+            $membership = $membership->whereNull('parent_id');    
         }
-        return $membership;
+    }else{
+        $membership = $membership->whereNull('parent_id')->with('subMember');    
     }
+
+    return $membership;
+}
 
     /**
      * Show the form for creating a new resource.
@@ -68,7 +117,7 @@ class MembershipApiController extends Controller
      */
     public function store(StoreMembershipRequest $request)
     {
-        $membership = Membership::create($request->except('_token'));
+        $membership = Membership::create($request->all());
         return response()->success($membership);
     }
 
@@ -107,8 +156,7 @@ class MembershipApiController extends Controller
      */
     public function update(UpdateMembershipRequest $request, Membership $membership)
     {
-        $membership->update($request->except('_token','_method'));
-        
+        $membership->update($request->only('name','code'));
         if (isset($membership->subMember->units)) {
             $membership->subMember;
             $membership->subMember->units;
@@ -122,9 +170,9 @@ class MembershipApiController extends Controller
      * @param  \App\Membership  $membership
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Membership $Membership)
+    public function destroy(Membership $membership)
     {
-        $membership->delete();
+        $membership = $membership->delete();
         return response()->success($membership);
     }
 }

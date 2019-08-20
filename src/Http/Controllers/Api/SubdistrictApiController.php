@@ -63,7 +63,7 @@ class SubdistrictApiController extends Controller
      */
     public function store(StoreSubdistrictRequest $request)
     {
-        $subdistrict = Subdistrict::create($request->except('_token'));
+        $subdistrict = Subdistrict::create($request->all());
         if (isset($subdistrict->city)) {
             $subdistrict->city;
             $subdistrict->city->province;
@@ -79,10 +79,11 @@ class SubdistrictApiController extends Controller
      */
     public function show(Subdistrict $subdistrict)
     {
-        if (isset($subdistrict->villages)) {
-            $subdistrict->villages;
-        }
         $subdistrict->city->province;
+        $selection  = collect([
+            'selection' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->get()
+        ]);
+        $subdistrict = $selection->merge($subdistrict);
         return response()->success($subdistrict);
     }
     /**
@@ -94,7 +95,7 @@ class SubdistrictApiController extends Controller
      */
     public function update(UpdateSubdistrictRequest $request, Subdistrict $subdistrict)
     {
-        $subdistrict->update($request->except('_token','_method'));
+        $subdistrict->update($request->all());
         $subdistrict->city;
         if (isset($subdistrict->villages)) {
             $subdistrict->villages;

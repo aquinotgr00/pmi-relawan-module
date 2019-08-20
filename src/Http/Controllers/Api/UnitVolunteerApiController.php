@@ -19,10 +19,12 @@ class UnitVolunteerApiController extends Controller
      */
     public function index(Request $request,UnitVolunteer $unit)
     {
+        $unit = $this->handleSearch($request,$unit);
         $unit = $this->handleByCityId($request,$unit);
-        $unit = $this->handleBySubId($request,$unit);
+        $unit = $this->handleByMembership($request,$unit);
+        
         $unit = $this->handleOrder($request,$unit);
-        $unit = $unit->with('membership');
+        $unit = $unit->with('membership.parentMember');
         $unit = $unit->with('city');
         $unit = $this->handlePaginate($request, $unit);
         return response()->success($unit);
@@ -50,10 +52,10 @@ class UnitVolunteerApiController extends Controller
         return $unit;
     }
 
-    private function handleBySubId(Request $request,$unit)
+    private function handleByMembership(Request $request,$unit)
     {
-        if ($request->has('s_id')) {
-            $unit = $unit->where('submember_type_id',$request->s_id);
+        if ($request->has('p_id')) {
+            $unit = $unit->where('membership_id',$request->p_id);
         }
         return $unit;
     }
@@ -76,7 +78,7 @@ class UnitVolunteerApiController extends Controller
      */
     public function store(StoreUnitRequest $request)
     {
-        $unit = UnitVolunteer::create($request->except('_token'));
+        $unit = UnitVolunteer::create($request->only('name','city_id','membership_id'));
         return response()->success($unit);
     }
 
@@ -88,11 +90,8 @@ class UnitVolunteerApiController extends Controller
      */
     public function show(UnitVolunteer $unit)
     {
-        if (isset($unit->membership->parentMember)) {
-            $unit->membership->parentMember;
-        }
-        if (isset($unit->membership->subMember)) {
-            $unit->membership->subMember;
+        if (isset($unit->membership)) {
+            $unit->membership;
         }
         $unit->city;
         return response()->success($unit);
@@ -118,12 +117,12 @@ class UnitVolunteerApiController extends Controller
      */
     public function update(UpdateUnitRequest $request, UnitVolunteer $unit)
     {
-        $unit->update($request->except('_token','_method'));
-        if (isset($unit->membership->parentMember)) {
-            $unit->membership->parentMember;
+        $unit->update($request->only('name','city_id','membership_id'));
+        if (isset($unit->membership)) {
+            $unit->membership;
         }
-        if (isset($unit->membership->subMember)) {
-            $unit->membership->subMember;
+        if (isset($unit->subMembership)) {
+            $unit->subMembership;
         }
         $unit->city;
         return response()->success($unit);
