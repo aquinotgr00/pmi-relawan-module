@@ -17,9 +17,4 @@ class UnitVolunteer extends Model
     {
     	return $this->belongsTo('BajakLautMalaka\PmiRelawan\City','city_id','id');
     }
-
-    public function subMembership()
-    {
-    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\Membership','sub_member_id','id')->where('parent_id','<>',NULL);
-    }
 }

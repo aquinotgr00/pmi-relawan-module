@@ -61,9 +61,14 @@ class MembershipApiController extends Controller
 
 
       }
+
       $ori          = collect($membership);
-      $mixed        = collect(['data'=>$data]);
-      $membership   = $ori->merge($mixed);
+      if (isset($ori['data'])) {
+        $mixed       = collect(['data'=>$data]);
+        $membership  = $ori->merge($mixed);
+      }else{
+        $membership  = collect($data);
+      }
       return response()->success($membership);
   }
 

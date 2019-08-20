@@ -21,11 +21,10 @@ class UnitVolunteerApiController extends Controller
     {
         $unit = $this->handleSearch($request,$unit);
         $unit = $this->handleByCityId($request,$unit);
-        $unit = $this->handleByMemberId($request,$unit);
-        $unit = $this->handleBySubMemberId($request,$unit);
+        $unit = $this->handleByMembership($request,$unit);
+        
         $unit = $this->handleOrder($request,$unit);
-        $unit = $unit->with('membership');
-        $unit = $unit->with('subMembership');
+        $unit = $unit->with('membership.parentMember');
         $unit = $unit->with('city');
         $unit = $this->handlePaginate($request, $unit);
         return response()->success($unit);
@@ -53,18 +52,10 @@ class UnitVolunteerApiController extends Controller
         return $unit;
     }
 
-    private function handleByMemberId(Request $request,$unit)
+    private function handleByMembership(Request $request,$unit)
     {
         if ($request->has('p_id')) {
             $unit = $unit->where('membership_id',$request->p_id);
-        }
-        return $unit;
-    }
-
-    public function handleBySubMemberId(Request $request,$unit)
-    {
-        if ($request->has('s_id')) {
-            $unit = $unit->where('sub_member_id',$request->s_id);
         }
         return $unit;
     }
@@ -87,7 +78,7 @@ class UnitVolunteerApiController extends Controller
      */
     public function store(StoreUnitRequest $request)
     {
-        $unit = UnitVolunteer::create($request->only('name','city_id','membership_id','sub_member_id'));
+        $unit = UnitVolunteer::create($request->only('name','city_id','membership_id'));
         return response()->success($unit);
     }
 
@@ -101,9 +92,6 @@ class UnitVolunteerApiController extends Controller
     {
         if (isset($unit->membership)) {
             $unit->membership;
-        }
-        if (isset($unit->subMembership)) {
-            $unit->subMembership;
         }
         $unit->city;
         return response()->success($unit);
@@ -129,7 +117,7 @@ class UnitVolunteerApiController extends Controller
      */
     public function update(UpdateUnitRequest $request, UnitVolunteer $unit)
     {
-        $unit->update($request->only('name','city_id','membership_id','sub_member_id'));
+        $unit->update($request->only('name','city_id','membership_id'));
         if (isset($unit->membership)) {
             $unit->membership;
         }
