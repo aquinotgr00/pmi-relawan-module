@@ -3,14 +3,14 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
-use BajakLautMalaka\PmiRelawan\EventPartisipant;
+use BajakLautMalaka\PmiRelawan\EventParticipant;
 use BajakLautMalaka\PmiRelawan\EventReport;
-use BajakLautMalaka\PmiRelawan\Http\Requests\StorePartisipantRequest;
-use BajakLautMalaka\PmiRelawan\Http\Requests\UpdatePartisipantRequest;
+use BajakLautMalaka\PmiRelawan\Http\Requests\StoreParticipantRequest;
+use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateParticipantRequest;
 use Illuminate\Http\Request;
 use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 
-class EventPartisipantApiController extends Controller
+class EventParticipantApiController extends Controller
 {
     use RelawanTrait;
     /**
@@ -23,15 +23,15 @@ class EventPartisipantApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, EventPartisipant $partisipants)
+    public function index(Request $request, EventParticipant $participants)
     {
         $user               = auth()->user();
-        $partisipants       = $partisipants->where('volunteer_id',$user->id);
-        $partisipants       = $this->handleRequestJoinStatus($request,$partisipants);
+        $participants       = $participants->where('volunteer_id',$user->id);
+        $participants       = $this->handleRequestJoinStatus($request,$participants);
         
         $events_id          = [];    
-        if ($partisipants->count() > 0) {
-            foreach ($partisipants->get() as $key => $value) {
+        if ($participants->count() > 0) {
+            foreach ($participants->get() as $key => $value) {
                 $events_id[] = $value->event_report_id;
             }
         }
@@ -43,15 +43,15 @@ class EventPartisipantApiController extends Controller
         return response()->success($events);
     }
 
-    private function handleRequestJoinStatus(Request $request,$partisipants)
+    private function handleRequestJoinStatus(Request $request,$participants)
     {
         if ($request->has('j')) {
 
-            $partisipants = $partisipants->where('request_join',intval($request->j));
+            $participants = $participants->where('request_join',intval($request->j));
         }else{
-            $partisipants = $partisipants->whereNull('request_join');    
+            $participants = $participants->whereNull('request_join');    
         }
-        return $partisipants;
+        return $participants;
     }
 
     private function handleArchivedStatus(Request $request,$events)
@@ -76,28 +76,18 @@ class EventPartisipantApiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePartisipantRequest $request)
+    public function store(StoreParticipantRequest $request)
     {
         $user   = auth()->user();
         $event  = EventReport::find($request->event_report_id);
         if (!is_null($event)) {
             if ($event->approved === 1) {
-                $partisipants = EventPartisipant::firstOrCreate(
+                $participants = EventParticipant::firstOrCreate(
                     [
                     'event_report_id' => $request->event_report_id 
                     ],
@@ -107,8 +97,8 @@ class EventPartisipantApiController extends Controller
                     ]
                     );
 
-                $partisipants->event;
-                return response()->success($partisipants);
+                $participants->event;
+                return response()->success($participants);
             }
         }
         return response()->fail($event);
@@ -117,21 +107,10 @@ class EventPartisipantApiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \BajakLautMalaka\PmiRelawan\EventPartisipant  $partisipants
+     * @param  \BajakLautMalaka\PmiRelawan\EventParticipant  $participants
      * @return \Illuminate\Http\Response
      */
-    public function show(EventPartisipant $partisipants)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \BajakLautMalaka\PmiRelawan\EventPartisipant  $partisipants
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(EventPartisipant $partisipants)
+    public function show(EventParticipant $participants)
     {
         //
     }
@@ -140,26 +119,26 @@ class EventPartisipantApiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \BajakLautMalaka\PmiRelawan\EventPartisipant  $partisipants
+     * @param  \BajakLautMalaka\PmiRelawan\EventParticipant  $participants
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePartisipantRequest $request, EventPartisipant $partisipants)
+    public function update(UpdateParticipantRequest $request, EventParticipant $participants)
     {
-        $partisipants->request_join = $request->request_join;
-        $partisipants->admin_id     = auth()->user()->id;
-        $partisipants->save();
-        $partisipants->event;
-        return response()->success($partisipants);
+        $participants->request_join = $request->request_join;
+        $participants->admin_id     = auth()->user()->id;
+        $participants->save();
+        $participants->event;
+        return response()->success($participants);
 
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \BajakLautMalaka\PmiRelawan\EventPartisipant  $partisipants
+     * @param  \BajakLautMalaka\PmiRelawan\EventParticipant  $participants
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EventPartisipant $partisipants)
+    public function destroy(EventParticipant $participants)
     {
         //
     }

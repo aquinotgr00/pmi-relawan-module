@@ -14,7 +14,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::prefix('events')->group(function() {
         Route::apiResource('/report', 'EventReportApiController');
         Route::get('/report-only-transed', 'EventReportApiController@onlyTrashed')->name('event-report.only-transed');
-        Route::put('/partisipants/{partisipants}', 'EventPartisipantApiController@update')->name('event-partisipant.update');
+        Route::put('/participants/{participants}', 'EventParticipantApiController@update')->name('event-participant.update');
     });
 
     
@@ -41,7 +41,7 @@ Route::prefix('app')->group(function () {
 
     Route::prefix('events')->middleware('auth:api')->group(function() {
         Route::apiResource('/report', 'EventReportApiController');
-        Route::apiResource('/partisipants', 'EventPartisipantApiController');
+        Route::apiResource('/participants', 'EventParticipantApiController');
         Route::get('messages/{eventReport}', 'ChatApiController@showActivities');
         Route::post('message', 'ChatApiController@storeActivity');
     });
