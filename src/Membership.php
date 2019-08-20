@@ -34,4 +34,12 @@ class Membership extends Model
         $code       = $obj->setLeadingZeroCode($number,$length);
         return $code;
     }
+
+    public function getRecursive()
+    {
+        return DB::table(DB::raw('memberships AS m1'))
+            ->join(DB::raw('memberships AS m2'), 'm1.parent_id', '=', 'm2.id')
+            ->join(DB::raw('memberships AS m3'), 'm3.parent_id', '=', 'm2.id')
+            ->get();
+    }
 }
