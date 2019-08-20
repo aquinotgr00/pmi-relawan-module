@@ -24,17 +24,7 @@ class Membership extends Model
     {
     	return $this->hasMany('BajakLautMalaka\PmiRelawan\UnitVolunteer', 'membership_id', 'id');
     }
-
-    public static function getCode()
-    {
-        $statement  = DB::select("SHOW TABLE STATUS LIKE 'memberships'");
-        $number     = $statement[0]->Auto_increment;
-        $length     = 2;
-        $obj        = new Membership;
-        $code       = $obj->setLeadingZeroCode($number,$length);
-        return $code;
-    }
-
+    
     public function getRecursive()
     {
         return DB::table(DB::raw('memberships AS m1'))

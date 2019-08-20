@@ -26,7 +26,6 @@ class UpdateMembershipRequest extends FormRequest
     {           
         return [            
             'name' => 'required|unique:memberships,name,' .$this->membership->id. ',id',
-            //'code' => 'unique:memberships,code,' .$this->membership->id. ',id',
         ];
     }
 

@@ -21,7 +21,6 @@ class ProvinceApiController extends Controller
     {
         $province = $this->handleSearch($request,$province);
         $province = $this->handleOrder($request,$province);
-        //$province = $province->with('cities.subdistricts.villages');
         $province = $this->handlePaginate($request,$province);
         return response()->success($province);
     }
@@ -43,7 +42,6 @@ class ProvinceApiController extends Controller
     public function store(StoreProvinceRequest $request)
     {
         $province = Province::create($request->all());
-        //$province->with('cities.subdistricts.villages');
         return response()->success($province);
     }
 

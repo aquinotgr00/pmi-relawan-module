@@ -26,7 +26,6 @@ class StoreMembershipRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:memberships',
-            //'code' => 'unique:memberships',
         ];
     }
 
