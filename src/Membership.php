@@ -13,7 +13,7 @@ class Membership extends Model
 	protected $guarded = [];
 
     public function parentMember() {
-        return $this->belongsTo('BajakLautMalaka\PmiRelawan\Membership', 'parent_id');
+        return $this->belongsTo('BajakLautMalaka\PmiRelawan\Membership', 'parent_id','id');
     }
     
     public function subMember() {

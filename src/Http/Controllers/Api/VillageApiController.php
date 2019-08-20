@@ -74,7 +74,7 @@ class VillageApiController extends Controller
      */
     public function store(StoreVillageRequest $request)
     {
-        $village = Village::create($request->except('_token','city_id'));
+        $village = Village::create($request->except('city_id'));
         if (isset($village->subdistrict)) {
             $village->subdistrict;
             $village->subdistrict->city->province;
@@ -92,7 +92,8 @@ class VillageApiController extends Controller
     {
         $village->subdistrict->city->province;
         $selection  = collect([
-            'selection' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->with('subdistricts')->get()
+            'selection' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->with('subdistricts')->get(),
+            'subdistricts' => \BajakLautMalaka\PmiRelawan\Subdistrict::select(['id','name'])->where('city_id',$village->city_id)->get(),
         ]);
         $village = $selection->merge($village);
         return response()->success($village);
@@ -106,7 +107,7 @@ class VillageApiController extends Controller
      */
     public function update(UpdateVillageRequest $request, Village $village)
     {
-        $village->update($request->except('_token','_method','city_id'));
+        $village->update($request->except('city_id'));
         $village->subdistrict->city->province;
         return response()->success($village);
     }

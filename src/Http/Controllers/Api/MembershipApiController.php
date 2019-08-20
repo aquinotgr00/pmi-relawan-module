@@ -19,9 +19,11 @@ class MembershipApiController extends Controller
      */
     public function index(Request $request,Membership $membership)
     {
+        $membership = $this->handleByLevel($request,$membership);
         $membership = $this->handleSearch($request,$membership);
         $membership = $this->handleOrder($request,$membership);
-        $membership = $this->handleByParent($request,$membership);
+        //$membership = $this->handleByParent($request,$membership);
+        $membership = $membership->with('parentMember');
         $membership = $this->handlePaginate($request,$membership);        
         return response()->success($membership);
     }
@@ -50,6 +52,18 @@ class MembershipApiController extends Controller
         return $membership;
     }
 
+    private function handleByLevel(Request $request,$membership)
+    {
+        if ($request->has('l')) {
+            if ($request->l > 0) {
+                $membership = $membership->where('parent_id',$request->l);
+            }else{
+                $membership = $membership->whereNull('parent_id');    
+            }
+        }
+        return $membership;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -68,11 +82,7 @@ class MembershipApiController extends Controller
      */
     public function store(StoreMembershipRequest $request)
     {
-        $code    = Membership::getCode();
-        $request->merge([
-            'code' => $code 
-        ]);
-        $membership = Membership::create($request->except('_token'));
+        $membership = Membership::create($request->all());
         return response()->success($membership);
     }
 
@@ -128,13 +138,6 @@ class MembershipApiController extends Controller
     public function destroy(Membership $membership)
     {
         $membership = $membership->delete();
-        return response()->success($membership);
-    }
-
-    public function parentMembers(Request $request,Membership $membership)
-    {
-        $membership = $membership->whereNull('parent_id');
-        $membership = $this->handlePaginate($request,$membership);        
         return response()->success($membership);
     }
 }

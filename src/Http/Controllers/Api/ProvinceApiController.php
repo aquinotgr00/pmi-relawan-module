@@ -42,7 +42,7 @@ class ProvinceApiController extends Controller
      */
     public function store(StoreProvinceRequest $request)
     {
-        $province = Province::create($request->except('_token'));
+        $province = Province::create($request->all());
         //$province->with('cities.subdistricts.villages');
         return response()->success($province);
     }
@@ -67,7 +67,7 @@ class ProvinceApiController extends Controller
      */
     public function update(UpdateProvinceRequest $request, Province $province)
     {
-        $province->update($request->except('_token','_method'));
+        $province->update($request->all());
         return response()->success($province);
     }
 

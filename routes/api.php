@@ -8,7 +8,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         Route::apiResource('subdistrict', 'SubdistrictApiController');
         Route::apiResource('village', 'VillageApiController');
         Route::apiResource('membership', 'MembershipApiController');
-        Route::get('membership-parents', 'MembershipApiController@parentMembers')->name('membership.parents');
         Route::apiResource('unit', 'UnitVolunteerApiController');
     });
 
