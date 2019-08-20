@@ -13,6 +13,9 @@ use PDF;
 use App\User;
 use BajakLautMalaka\PmiRelawan\Volunteer;
 use BajakLautMalaka\PmiRelawan\Qualification;
+use BajakLautMalaka\PmiRelawan\Membership;
+use BajakLautMalaka\PmiRelawan\Subdistrict;
+use BajakLautMalaka\PmiRelawan\City;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVolunteerRequest;
 
 class VolunteerApiController extends Controller
@@ -30,15 +33,24 @@ class VolunteerApiController extends Controller
         $volunteer = $this->handleVolunteerSubType($request, $volunteer);
         $volunteer = $this->handleVolunteerCity($request, $volunteer);
         $volunteer = $this->handleVolunteerUnit($request, $volunteer);
+        $volunteer = $this->handleVolunteerSubdistrict($request, $volunteer);
         $volunteer = $this->handleSearchKeyword($request, $volunteer);
+        $admins = $volunteer->with('unit.membership.parentMember')->with('qualifications')->paginate();
 
-        return response()->success($volunteer->paginate());
+        return response()->success(compact('admins'));
     }
 
     private function handleVolunteerType(Request $request, $volunteer)
     {
         if ($request->has('t')) {
-            $volunteer = $volunteer->where('type', $request->t);
+            $membershipId = null;
+            $membership = Membership::where('name', $request->t)->first();
+            if ($membership)
+                $membershipId = $membership->id;
+
+            $volunteer = $volunteer->whereHas('unit.membership', function ($q) use ($membershipId) {
+                $q->where('parent_id', $membershipId);
+            });
         }
         return $volunteer;
     }
@@ -46,7 +58,14 @@ class VolunteerApiController extends Controller
     private function handleVolunteerSubType(Request $request, $volunteer)
     {
         if ($request->has('st')) {
-            $volunteer = $volunteer->where('sub_type', $request->st);
+            $membershipId = null;
+            $membership = Membership::where('name', $request->st)->first();
+            if ($membership)
+                $membershipId = $membership->id;
+
+            $volunteer = $volunteer->whereHas('unit.membership', function ($q) use ($membershipId) {
+                $q->where('id', $membershipId);
+            });
         }
         return $volunteer;
     }
@@ -54,7 +73,17 @@ class VolunteerApiController extends Controller
     private function handleVolunteerCity(Request $request, $volunteer)
     {
         if ($request->has('c')) {
-            $volunteer = $volunteer->where('city', $request->c);
+            $city = City::find($request->c);
+            $volunteer = $volunteer->where('city', $city->name);
+        }
+        return $volunteer;
+    }
+    
+    private function handleVolunteerSubdistrict(Request $request, $volunteer)
+    {
+        if ($request->has('sd')) {
+            $subdistrict = Subdistrict::find($request->sd);
+            $volunteer = $volunteer->where('subdistrict', $subdistrict->name);
         }
         return $volunteer;
     }
@@ -62,7 +91,9 @@ class VolunteerApiController extends Controller
     private function handleVolunteerUnit(Request $request, $volunteer)
     {
         if ($request->has('u')) {
-            $volunteer = $volunteer->where('unit', $request->u);
+            $volunteer = $volunteer->whereHas('unit', function ($q) use ($request) {
+                $q->where('id', $request->u);
+            });
         }
         return $volunteer;
     }
