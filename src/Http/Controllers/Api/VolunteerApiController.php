@@ -211,6 +211,7 @@ class VolunteerApiController extends Controller
         }
 
         $volunteer->update($request->input());
+        $volunteer->unit->membership->parentMember;
         return response()->success($volunteer);
     }
 
