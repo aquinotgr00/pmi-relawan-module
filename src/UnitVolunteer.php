@@ -17,4 +17,9 @@ class UnitVolunteer extends Model
     {
     	return $this->belongsTo('BajakLautMalaka\PmiRelawan\City','city_id','id');
     }
+
+    public function volunteers()
+    {
+        return $this->hasMany('BajakLautMalaka\PmiRelawan\Volunteer');
+    }
 }

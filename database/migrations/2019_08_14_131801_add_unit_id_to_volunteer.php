@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ReplacePartisipantToParticipant extends Migration
+class AddUnitIdToVolunteer extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class ReplacePartisipantToParticipant extends Migration
      */
     public function up()
     {
-        Schema::rename('event_partisipants', 'event_participants');
+        Schema::table('volunteers', function (Blueprint $table) {
+            $table->unsignedInteger('unit_id')->nullable();
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class ReplacePartisipantToParticipant extends Migration
      */
     public function down()
     {
-        Schema::rename('event_participants', 'event_partisipants');
+        Schema::table('volunteers', function (Blueprint $table) {
+            $table->dropColumn('unit_id');
+        });
     }
 }

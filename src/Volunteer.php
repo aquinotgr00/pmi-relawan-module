@@ -13,11 +13,11 @@ class Volunteer extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 
-        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'unit', 'membership', 'user_id'
+        'name', 'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
+        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id'
     ];
     
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'age'];
 
     public function user()
     {
@@ -29,34 +29,9 @@ class Volunteer extends Model
         return Carbon::parse($this->attributes['dob'])->age;
     }
 
-    public static function getByType(Type $var = null)
+    public function unit()
     {
-        # code...
-    }
-
-    public static function getBySubType(Type $var = null)
-    {
-        # code...
-    }
-
-    public static function getByCity(Type $var = null)
-    {
-        # code...
-    }
-
-    public static function getByProvince(Type $var = null)
-    {
-        # code...
-    }
-
-    public static function getByUnit(Type $var = null)
-    {
-        # code...
-    }
-
-    public static function getByKeyword(Type $var = null)
-    {
-        # code...
+        return $this->belongsTo('BajakLautMalaka\PmiRelawan\UnitVolunteer');
     }
     
     public function qualifications()
