@@ -29,7 +29,7 @@ class EventReportApiController extends Controller
         $report = $this->handleApprovedStatus($request,$report);
         $report = $this->handleEmergencyStatus($request,$report);
         $report = $this->handleArchivedStatus($request,$report);
-        $report = $report->with('partisipants')->with('activities');
+        $report = $report->with('participants')->with('activities');
         $report = $report->paginate();
 
         return response()->success($report);
@@ -74,16 +74,6 @@ class EventReportApiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -112,23 +102,12 @@ class EventReportApiController extends Controller
      */
     public function show(EventReport $report)
     {
-        $report->partisipants;
+        $report->participants;
         $report->activities;
         if (isset($report->village)) {
             $report->village->subdistrict->city->province;
         }
         return response()->success($report);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \BajakLautMalaka\PmiRelawan\EventReport  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(EventReport $report)
-    {
-        //
     }
 
     /**
@@ -144,13 +123,10 @@ class EventReportApiController extends Controller
         if ($request->has('approved')) {
             $report->approved = $request->approved;
             $report->save();
-        }elseif ($request->has('archived')) {
-            $report->archived = (!$report->archived);
-            $report->save();
-        }else{
+        } else {
             $report->update($request->except('_method'));
         }
-        $report->partisipants;
+        $report->participants;
         $report->activities;
         if (isset($report->village)) {
             $report->village->subdistrict->city->province;

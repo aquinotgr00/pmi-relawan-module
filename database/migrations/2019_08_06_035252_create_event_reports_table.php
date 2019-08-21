@@ -18,7 +18,7 @@ class CreateEventReportsTable extends Migration
             $table->unsignedInteger('volunteer_id');
             $table->unsignedInteger('admin_id')->nullable();
             $table->unsignedInteger('urban_village_id')->nullable();
-            $table->unsignedInteger('partisipant_pic_id')->nullable();
+            $table->unsignedInteger('participant_pic_id')->nullable();
             $table->string('title')->unique();
             $table->text('description')->nullable();
             $table->string('type')->nullable();

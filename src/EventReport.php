@@ -9,13 +9,11 @@ class EventReport extends Model
 {
 	use SoftDeletes;
 
-    protected $fillable = ['volunteer_id','title','description','type','location','image','image_file_name','emergency','village_id'];
+    protected $fillable = ['volunteer_id','title','description','location','image','image_file_name','emergency','village_id'];
 
-    protected $appends = ['members'];
-
-    public function partisipants()
+    public function participants()
     {
-    	return $this->hasMany('BajakLautMalaka\PmiRelawan\EventPartisipant');
+    	return $this->hasMany('BajakLautMalaka\PmiRelawan\EventParticipant');
     }
 
     public function activities()
@@ -28,14 +26,4 @@ class EventReport extends Model
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\Village','village_id','id');
     }
 
-    public function getMembersAttribute()
-    {
-        $members = [];
-        if ($this->partisipants->count() > 0) {
-            foreach ($this->partisipants->where('request_join',1) as $key => $value) {
-                $members[] = $value;
-            }
-        }
-        return $members;
-    }
 }
