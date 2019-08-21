@@ -13,8 +13,8 @@ class Volunteer extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 
-        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'unit', 'membership', 'user_id'
+        'name', 'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
+        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id'
     ];
     
     protected $appends = ['image_url', 'age'];
@@ -31,7 +31,7 @@ class Volunteer extends Model
 
     public function unit()
     {
-        return $this->hasOne('BajakLautMalaka\PmiRelawan\UnitVolunteer');
+        return $this->belongsTo('BajakLautMalaka\PmiRelawan\UnitVolunteer');
     }
     
     public function qualifications()

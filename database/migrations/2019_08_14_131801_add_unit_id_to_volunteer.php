@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddVolunteerIdToUnitVolunteer extends Migration
+class AddUnitIdToVolunteer extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddVolunteerIdToUnitVolunteer extends Migration
      */
     public function up()
     {
-        Schema::table('unit_volunteers', function (Blueprint $table) {
-            $table->unsignedInteger('volunteer_id')->after('membership_id');
+        Schema::table('volunteers', function (Blueprint $table) {
+            $table->unsignedInteger('unit_id')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddVolunteerIdToUnitVolunteer extends Migration
      */
     public function down()
     {
-        Schema::table('unit_volunteers', function (Blueprint $table) {
-            $table->dropColumn('volunteer_id');
+        Schema::table('volunteers', function (Blueprint $table) {
+            $table->dropColumn('unit_id');
         });
     }
 }
