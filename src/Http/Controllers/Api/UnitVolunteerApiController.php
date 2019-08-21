@@ -22,6 +22,7 @@ class UnitVolunteerApiController extends Controller
         $unit = $this->handleByCityId($request,$unit);
         $unit = $this->handleBySubId($request,$unit);
         $unit = $this->handleOrder($request,$unit);
+        $unit = $this->handleSearch($request,$unit);
         $unit = $unit->with('membership');
         $unit = $unit->with('city');
         $unit = $this->handlePaginate($request, $unit);
