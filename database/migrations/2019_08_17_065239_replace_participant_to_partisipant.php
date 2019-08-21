@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ReplaceparticipantToParticipant extends Migration
+class ReplaceparticipantToPartisipant extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class ReplaceparticipantToParticipant extends Migration
      */
     public function up()
     {
-        Schema::rename('event_participants', 'event_participants');
+        Schema::rename('event_participants', 'event_partisipants');
     }
 
     /**
@@ -23,6 +23,6 @@ class ReplaceparticipantToParticipant extends Migration
      */
     public function down()
     {
-        Schema::rename('event_participants', 'event_participants');
+        Schema::rename('event_partisipants', 'event_participants');
     }
 }

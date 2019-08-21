@@ -24,80 +24,36 @@ class MembershipApiController extends Controller
         $membership = $this->handleOrder($request,$membership);
         $membership = $membership->with('parentMember');
         $membership = $this->handlePaginate($request,$membership);
-
-        $data = [];
-        foreach ($membership as $key => $value) {
-
-            if ($value->subMember->count() > 0) {
-                $parent = collect([
-                    'circular' => $value->name,
-                    'id' => $value->id,
-                    'parent_id' => $value->parent_id,
-                    'name' => $value->name,
-                    'code' => $value->code,
-                    'created_at' => $value->created_at,
-                    'updated_at' => $value->updated_at,
-                    ]);
-                array_push($data, $parent);
-                foreach ($value->subMember as $index => $sub) {
-                    $member     = $value->name;
-                    $member    .=" > ".$sub->name;
-                    $obj = collect(['circular' => $member]);
-                    $sub = $obj->merge($sub);
-                    $data[] = $sub;
-                }
-
-            }else{
-              $data[] = collect([
-                'circular' => $value->name,
-                'id' => $value->id,
-                'parent_id' => $value->parent_id,
-                'name' => $value->name,
-                'code' => $value->code,
-                'created_at' => $value->created_at,
-                'updated_at' => $value->updated_at,
-                ]);
-          }
-
-
-      }
-
-      $ori          = collect($membership);
-      if (isset($ori['data'])) {
-        $mixed       = collect(['data'=>$data]);
-        $membership  = $ori->merge($mixed);
-      }else{
-        $membership  = collect($data);
-      }
-      return response()->success($membership);
-  }
-
-  private function handleSearch(Request $request,$membership)
-  {
-    if ($request->has('s')) {
-        $membership = $membership->where('name','like','%'.$request->s.'%')
-        ->orWhereHas('subMember', function ($query) use ($request) {
-            $query->where('name','like','%'.$request->s.'%');
-        })
-        ->orWhere('code','like','%'.$request->s.'%');
+        $membership = $this->handleCircularCollection($request,$membership);
+        return response()->success($membership);
     }
-    return $membership;
-}
 
-private function handleByLevel(Request $request,$membership)
-{
-    if ($request->has('l')) {
-        if ($request->l > 0) {
-            $membership = $membership->where('parent_id',$request->l);
-        }else{
-            $membership = $membership->whereNull('parent_id');    
+    private function handleSearch(Request $request,$membership)
+    {
+        if ($request->has('s')) {
+            $membership = $membership->where('name','like','%'.$request->s.'%')
+            ->orWhereHas('subMember', function ($query) use ($request) {
+                $query->where('name','like','%'.$request->s.'%');
+            })
+            ->orWhere('code','like','%'.$request->s.'%');
         }
-    }else{
-        $membership = $membership->whereNull('parent_id')->with('subMember');    
+        return $membership;
     }
 
-    return $membership;
-}
+    private function handleByLevel(Request $request,$membership)
+    {
+        if ($request->has('l')) {
+            if ($request->l > 0) {
+                $membership = $membership->where('parent_id',$request->l);
+            }else{
+                $membership = $membership->whereNull('parent_id');    
+            }
+        }else{
+            $membership = $membership->whereNull('parent_id')->with('subMember');    
+        }
+
+        return $membership;
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -174,5 +130,52 @@ private function handleByLevel(Request $request,$membership)
     {
         $membership = $membership->delete();
         return response()->success($membership);
+    }
+
+    private function handleCircularCollection(Request $request,$membership)
+    {
+        if ($request->has('sub')) {
+            $data = [];
+            foreach ($membership as $key => $value) {
+                if ($value->subMember->count() > 0) {
+                    $parent = collect([
+                        'circular' => $value->name,
+                        'id' => $value->id,
+                        'parent_id' => $value->parent_id,
+                        'name' => $value->name,
+                        'code' => $value->code,
+                        'created_at' => $value->created_at,
+                        'updated_at' => $value->updated_at,
+                    ]);
+                    array_push($data, $parent);
+                    foreach ($value->subMember as $index => $sub) {
+                        $member     = $value->name;
+                        $member    .=" > ".$sub->name;
+                        $obj = collect(['circular' => $member]);
+                        $sub = $obj->merge($sub);
+                        $data[] = $sub;
+                    }
+                }else{
+                  $data[] = collect([
+                    'circular' => $value->name,
+                    'id' => $value->id,
+                    'parent_id' => $value->parent_id,
+                    'name' => $value->name,
+                    'code' => $value->code,
+                    'created_at' => $value->created_at,
+                    'updated_at' => $value->updated_at,
+                ]);
+              }
+          }
+          $ori  = collect($membership);
+          if (isset($ori['data'])) {
+            $mixed       = collect(['data'=>$data]);
+            $membership  = $ori->merge($mixed);
+        }else{
+            $membership  = collect($data);
+        }
+    }   
+
+        return $membership;
     }
 }
