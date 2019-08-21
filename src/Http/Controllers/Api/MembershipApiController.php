@@ -22,7 +22,7 @@ class MembershipApiController extends Controller
         $membership = $this->handleByLevel($request,$membership);
         $membership = $this->handleSearch($request,$membership);
         $membership = $this->handleOrder($request,$membership);
-        $membership = $membership->with('parentMember');
+        $membership = $membership->with('subMember');
         $membership = $this->handlePaginate($request,$membership);
         $membership = $this->handleCircularCollection($request,$membership);
         return response()->success($membership);
