@@ -150,7 +150,10 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
-        return response()->success($volunteer->where('user_id',auth()->user()->id)->first());
+        $volunteer->unit;
+        $volunteer->unit->membership;
+        $volunteer->unit->membership->parentMember;
+        return response()->success($volunteer);
     }
 
     public function print(Request $request, Volunteer $volunteers)
