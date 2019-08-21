@@ -13,7 +13,7 @@ class EventReport extends Model
 
     public function participants()
     {
-    	return $this->hasMany('BajakLautMalaka\PmiRelawan\EventParticipant');
+    	return $this->hasMany('BajakLautMalaka\PmiRelawan\EventPartisipant');
     }
 
     public function activities()

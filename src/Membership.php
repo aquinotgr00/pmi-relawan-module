@@ -11,6 +11,7 @@ class Membership extends Model
     use RelawanTrait;
 
 	protected $guarded = [];
+    protected $appends = ['amount'];
 
     public function parentMember() {
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\Membership', 'parent_id','id');
@@ -24,12 +25,14 @@ class Membership extends Model
     {
     	return $this->hasMany('BajakLautMalaka\PmiRelawan\UnitVolunteer', 'membership_id', 'id');
     }
-    
-    public function getRecursive()
+
+    public function volunteers()
     {
-        return DB::table(DB::raw('memberships AS m1'))
-            ->join(DB::raw('memberships AS m2'), 'm1.parent_id', '=', 'm2.id')
-            ->join(DB::raw('memberships AS m3'), 'm3.parent_id', '=', 'm2.id')
-            ->get();
+        return $this->hasMany('');
+    }
+
+    public function getAmountAttribute()
+    {
+        return 0;
     }
 }
