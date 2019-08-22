@@ -14,11 +14,12 @@ class EventReportsTableSeeder extends Seeder
     public function run()
     {
     	
-        $event_reports =  factory(EventReport::class, 200)->create()->each(function ($u) {
-			if ($u->approved) {
-				if ($u->id % 2 == 0) {
-					\BajakLautMalaka\PmiRelawan\EventReport::find($u->id)->update(['archived'=>$u->id]);
-					\BajakLautMalaka\PmiRelawan\EventReport::find($u->id)->delete();
+        factory(EventReport::class, 200)->create()->each(function ($rsvp) {
+			if ($rsvp->approved) {
+                $archived = (bool)random_int(0, 1);
+				if ($archived) {
+                    $rsvp->update(['archived'=>$rsvp->id]);
+					$rsvp->delete();
 				}
 			}
 		});
