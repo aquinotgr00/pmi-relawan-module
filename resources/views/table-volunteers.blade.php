@@ -16,11 +16,11 @@
         <tr>
             <td>{{ $key }}</td>
             <td>{{ $volunteer->name }}</td>
-            <td>{{ $volunteer->gender }}</td>
-            <td>{{ $volunteer->type }}</td>
-            <td>{{ $volunteer->sub_type }}</td>
+            <td>{{ $volunteer->gender === 'female' ? 'Perempuan':'Laki - laki' }}</td>
+            <td>{{ $volunteer->unit ? $volunteer->unit->membership->parentMember->name:'' }}</td>
+            <td>{{ $volunteer->unit ? $volunteer->unit->membership->name:'' }}</td>
             <td>{{ $volunteer->city }}</td>
-            <td>{{ $volunteer->unit }}</td>
+            <td>{{ $volunteer->unit ? $volunteer->unit->name:'' }}</td>
         </tr>
     @endforeach
     </tbody>
