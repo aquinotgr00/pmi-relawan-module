@@ -112,7 +112,7 @@ class MembershipApiController extends Controller
      */
     public function update(UpdateMembershipRequest $request, Membership $membership)
     {
-        $membership->update($request->only('name','code'));
+        $membership->update($request->only('name','parent_id'));
         if (isset($membership->subMember->units)) {
             $membership->subMember;
             $membership->subMember->units;
@@ -177,5 +177,36 @@ class MembershipApiController extends Controller
     }   
 
         return $membership;
+    }
+
+    public function getAmountVolunteers(Membership $membership)
+    {
+        $membership = $membership->whereNull('parent_id')->with('subMember')->get();
+        $all = [];
+        foreach ($membership as $key => $value) {
+            $items = [];
+            $total = 0;
+            foreach ($value->subMember as $x => $y) {
+                $counts = [];
+                foreach ($y->units as $index => $data) {
+                    if (isset($data->volunteers)) {
+                        $counts[] = $data->volunteers->count();
+                    }
+                }
+                $subtotal = array_sum($counts);
+                $items[$y->id] = [
+                    'title' => $y->name,
+                    'amount' => $subtotal
+                ];
+                $total += $subtotal;
+            }
+            $all[$value->id] = [
+                    'id' => $value->id,
+                    'title' => $value->name,
+                    'amount' =>  $total,
+                'data' => $items 
+            ];
+        }
+        return response()->success($all);
     }
 }

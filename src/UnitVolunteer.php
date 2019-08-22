@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class UnitVolunteer extends Model
 {
     protected $guarded = [];
-
     public function membership()
     {
     	return $this->belongsTo('BajakLautMalaka\PmiRelawan\Membership','membership_id','id');
@@ -20,6 +19,6 @@ class UnitVolunteer extends Model
 
     public function volunteers()
     {
-        return $this->hasMany('BajakLautMalaka\PmiRelawan\Volunteer');
+        return $this->hasMany('BajakLautMalaka\PmiRelawan\Volunteer','unit_id','id');
     }
 }

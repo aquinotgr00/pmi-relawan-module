@@ -9,6 +9,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         Route::apiResource('village', 'VillageApiController');
         Route::apiResource('membership', 'MembershipApiController');
         Route::apiResource('unit', 'UnitVolunteerApiController');
+        Route::get('membership/amount/volunteer', 'MembershipApiController@getAmountVolunteers')->name('membership.amount.volunteer');
     });
 
     Route::prefix('events')->group(function() {

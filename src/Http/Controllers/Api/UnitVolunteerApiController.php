@@ -24,8 +24,9 @@ class UnitVolunteerApiController extends Controller
         $unit = $this->handleByMembership($request,$unit);
         
         $unit = $this->handleOrder($request,$unit);
-        $unit = $unit->with('membership.parentMember');
+        $unit = $unit->with('membership');
         $unit = $unit->with('city');
+        //$unit = $unit->with('volunteers');
         $unit = $this->handlePaginate($request, $unit);
         return response()->success($unit);
     }
