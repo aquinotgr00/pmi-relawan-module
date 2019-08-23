@@ -1,18 +1,16 @@
 <?php
 
-/* @var $factory \Illuminate\Database\Eloquent\Factory */
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use BajakLautMalaka\PmiRelawan\UnitVolunteer;
-use BajakLautMalaka\PmiRelawan\Membership;
 use BajakLautMalaka\PmiRelawan\City;
+use BajakLautMalaka\PmiRelawan\Membership;
+use BajakLautMalaka\PmiRelawan\UnitVolunteer;
 use Faker\Generator as Faker;
 
 $factory->define(UnitVolunteer::class, function (Faker $faker) {
-	$membership = Membership::all()->random();
-	$city 		= City::all()->random();
     return [
-        'membership_id' => $membership->id,
-        'city_id' => $city->id ,
-        'name' => $faker->sentence
+        'city_id'=>City::all()->random()->id,
+        'membership_id'=>Membership::all()->random()->id,
+        'name'=>$faker->sentence(3)
     ];
 });

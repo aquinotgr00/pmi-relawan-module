@@ -1,10 +1,10 @@
 <?php
 namespace BajakLautMalaka\PmiRelawan\Seeds;
 
-use Illuminate\Database\Seeder;
 use BajakLautMalaka\PmiRelawan\UnitVolunteer;
+use Illuminate\Database\Seeder;
 
-class UnitVolunteerTableSeeder extends Seeder
+class UnitVolunteersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
