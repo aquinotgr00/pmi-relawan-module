@@ -24,8 +24,9 @@ class UnitVolunteerApiController extends Controller
         $unit = $this->handleByMembership($request,$unit);
         
         $unit = $this->handleOrder($request,$unit);
-        $unit = $unit->with('membership.parentMember');
+        $unit = $unit->with('membership');
         $unit = $unit->with('city');
+        //$unit = $unit->with('volunteers');
         $unit = $this->handlePaginate($request, $unit);
         return response()->success($unit);
     }
@@ -61,16 +62,6 @@ class UnitVolunteerApiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -95,17 +86,6 @@ class UnitVolunteerApiController extends Controller
         }
         $unit->city;
         return response()->success($unit);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\UnitVolunteer  $unit
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(UnitVolunteer $unit)
-    {
-        //
     }
 
     /**
