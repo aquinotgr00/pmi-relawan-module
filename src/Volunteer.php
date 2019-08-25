@@ -48,10 +48,4 @@ class Volunteer extends Model
     {
         return asset((Storage::url($this->image)));
     }
-    
-    public function approveVolunteer()
-    {
-        $this->verified = 1;
-        $this->save();
-    }
 }

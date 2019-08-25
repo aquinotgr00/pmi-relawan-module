@@ -218,6 +218,7 @@ class VolunteerApiController extends Controller
         }
 
         $volunteer->update($request->input());
+        $this->rejectVolunteer($request->only(['verified', 'description']), $volunteer);
         $volunteer->unit->membership->parentMember;
         return response()->success($volunteer);
     }
@@ -228,12 +229,10 @@ class VolunteerApiController extends Controller
         return response()->success($volunteer);
     }
 
-    public function approveVolunteer(Request $request, Volunteer $volunteer)
+    private function rejectVolunteer($request, Volunteer $volunteer)
     {
-        $volunteer->approveVolunteer();
-        if ($request->status == 3) {
+        if ($request['verified'] == 0) {
             $volunteer->delete();
         }
-        return response()->success($volunteer);
     }
 }
