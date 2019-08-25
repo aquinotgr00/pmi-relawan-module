@@ -30,6 +30,7 @@ class VolunteerApiController extends Controller
 
     public function index(Request $request, Volunteer $volunteer)
     {
+        $volunteer = $this->handleApproved($request, $volunteer);
         $volunteer = $this->handleVolunteerType($request, $volunteer);
         $volunteer = $this->handleVolunteerSubType($request, $volunteer);
         $volunteer = $this->handleVolunteerCity($request, $volunteer);
@@ -39,6 +40,15 @@ class VolunteerApiController extends Controller
         $admins = $volunteer->with('unit.membership.parentMember')->with('qualifications')->paginate();
 
         return response()->success(compact('admins'));
+    }
+
+    private function handleApproved(Request $request, $volunteer)
+    {
+        if ($request->has('v')) {
+            $volunteer = $volunteer->whereVerified($request->v);
+        }
+
+        return $volunteer;
     }
 
     private function handleVolunteerType(Request $request, $volunteer)
@@ -140,10 +150,9 @@ class VolunteerApiController extends Controller
 
     private function handleSearchKeyword(Request $request, $volunteer)
     {
-        if ($request->has('s')) {
-            $volunteer = $volunteer->where(function ($query) use ($request) {
-                $query->where('name', 'like', '%'.$request->s.'%');
-            });
+        if ($request->has('s') && $request->s != '') {
+            $volunteer = $volunteer->query()
+                ->whereLike(['phone', 'unit.name', 'user.name'], $request->s);
         }
         return $volunteer;
     }
@@ -182,7 +191,6 @@ class VolunteerApiController extends Controller
 
     public function printProfile(Volunteer $volunteer)
     {
-        $volunteer = $volunteer->first();
         $pdfTitle = 'Volunteer Profile';
         $html = view('volunteer::profile-volunteer', [
             'volunteer' => $volunteer
@@ -210,6 +218,7 @@ class VolunteerApiController extends Controller
         }
 
         $volunteer->update($request->input());
+        $this->rejectVolunteer($request->only(['verified', 'description']), $volunteer);
         $volunteer->unit->membership->parentMember;
         return response()->success($volunteer);
     }
@@ -218,5 +227,12 @@ class VolunteerApiController extends Controller
     {
         $volunteer->delete();
         return response()->success($volunteer);
+    }
+
+    private function rejectVolunteer($request, Volunteer $volunteer)
+    {
+        if ($request['verified'] == 0) {
+            $volunteer->delete();
+        }
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Routing\RouteRegistrar as Router;
 use Illuminate\Support\Facades\Broadcast;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class PmiRelawanServiceProvider extends ServiceProvider
 {
     /**
@@ -31,6 +33,7 @@ class PmiRelawanServiceProvider extends ServiceProvider
         $this->loadRoutes($router);
         $this->loadViews();
         $this->loadBroadcast();
+        $this->loadWhereLikeMacro();
     }
 
     /**
@@ -99,5 +102,30 @@ class PmiRelawanServiceProvider extends ServiceProvider
         Broadcast::routes(['middleware' => ['auth:api', 'cors']]);
 
         require base_path('routes/channels.php'); 
+    }
+
+    private function loadWhereLikeMacro()
+    {
+        Builder::macro('whereLike', function ($attributes, string $searchTerm) {
+            $this->where(function (Builder $query) use ($attributes, $searchTerm) {
+                foreach (array_wrap($attributes) as $attribute) {
+                    $query->when(
+                        str_contains($attribute, '.'),
+                        function (Builder $query) use ($attribute, $searchTerm) {
+                            [$relationName, $relationAttribute] = explode('.', $attribute);
+        
+                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
+                                $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
+                            });
+                        },
+                        function (Builder $query) use ($attribute, $searchTerm) {
+                            $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
+                        }
+                    );
+                }
+            });
+        
+            return $this;
+        });
     }
 }

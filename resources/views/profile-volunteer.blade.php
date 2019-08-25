@@ -29,10 +29,11 @@
     </tr>
     <tr>
         <td>Gol. Darah</td>
-        <td>: {{ $volunteer->blood }}</td>
+        <td>: {{ $volunteer->blood_type }}</td>
     </tr>
 </table>
 
+@if(count($volunteer->trainings) > 0)
 <br />
 <br />
 <br />
@@ -41,12 +42,11 @@
         <th><b>No</b></th>
         <th><b>Penghargaan</b></th>
     </tr>
-    <tr>
-        <td>1</td>
-        <td>{{ $volunteer->awards }}</td>
-    </tr>
+    @each('volunteer::qualification', array_combine(range(1, count($volunteer->achievements)), array_values($volunteer->achievements)), 'qualification')
 </table>
+@endif
 
+@if(count($volunteer->trainings) > 0)
 <br />
 <br />
 <br />
@@ -55,12 +55,11 @@
         <th><b>No</b></th>
         <th><b>Penugasan</b></th>
     </tr>
-    <tr>
-        <td>1</td>
-        <td>{{ $volunteer->assignments }}</td>
-    </tr>
+    @each('volunteer::qualification', array_combine(range(1, count($volunteer->assignments)), array_values($volunteer->assignments)), 'qualification')
 </table>
+@endif
 
+@if(count($volunteer->trainings) > 0)
 <br />
 <br />
 <br />
@@ -69,8 +68,6 @@
         <th><b>No</b></th>
         <th><b>Pelatihan</b></th>
     </tr>
-    <tr>
-        <td>1</td>
-        <td>{{ $volunteer-> trainings }}</td>
-    </tr>
+    @each('volunteer::qualification', array_combine(range(1, count($volunteer->trainings)), array_values($volunteer->trainings)), 'qualification')
 </table>
+@endif
