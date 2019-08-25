@@ -17,7 +17,7 @@ class Volunteer extends Model
         'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id', 'verified'
     ];
     
-    protected $appends = ['name','image_url', 'age'];
+    protected $appends = ['name','image_url', 'age', 'achievements', 'assignments', 'trainings'];
 
     public function user()
     {
@@ -32,6 +32,21 @@ class Volunteer extends Model
     public function getAgeAttribute()
     {
         return Carbon::parse($this->dob)->age;
+    }
+    
+    public function getAchievementsAttribute()
+    {
+        return $this->qualifications->where('category', 1)->toArray();
+    }
+    
+    public function getAssignmentsAttribute()
+    {
+        return $this->qualifications->where('category', 2)->toArray();
+    }
+    
+    public function getTrainingsAttribute()
+    {
+        return $this->qualifications->where('category', 3)->toArray();
     }
 
     public function unit()

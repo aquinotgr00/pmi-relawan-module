@@ -33,7 +33,7 @@ class PmiRelawanServiceProvider extends ServiceProvider
         $this->loadRoutes($router);
         $this->loadViews();
         $this->loadBroadcast();
-        $this->loadWhereLikeMicro();
+        $this->loadWhereLikeMacro();
     }
 
     /**
@@ -104,7 +104,7 @@ class PmiRelawanServiceProvider extends ServiceProvider
         require base_path('routes/channels.php'); 
     }
 
-    private function loadWhereLikeMicro()
+    private function loadWhereLikeMacro()
     {
         Builder::macro('whereLike', function ($attributes, string $searchTerm) {
             $this->where(function (Builder $query) use ($attributes, $searchTerm) {

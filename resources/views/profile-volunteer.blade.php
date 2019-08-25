@@ -33,6 +33,7 @@
     </tr>
 </table>
 
+@if(count($volunteer->trainings) > 0)
 <br />
 <br />
 <br />
@@ -41,17 +42,11 @@
         <th><b>No</b></th>
         <th><b>Penghargaan</b></th>
     </tr>
-    @foreach($volunteer->qualifications as $key => $qualification)
-        @if ($qualification->category === 1)
-            @php $key++ @endphp
-            <tr>
-                <td>{{ $key }}</td>
-                <td>{{ $qualification->description }}</td>
-            </tr>
-        @endif
-    @endforeach
+    @each('volunteer::qualification', array_combine(range(1, count($volunteer->achievements)), array_values($volunteer->achievements)), 'qualification')
 </table>
+@endif
 
+@if(count($volunteer->trainings) > 0)
 <br />
 <br />
 <br />
@@ -60,17 +55,11 @@
         <th><b>No</b></th>
         <th><b>Penugasan</b></th>
     </tr>
-    @foreach($volunteer->qualifications as $key => $qualification)
-        @if ($qualification->category === 2)
-            @php $key++ @endphp
-            <tr>
-                <td>{{ $key }}</td>
-                <td>{{ $qualification->description }}</td>
-            </tr>
-        @endif
-    @endforeach
+    @each('volunteer::qualification', array_combine(range(1, count($volunteer->assignments)), array_values($volunteer->assignments)), 'qualification')
 </table>
+@endif
 
+@if(count($volunteer->trainings) > 0)
 <br />
 <br />
 <br />
@@ -79,13 +68,6 @@
         <th><b>No</b></th>
         <th><b>Pelatihan</b></th>
     </tr>
-    @foreach($volunteer->qualifications as $key => $qualification)
-        @if ($qualification->category === 3)
-            @php $key++ @endphp
-            <tr>
-                <td>{{ $key }}</td>
-                <td>{{ $qualification->description }}</td>
-            </tr>
-        @endif
-    @endforeach
+    @each('volunteer::qualification', array_combine(range(1, count($volunteer->trainings)), array_values($volunteer->trainings)), 'qualification')
 </table>
+@endif
