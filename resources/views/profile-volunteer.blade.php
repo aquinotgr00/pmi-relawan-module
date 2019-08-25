@@ -29,7 +29,7 @@
     </tr>
     <tr>
         <td>Gol. Darah</td>
-        <td>: {{ $volunteer->blood }}</td>
+        <td>: {{ $volunteer->blood_type }}</td>
     </tr>
 </table>
 
@@ -41,10 +41,15 @@
         <th><b>No</b></th>
         <th><b>Penghargaan</b></th>
     </tr>
-    <tr>
-        <td>1</td>
-        <td>{{ $volunteer->awards }}</td>
-    </tr>
+    @foreach($volunteer->qualifications as $key => $qualification)
+        @if ($qualification->category === 1)
+            @php $key++ @endphp
+            <tr>
+                <td>{{ $key }}</td>
+                <td>{{ $qualification->description }}</td>
+            </tr>
+        @endif
+    @endforeach
 </table>
 
 <br />
@@ -55,10 +60,15 @@
         <th><b>No</b></th>
         <th><b>Penugasan</b></th>
     </tr>
-    <tr>
-        <td>1</td>
-        <td>{{ $volunteer->assignments }}</td>
-    </tr>
+    @foreach($volunteer->qualifications as $key => $qualification)
+        @if ($qualification->category === 2)
+            @php $key++ @endphp
+            <tr>
+                <td>{{ $key }}</td>
+                <td>{{ $qualification->description }}</td>
+            </tr>
+        @endif
+    @endforeach
 </table>
 
 <br />
@@ -69,8 +79,13 @@
         <th><b>No</b></th>
         <th><b>Pelatihan</b></th>
     </tr>
-    <tr>
-        <td>1</td>
-        <td>{{ $volunteer-> trainings }}</td>
-    </tr>
+    @foreach($volunteer->qualifications as $key => $qualification)
+        @if ($qualification->category === 3)
+            @php $key++ @endphp
+            <tr>
+                <td>{{ $key }}</td>
+                <td>{{ $qualification->description }}</td>
+            </tr>
+        @endif
+    @endforeach
 </table>

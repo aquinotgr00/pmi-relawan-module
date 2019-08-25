@@ -191,7 +191,6 @@ class VolunteerApiController extends Controller
 
     public function printProfile(Volunteer $volunteer)
     {
-        $volunteer = $volunteer->first();
         $pdfTitle = 'Volunteer Profile';
         $html = view('volunteer::profile-volunteer', [
             'volunteer' => $volunteer
