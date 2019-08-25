@@ -30,6 +30,7 @@ class VolunteerApiController extends Controller
 
     public function index(Request $request, Volunteer $volunteer)
     {
+        $volunteer = $this->handleApproved($request, $volunteer);
         $volunteer = $this->handleVolunteerType($request, $volunteer);
         $volunteer = $this->handleVolunteerSubType($request, $volunteer);
         $volunteer = $this->handleVolunteerCity($request, $volunteer);
@@ -39,6 +40,15 @@ class VolunteerApiController extends Controller
         $admins = $volunteer->with('unit.membership.parentMember')->with('qualifications')->paginate();
 
         return response()->success(compact('admins'));
+    }
+
+    private function handleApproved(Request $request, $volunteer)
+    {
+        if ($request->has('v')) {
+            $volunteer = $volunteer->whereVerified($request->v);
+        }
+
+        return $volunteer;
     }
 
     private function handleVolunteerType(Request $request, $volunteer)
@@ -218,6 +228,15 @@ class VolunteerApiController extends Controller
     public function destroy(Volunteer $volunteer)
     {
         $volunteer->delete();
+        return response()->success($volunteer);
+    }
+
+    public function approveVolunteer(Request $request, Volunteer $volunteer)
+    {
+        $volunteer->approveVolunteer();
+        if ($request->status == 3) {
+            $volunteer->delete();
+        }
         return response()->success($volunteer);
     }
 }

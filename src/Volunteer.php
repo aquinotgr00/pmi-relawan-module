@@ -14,7 +14,7 @@ class Volunteer extends Model
 
     protected $fillable = [
         'name', 'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
-        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id'
+        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id', 'verified', 'deleted_at'
     ];
     
     protected $appends = ['image_url', 'age'];
@@ -42,5 +42,11 @@ class Volunteer extends Model
     public function getImageUrlAttribute()
     {
         return asset((Storage::url($this->image)));
+    }
+    
+    public function approveVolunteer()
+    {
+        $this->verified = 1;
+        $this->save();
     }
 }
