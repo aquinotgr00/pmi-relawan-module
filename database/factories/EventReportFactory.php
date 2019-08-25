@@ -9,15 +9,14 @@ use BajakLautMalaka\PmiRelawan\EventReport;
 use Faker\Generator as Faker;
 
 $factory->define(EventReport::class, function (Faker $faker) {
-    $number_of_active_admins 	= Admin::active()->count();
-    $number_of_villages 		= Village::all()->count();
-    $volunteer                  = Volunteer::all()->random();
-    $approved                   = $faker->randomElement([1,0]);
+    $rsvpIsCreatedByAdmin = $faker->boolean;
+    $randomVillage = $faker->optional()->randomElement(Village::all());
+    $approved = $rsvpIsCreatedByAdmin?true:$faker->boolean;
     return [
-        'volunteer_id' => $volunteer->id,
-        'admin_id'=>$faker->numberBetween(2,$number_of_active_admins),
-        'village_id'=> $faker->optional()->numberBetween(2,$number_of_villages),
-        'moderator_id'=> $volunteer->id,
+        'volunteer_id'=>$rsvpIsCreatedByAdmin?null:Volunteer::all()->random()->id,
+        'admin_id'=>$rsvpIsCreatedByAdmin?Admin::active()->get()->random()->id:null,
+        'village_id'=> $randomVillage?$randomVillage->id:null,
+        'moderator_id'=> Volunteer::all()->random()->id,
         'title'=> $faker->sentence,
         'description'=> $faker->paragraph(),
         'location'=> $faker->optional()->address,
@@ -25,6 +24,6 @@ $factory->define(EventReport::class, function (Faker $faker) {
         'image_file_name'=>$faker->imageUrl(640,480),
         'approved'=> $approved,
         'emergency'=> $faker->boolean,
-        'reason_rejection'=> ($approved === 0)? $faker->sentence : NULL 
+        'reason_rejection'=> !$approved?$faker->sentence:NULL 
     ];
 });

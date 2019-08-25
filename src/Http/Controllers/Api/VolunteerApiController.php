@@ -122,7 +122,6 @@ class VolunteerApiController extends Controller
         DB::transaction(function () use ($request, &$user) {
             $user = User::create($request->only('name','email','password'));
             $this->createVolunteer($request, $user);
-            //return asset((Storage::url($path)));
         });
         
         if($user) {

@@ -11,6 +11,10 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         Route::apiResource('unit', 'UnitVolunteerApiController');
     });
 
+    Route::prefix('dashboard')->group(function() {
+        Route::get('/amount/volunteer', 'MembershipApiController@getAmountVolunteers')->name('dashboard.amount.volunteer');
+    });
+
     Route::prefix('events')->group(function() {
         Route::apiResource('/report', 'EventReportApiController');
         Route::get('/report-only-transed', 'EventReportApiController@onlyTrashed')->name('event-report.only-transed');

@@ -5,16 +5,16 @@
 use BajakLautMalaka\PmiRelawan\Volunteer;
 use BajakLautMalaka\PmiRelawan\Subdistrict;
 use BajakLautMalaka\PmiRelawan\City;
+use BajakLautMalaka\PmiRelawan\UnitVolunteer;
 use BajakLautMalaka\PmiRelawan\Village;
 use Faker\Generator as Faker;
 
 $factory->define(Volunteer::class, function (Faker $faker) {
-    $gender = $faker->randomElement(['male','female']);
-    $city = City::all()->random();
-    $subdistrict = Subdistrict::where('city_id',$city->id)->get()->random();
-    $village = Village::where('subdistrict_id',$subdistrict->id)->get()->random();
+    $gender         = $faker->randomElement(['male','female']);
+    $city           = City::all()->random();
+    $subdistrict    = Subdistrict::where('city_id',$city->id)->get()->random();
+    $village        = Village::where('subdistrict_id',$subdistrict->id)->get()->random();
     return [
-        'name'=>$faker->name($gender),
         'phone'=>$faker->e164PhoneNumber,
         'image'=>$faker->imageUrl(),
         'dob'=>$faker->date,
@@ -28,6 +28,7 @@ $factory->define(Volunteer::class, function (Faker $faker) {
         'subdistrict'=>$subdistrict->name,
         'subdivision'=>$village->name,
         'postal_code'=>$faker->postcode,
-        'verified'=>$faker->boolean
+        'verified'=>$faker->boolean,
+        'unit_id'=>UnitVolunteer::all()->random()->id
     ];
 });

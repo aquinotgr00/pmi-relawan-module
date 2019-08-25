@@ -85,8 +85,9 @@ class EventReportApiController extends Controller
         $volunteer = Volunteer::where('user_id',auth()->user()->id)->first();
         if (!is_null($volunteer)) {
             $request->merge([
+                //'image' => $request->image_file->store('volunteers','public'),
                 'volunteer_id' => $volunteer->id
-                ]);
+            ]);
             $event_reports = EventReport::create($request->except('imaga_file','_token'));
             return response()->success($event_reports);
         }else{

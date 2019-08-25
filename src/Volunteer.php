@@ -14,19 +14,24 @@ class Volunteer extends Model
 
     protected $fillable = [
         'name', 'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
-        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id', 'verified', 'deleted_at'
+        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id', 'verified'
     ];
     
-    protected $appends = ['image_url', 'age'];
+    protected $appends = ['name','image_url', 'age'];
 
     public function user()
     {
         return $this->belongsTo('\App\User');
     }
 
+    public function getNameAttribute()
+    {
+        return $this->user->name;
+    }
+
     public function getAgeAttribute()
     {
-        return Carbon::parse($this->attributes['dob'])->age;
+        return Carbon::parse($this->dob)->age;
     }
 
     public function unit()
