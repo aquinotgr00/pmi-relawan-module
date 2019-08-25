@@ -13,7 +13,7 @@ class Volunteer extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
+        'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
         'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id', 'verified'
     ];
     
