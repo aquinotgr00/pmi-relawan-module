@@ -33,7 +33,7 @@
     </tr>
 </table>
 
-@if(count($volunteer->trainings) > 0)
+@if(count($volunteer->achievements) > 0)
 <br />
 <br />
 <br />
@@ -46,7 +46,7 @@
 </table>
 @endif
 
-@if(count($volunteer->trainings) > 0)
+@if(count($volunteer->assignments) > 0)
 <br />
 <br />
 <br />
