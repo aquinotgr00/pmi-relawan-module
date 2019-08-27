@@ -4,7 +4,7 @@ namespace BajakLautMalaka\PmiRelawan;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EventPartisipant extends Model
+class EventParticipant extends Model
 {
     protected $fillable = ['volunteer_id','event_report_id','admin_id'];
 
