@@ -25,6 +25,7 @@ class EventReportApiController extends Controller
     public function index(Request $request,EventReport $report)
     {
         $report = $this->handleSearch($request,$report);
+        $report = $this->handleByVolunteerID($request,$report);
         $report = $this->handleOrder($request,$report);
         $report = $this->handleApprovedStatus($request,$report);
         $report = $this->handleEmergencyStatus($request,$report);
@@ -69,6 +70,14 @@ class EventReportApiController extends Controller
     {
         if ($request->has('ar')) {
             $report = $report->where('archived',$request->ar);
+        }
+        return $report;
+    }
+
+    public function handleByVolunteerID(Request $request, $report)
+    {
+        if ($request->has('v_id')) {
+            $report = $report->where('volunteer_id',$request->v_id);
         }
         return $report;
     }
