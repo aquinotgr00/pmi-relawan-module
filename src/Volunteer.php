@@ -19,6 +19,17 @@ class Volunteer extends Model
     
     protected $appends = ['name','image_url', 'age', 'achievements', 'assignments', 'trainings'];
 
+    /**
+     * Scope a query to only include verified volunteers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVerified($query)
+    {
+        return $query->where('verified', 1);
+    }
+
     public function user()
     {
         return $this->belongsTo('\App\User');

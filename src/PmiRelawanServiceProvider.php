@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Routing\RouteRegistrar as Router;
 use Illuminate\Support\Facades\Broadcast;
+use BajakLautMalaka\PmiRelawan\PmiRelawanEventServiceProvider;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -18,7 +19,7 @@ class PmiRelawanServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->register(PmiRelawanEventServiceProvider::class);
     }
 
     /**

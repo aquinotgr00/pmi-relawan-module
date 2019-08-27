@@ -13,10 +13,10 @@ $factory->define(EventReport::class, function (Faker $faker) {
     $randomVillage = $faker->optional()->randomElement(Village::all());
     $approved = $rsvpIsCreatedByAdmin?true:$faker->boolean;
     return [
-        'volunteer_id'=>$rsvpIsCreatedByAdmin?null:Volunteer::all()->random()->id,
+        'volunteer_id'=>$rsvpIsCreatedByAdmin?null:Volunteer::verified()->get()->random()->id,
         'admin_id'=>$rsvpIsCreatedByAdmin?Admin::active()->get()->random()->id:null,
         'village_id'=> $randomVillage?$randomVillage->id:null,
-        'moderator_id'=> Volunteer::all()->random()->id,
+        'moderator_id'=> Volunteer::verified()->get()->random()->id,
         'title'=> $faker->sentence,
         'description'=> $faker->paragraph(),
         'location'=> $faker->optional()->address,

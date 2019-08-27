@@ -5,8 +5,6 @@ namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Intervention\Image\Facades\Image;
 use BajakLautMalaka\PmiRelawan\EventReport;
 use BajakLautMalaka\PmiRelawan\Volunteer;
@@ -29,7 +27,12 @@ class EventReportApiController extends Controller
         $report = $this->handleApprovedStatus($request,$report);
         $report = $this->handleEmergencyStatus($request,$report);
         $report = $this->handleArchivedStatus($request,$report);
-        $report = $report->with('participants')->with('activities');
+        $report = $report->withCount([
+            'participants',
+            'participants AS approved_participants'=>function($query) {
+                $query->where('approved',true);
+            }]
+        )->with(['participants','activities']);
         $report = $report->paginate();
 
         return response()->success($report);
