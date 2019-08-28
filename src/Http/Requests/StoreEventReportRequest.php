@@ -25,7 +25,7 @@ class StoreEventReportRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:event_reports',
+            'title' => 'required',
             'description' => 'required',
             'image_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
