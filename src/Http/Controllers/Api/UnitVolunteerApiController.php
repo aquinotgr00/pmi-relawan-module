@@ -8,6 +8,7 @@ use BajakLautMalaka\PmiRelawan\UnitVolunteer;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreUnitRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateUnitRequest;
 use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
+use BajakLautMalaka\PmiRelawan\Events\UnitCreated;
 
 class UnitVolunteerApiController extends Controller
 {
@@ -70,6 +71,9 @@ class UnitVolunteerApiController extends Controller
     public function store(StoreUnitRequest $request)
     {
         $unit = UnitVolunteer::create($request->only('name','city_id','membership_id'));
+        if ($unit) {
+            broadcast(new UnitCreated($unit));
+        }
         return response()->success($unit);
     }
 
