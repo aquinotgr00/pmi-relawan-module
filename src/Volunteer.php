@@ -3,7 +3,6 @@
 namespace BajakLautMalaka\PmiRelawan;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -18,6 +17,8 @@ class Volunteer extends Model
     ];
     
     protected $appends = ['name','image_url', 'age', 'achievements', 'assignments', 'trainings'];
+
+    protected $hidden = ['qualifications'];
 
     /**
      * Scope a query to only include verified volunteers.
@@ -47,17 +48,17 @@ class Volunteer extends Model
     
     public function getAchievementsAttribute()
     {
-        return $this->qualifications->where('category', 1)->toArray();
+        return $this->qualifications->where('category', 1)->values();
     }
     
     public function getAssignmentsAttribute()
     {
-        return $this->qualifications->where('category', 2)->toArray();
+        return $this->qualifications->where('category', 2)->values();
     }
     
     public function getTrainingsAttribute()
     {
-        return $this->qualifications->where('category', 3)->toArray();
+        return $this->qualifications->where('category', 3)->values();
     }
 
     public function unit()
@@ -72,6 +73,6 @@ class Volunteer extends Model
     
     public function getImageUrlAttribute()
     {
-        return asset((Storage::url($this->image)));
+        return asset(Storage::url($this->image));
     }
 }
