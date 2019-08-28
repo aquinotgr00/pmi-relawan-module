@@ -113,7 +113,9 @@ class PmiRelawanServiceProvider extends ServiceProvider
                     $query->when(
                         str_contains($attribute, '.'),
                         function (Builder $query) use ($attribute, $searchTerm) {
-                            [$relationName, $relationAttribute] = explode('.', $attribute);
+                            $attributes = explode('.', $attribute);
+                            $relationAttribute = array_pop($attributes);
+                            $relationName = implode('.', $attributes);
         
                             $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
                                 $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");

@@ -45,11 +45,9 @@ class EventReportApiController extends Controller
     private function handleSearch(Request $request,$report)
     {
         if ($request->has('s')) {
-            $report = $report->with('village.subdistrict.city')->where('title','like','%'.$request->s.'%')
-            ->orWhere('description','like','%'.$request->s.'%')
-            ->orWhereHas('village.subdistrict.city',function($query) use ($request) {
-                $query->where('name','like','%'.$request->s.'%');
-            });
+            $report = $report->whereLike([
+                'title', 'description', 'village.subdistrict.city.name', 'admin.name' , 'volunteer.user.name'
+            ],$request->s);
         }
         return $report;
     }
