@@ -151,8 +151,7 @@ class VolunteerApiController extends Controller
     private function handleSearchKeyword(Request $request, $volunteer)
     {
         if ($request->has('s') && $request->s != '') {
-            $volunteer = $volunteer->query()
-                ->whereLike(['phone', 'unit.name', 'user.name'], $request->s);
+            $volunteer = $volunteer->whereLike(['phone', 'unit.name', 'user.name'], $request->s);
         }
         return $volunteer;
     }
