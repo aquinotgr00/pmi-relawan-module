@@ -10,7 +10,6 @@ use BajakLautMalaka\PmiRelawan\Village;
 use Faker\Generator as Faker;
 
 $factory->define(Volunteer::class, function (Faker $faker) {
-    $gender         = $faker->randomElement(['male','female']);
     $city           = City::all()->random();
     $subdistrict    = Subdistrict::where('city_id',$city->id)->get()->random();
     $village        = Village::where('subdistrict_id',$subdistrict->id)->get()->random();
@@ -19,9 +18,9 @@ $factory->define(Volunteer::class, function (Faker $faker) {
         'image'=>$faker->imageUrl(),
         'dob'=>$faker->date,
         'birthplace'=>City::all()->random()->name,
-        'gender'=>$gender,
-        'religion'=>$faker->randomElement(['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu']),
-        'blood_type'=>$faker->randomElement(['A','B','AB','O']),
+        'gender'=>$faker->randomElement(['male','female']),
+        'religion'=>$faker->randomElement(config('volunteer.religion')),
+        'blood_type'=>$faker->randomElement(config('volunteer.bloodType')),
         'address'=>$faker->streetAddress,
         'province'=>'DKI Jakarta',
         'city'=>$city->name,
