@@ -5,12 +5,15 @@ namespace BajakLautMalaka\PmiRelawan;
 use BajakLautMalaka\PmiRelawan\Scopes\OrderByLatestScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class EventReport extends Model
 {
 	use SoftDeletes;
 
-    protected $fillable = ['volunteer_id','title','description','location','image','image_file_name','emergency','village_id'];
+    protected $fillable = ['volunteer_id','title','description','location','image','emergency','village_id'];
+
+    protected $appends = ['image_url'];
 
     protected static function boot()
     {
@@ -40,6 +43,11 @@ class EventReport extends Model
     public function village()
     {
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\Village','village_id','id');
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return asset(Storage::url($this->image));
     }
 
 }
