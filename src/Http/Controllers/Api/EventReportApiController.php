@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use BajakLautMalaka\PmiRelawan\EventReport;
-use BajakLautMalaka\PmiRelawan\Volunteer;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreEventReportRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateEventReportRequest;
+use BajakLautMalaka\PmiRelawan\Scopes\OrderByLatestScope;
 use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,7 +35,8 @@ class EventReportApiController extends Controller
             'participants AS approved_participants'=>function($query) {
                 $query->where('approved',true);
             }]
-        )->with(['participants','activities','village.subdistrict.city']);
+        )->with(['admin','volunteer','village.subdistrict.city']);
+        // TODO : hide all "qualifications" attributes in BajakLautMalaka\PmiRelawan\Volunteer
         $report = $report->paginate();
 
         return response()->success($report);
@@ -74,7 +75,10 @@ class EventReportApiController extends Controller
     private function handleArchivedStatus(Request $request,$report)
     {
         if ($request->has('ar')) {
-            $report = $report->whereRaw('archived = id')->withTrashed();
+            $report = $report->whereRaw('archived = id')
+                ->withTrashed()
+                ->withoutGlobalScope(OrderByLatestScope::class)
+                ->orderBy('deleted_at','desc');
         }
         return $report;
     }
@@ -101,20 +105,26 @@ class EventReportApiController extends Controller
             $rsvp->approved = true;    // automatically approved
         }
         else {
-            $rsvp->volunteer_id = Auth::id();
+            $rsvp->volunteer_id = Auth::user()->volunteer->id;
         }
+
+        // keep original file
+        $request->image_file->store('event-reports/originals','public');
+
+        // ... and resize another one to 320x240
         $rsvp->image = $request->image_file->store('event-reports','public');
-        
-        // resize to 320x240
         $resized = Image::make($request->image_file)->resize(320, 240, function ($constraint) {
             $constraint->aspectRatio();
         })->encode();
         Storage::disk('public')->put($rsvp->image, $resized);
         
-        // keep original file
-        $request->image_file->store('event-reports/originals','public');
-        $rsvp->save();
-        response()->success($rsvp);
+        try {
+            $rsvp->save();
+            return response()->success($rsvp);
+        } catch (Exception $e) {
+            return response()->fail($e);
+        }
+        
     }
 
     /**
