@@ -153,8 +153,12 @@ class EventReportApiController extends Controller
      */
     public function update(UpdateEventReportRequest $request, EventReport $report)
     {
-        $this->handleChangeImage($request,$report,'event-images');
-        
+        //$this->handleChangeImage($request,$report,'event-images');
+        if ($request->has('archived')) {
+            $report->archived = $report->id;
+            $report->save();
+            $report->delete();
+        }
         if ($request->has('approved')) {
             $report->approved = $request->approved;
             if(!$request->approved) {
@@ -164,12 +168,8 @@ class EventReportApiController extends Controller
         } else {
             $report->update($request->except('_method'));
         }
-        $report->participants;
-        $report->activities;
-        if (isset($report->village)) {
-            $report->village->subdistrict->city->province;
-        }
-        return response()->success($report);
+        
+        return response()->success($report->load(['admin','volunteer','village.subdistrict.city']));
     }
 
     /**
