@@ -113,12 +113,12 @@ class PmiRelawanServiceProvider extends ServiceProvider
                     $query->when(
                         str_contains($attribute, '.'),
                         function (Builder $query) use ($attribute, $searchTerm) {
-                            $attributes = explode('.', $attribute);
-                            $relationAttribute = array_pop($attributes);
-                            $relationName = implode('.', $attributes);
+                            $relations = explode('.', $attribute);
+                            $columnName = array_pop($relations);
+                            $tables = implode('.', $relations);
         
-                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
-                                $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
+                            $query->orWhereHas($tables, function (Builder $query) use ($columnName, $searchTerm) {
+                                $query->where($columnName, 'LIKE', "%{$searchTerm}%");
                             });
                         },
                         function (Builder $query) use ($attribute, $searchTerm) {
