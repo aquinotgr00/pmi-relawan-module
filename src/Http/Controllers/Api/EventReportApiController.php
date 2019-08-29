@@ -75,6 +75,7 @@ class EventReportApiController extends Controller
     {
         if ($request->has('ar')) {
             $report = $report->whereRaw('archived = id')
+                ->where('approved',1)
                 ->withTrashed()
                 ->withoutGlobalScope(OrderByLatestScope::class)
                 ->orderBy('deleted_at','desc');
@@ -165,8 +166,6 @@ class EventReportApiController extends Controller
                 $report->archived = $report->id;
             }
             $report->save();
-        } else {
-            $report->update($request->except('_method'));
         }
         
         return response()->success($report->load(['admin','volunteer','village.subdistrict.city']));

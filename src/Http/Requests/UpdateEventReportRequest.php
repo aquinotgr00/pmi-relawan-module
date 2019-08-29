@@ -25,12 +25,18 @@ class UpdateEventReportRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'unique:event_reports,title,' .$this->report->id . ',id',
-            'description' => Rule::requiredIf(null !== $this->input('title')),
+            'title' => 'sometimes|required',
+            'description' => 'sometimes|required',
             'image_file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'approved' => 'nullable|boolean',
-            'reason_rejection' => Rule::requiredIf((null !== $this->input('approved')) && ($this->input('approved') == 0)),
-            'archived' => 'boolean',
+            'approved' => 'sometimes|boolean',
+            'reason_rejection' => [
+                Rule::requiredIf($this->filled('approved') && $this->approved == 0)
+            ],
+            'archived' => function ($attribute, $value, $fail) {
+                if(!$this->report->approved) {
+                    $fail('only approved event/RSVP may be archived');
+                }
+            },
         ];
     }
 
