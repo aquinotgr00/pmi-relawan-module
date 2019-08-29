@@ -22,6 +22,6 @@ $factory->define(EventReport::class, function (Faker $faker) {
         'image'=>$faker->imageUrl(640,480),
         'approved'=> $approved,
         'emergency'=> $faker->boolean,
-        'reason_rejection'=> !$approved?$faker->sentence:NULL 
+        'reason_rejection'=> $approved===false?$faker->sentence:NULL 
     ];
 });
