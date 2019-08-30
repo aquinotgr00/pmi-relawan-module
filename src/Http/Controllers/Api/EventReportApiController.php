@@ -163,6 +163,7 @@ class EventReportApiController extends Controller
         if ($request->has('approved')) {
             $report->approved = $request->approved;
             if(!$request->approved) {
+                $report->reason_rejection = $request->reason_rejection;
                 $report->archived = $report->id;
             }
             $report->save();
