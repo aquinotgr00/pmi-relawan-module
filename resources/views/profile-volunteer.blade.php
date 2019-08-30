@@ -42,7 +42,8 @@
         <th><b>No</b></th>
         <th><b>Penghargaan</b></th>
     </tr>
-    @each('volunteer::qualification', array_combine(range(1, count($volunteer->achievements)), array_values($volunteer->achievements)), 'qualification')
+  
+    @each('volunteer::qualification', array_combine(range(1, count($volunteer->achievements)), array_values($volunteer->achievements->toArray())), 'qualification')
 </table>
 @endif
 
@@ -55,7 +56,7 @@
         <th><b>No</b></th>
         <th><b>Penugasan</b></th>
     </tr>
-    @each('volunteer::qualification', array_combine(range(1, count($volunteer->assignments)), array_values($volunteer->assignments)), 'qualification')
+    @each('volunteer::qualification', array_combine(range(1, count($volunteer->assignments)), array_values($volunteer->assignments->toArray())), 'qualification')
 </table>
 @endif
 
@@ -68,6 +69,6 @@
         <th><b>No</b></th>
         <th><b>Pelatihan</b></th>
     </tr>
-    @each('volunteer::qualification', array_combine(range(1, count($volunteer->trainings)), array_values($volunteer->trainings)), 'qualification')
+    @each('volunteer::qualification', array_combine(range(1, count($volunteer->trainings)), array_values($volunteer->trainings->toArray())), 'qualification')
 </table>
 @endif

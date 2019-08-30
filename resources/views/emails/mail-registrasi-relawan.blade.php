@@ -1,4 +1,4 @@
-@extends('donator::emails.mail-template')
+@extends('volunteer::emails.mail-template')
 
 @section('content')
 <!-- Start of main-banner -->
@@ -72,7 +72,7 @@
                                           <!-- Title -->
                                           <tr>
                                              <td style="font-family: 'Open Sans', sans-serif; font-size: 22px; color: #ED1C24; text-align:center; line-height: 30px;" st-title="fulltext-heading">
-                                                Hi, Tegar
+                                                Hi, {{ (isset($volunteer->name))? $volunteer->name : 'Sahabat PMI'  }}
                                              </td>
                                           </tr>
                                           <!-- End of Title -->

@@ -146,6 +146,7 @@ class VolunteerApiController extends Controller
                     'category'=>$qualification['category']]) ;
             })->all()
         );
+        $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
     }
 
     private function handleSearchKeyword(Request $request, $volunteer)
@@ -205,9 +206,15 @@ class VolunteerApiController extends Controller
         if ($request->has('image_file')) {
             $volunteer->image = $request->image->store('volunteers','public');
         }
+        
+        $previous_verifed = $volunteer->verified;
 
         $volunteer->update($request->input());
+
+        $this->sendRegistationStatusMail($request, $previous_verifed, $volunteer);
+        
         $this->rejectVolunteer($request->only(['verified', 'description']), $volunteer);
+
         return response()->success($volunteer);
     }
 
@@ -221,6 +228,15 @@ class VolunteerApiController extends Controller
     {
         if ($request['verified'] == 0) {
             $volunteer->delete();
+        }
+    }
+
+    private function sendRegistationStatusMail(Request $request, int $previous_verifed, $volunteer)
+    {
+        if ($request->has('verified')) {
+            if ($request->verified !== $previous_verifed) {
+                $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
+            }
         }
     }
 }

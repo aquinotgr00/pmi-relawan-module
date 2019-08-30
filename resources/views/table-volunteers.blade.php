@@ -17,8 +17,8 @@
             <td>{{ $key }}</td>
             <td>{{ $volunteer->name }}</td>
             <td>{{ $volunteer->gender === 'female' ? 'Perempuan':'Laki - laki' }}</td>
-            <td>{{ $volunteer->unit ? $volunteer->unit->membership->parentMember->name:'' }}</td>
-            <td>{{ $volunteer->unit ? $volunteer->unit->membership->name:'' }}</td>
+            <td>{{ $volunteer->unit->membership->parentMember ? $volunteer->unit->membership->parentMember->name:'' }}</td>
+            <td>{{ $volunteer->unit->membership ? $volunteer->unit->membership->name:'' }}</td>
             <td>{{ $volunteer->city }}</td>
             <td>{{ $volunteer->unit ? $volunteer->unit->name:'' }}</td>
         </tr>
