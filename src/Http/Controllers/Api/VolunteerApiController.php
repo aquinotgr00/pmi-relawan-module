@@ -37,7 +37,7 @@ class VolunteerApiController extends Controller
         $volunteer = $this->handleVolunteerUnit($request, $volunteer);
         $volunteer = $this->handleVolunteerSubdistrict($request, $volunteer);
         $volunteer = $this->handleSearchKeyword($request, $volunteer);
-        $admins = $volunteer->with('unit.membership.parentMember')->with('qualifications')->paginate();
+        $admins = $volunteer->with(['unit.membership.parentMember','qualifications'])->paginate();
 
         return response()->success(compact('admins'));
     }
@@ -118,9 +118,10 @@ class VolunteerApiController extends Controller
     public function store(StoreVolunteerRequest $request)
     {
         $user = null;
-        $request->merge(['password' => bcrypt($request->password)]);
         DB::transaction(function () use ($request, &$user) {
-            $user = User::create($request->only('name','email','password'));
+            $user = User::make($request->only('name','email'));
+            $user->password = bcrypt($request->password);
+            $user->save();
             $this->createVolunteer($request, $user);
         });
         
@@ -134,8 +135,7 @@ class VolunteerApiController extends Controller
     
     private function createVolunteer(StoreVolunteerRequest $request, User $user)
     {
-        $volunteer = new Volunteer;
-        $volunteer->fill($request->except('email','password','password_confirmation'));
+        $volunteer = Volunteer::make($request->except('email','password','password_confirmation'));
         if ($request->image)
             $volunteer->image = $request->image->store('volunteers','public');
 
@@ -153,17 +153,13 @@ class VolunteerApiController extends Controller
     private function handleSearchKeyword(Request $request, $volunteer)
     {
         if ($request->has('s') && $request->s != '') {
-            $volunteer = $volunteer->query()
-                ->whereLike(['phone', 'unit.name', 'user.name'], $request->s);
+            $volunteer = $volunteer->whereLike(['phone', 'unit.name', 'user.name'], $request->s);
         }
         return $volunteer;
     }
 
     public function show(Volunteer $volunteer)
     {
-        $volunteer->unit;
-        $volunteer->unit->membership;
-        $volunteer->unit->membership->parentMember;
         return response()->success($volunteer);
     }
 
@@ -209,19 +205,11 @@ class VolunteerApiController extends Controller
     public function update(Request $request, Volunteer $volunteer)
     {
         if ($request->has('image_file')) {
-            $image      = $request->file('image_file');
-            $extension  = $image->getClientOriginalExtension();
-            $file_name  = $image->getFilename() . '.' . $extension;
-
-            Storage::disk('public')->put($file_name,  File::get($image));
-
-            $image_url = url('storage/' . $file_name);
-            $volunteer->image = $image_url;
+            $volunteer->image = $request->image->store('volunteers','public');
         }
 
         $volunteer->update($request->input());
         $this->rejectVolunteer($request->only(['verified', 'description']), $volunteer);
-        $volunteer->unit->membership->parentMember;
         return response()->success($volunteer);
     }
 

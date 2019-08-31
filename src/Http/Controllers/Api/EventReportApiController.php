@@ -3,16 +3,16 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Intervention\Image\Facades\Image;
 use BajakLautMalaka\PmiRelawan\EventReport;
-use BajakLautMalaka\PmiRelawan\Volunteer;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreEventReportRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateEventReportRequest;
+use BajakLautMalaka\PmiRelawan\Scopes\OrderByLatestScope;
 use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
+use Illuminate\Support\Facades\Auth;
 
 class EventReportApiController extends Controller
 {
@@ -25,11 +25,18 @@ class EventReportApiController extends Controller
     public function index(Request $request,EventReport $report)
     {
         $report = $this->handleSearch($request,$report);
+        $report = $this->handleByVolunteerID($request,$report);
         $report = $this->handleOrder($request,$report);
         $report = $this->handleApprovedStatus($request,$report);
         $report = $this->handleEmergencyStatus($request,$report);
         $report = $this->handleArchivedStatus($request,$report);
-        $report = $report->with('participants')->with('activities');
+        $report = $report->withCount([
+            'participants',
+            'participants AS approved_participants'=>function($query) {
+                $query->where('approved',true);
+            }]
+        )->with(['admin','volunteer','village.subdistrict.city']);
+        // TODO : hide all "qualifications" attributes in BajakLautMalaka\PmiRelawan\Volunteer
         $report = $report->paginate();
 
         return response()->success($report);
@@ -38,10 +45,9 @@ class EventReportApiController extends Controller
     private function handleSearch(Request $request,$report)
     {
         if ($request->has('s')) {
-            $report = $report->where('title','like','%'.$request->s.'%')
-            ->orWhere('description','like','%'.$request->s.'%')
-            ->orWhere('type','like','%'.$request->s.'%')
-            ->orWhere('location','like','%'.$request->s.'%');
+            $report = $report->whereLike([
+                'title', 'description', 'village.subdistrict.city.name', 'admin.name' , 'volunteer.user.name'
+            ],$request->s);
         }
         return $report;
     }
@@ -68,7 +74,19 @@ class EventReportApiController extends Controller
     private function handleArchivedStatus(Request $request,$report)
     {
         if ($request->has('ar')) {
-            $report = $report->where('archived',$request->ar);
+            $report = $report->whereRaw('archived = id')
+                ->where('approved',1)
+                ->withTrashed()
+                ->withoutGlobalScope(OrderByLatestScope::class)
+                ->orderBy('deleted_at','desc');
+        }
+        return $report;
+    }
+
+    public function handleByVolunteerID(Request $request, $report)
+    {
+        if ($request->has('v_id')) {
+            $report = $report->where('volunteer_id',$request->v_id);
         }
         return $report;
     }
@@ -81,18 +99,32 @@ class EventReportApiController extends Controller
      */
     public function store(StoreEventReportRequest $request)
     {
-        $this->handleUploadImage($request,'event-images');
-        $volunteer = Volunteer::where('user_id',auth()->user()->id)->first();
-        if (!is_null($volunteer)) {
-            $request->merge([
-                //'image' => $request->image_file->store('volunteers','public'),
-                'volunteer_id' => $volunteer->id
-            ]);
-            $event_reports = EventReport::create($request->except('imaga_file','_token'));
-            return response()->success($event_reports);
-        }else{
-            return response()->fail(['message' => 'gagal membuat event/laporan']);
+        $rsvp = EventReport::make($request->input());
+        if($request->is('api/admin/*')) {
+            $rsvp->admin_id = Auth::id();
+            $rsvp->approved = true;    // automatically approved
         }
+        else {
+            $rsvp->volunteer_id = Auth::user()->volunteer->id;
+        }
+
+        // keep original file
+        $request->image_file->store('event-reports/originals','public');
+
+        // ... and resize another one to 320x240
+        $rsvp->image = $request->image_file->store('event-reports','public');
+        $resized = Image::make($request->image_file)->resize(320, 240, function ($constraint) {
+            $constraint->aspectRatio();
+        })->encode();
+        Storage::disk('public')->put($rsvp->image, $resized);
+        
+        try {
+            $rsvp->save();
+            return response()->success($rsvp);
+        } catch (Exception $e) {
+            return response()->fail($e);
+        }
+        
     }
 
     /**
@@ -113,6 +145,8 @@ class EventReportApiController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * 
+     * update mode : Approval, Archive, Revise
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \BajakLautMalaka\PmiRelawan\EventReport  $event
@@ -120,19 +154,22 @@ class EventReportApiController extends Controller
      */
     public function update(UpdateEventReportRequest $request, EventReport $report)
     {
-        $this->handleChangeImage($request,$report,'event-images');
+        //$this->handleChangeImage($request,$report,'event-images');
+        if ($request->has('archived')) {
+            $report->archived = $report->id;
+            $report->save();
+            $report->delete();
+        }
         if ($request->has('approved')) {
             $report->approved = $request->approved;
+            if(!$request->approved) {
+                $report->reason_rejection = $request->reason_rejection;
+                $report->archived = $report->id;
+            }
             $report->save();
-        } else {
-            $report->update($request->except('_method'));
         }
-        $report->participants;
-        $report->activities;
-        if (isset($report->village)) {
-            $report->village->subdistrict->city->province;
-        }
-        return response()->success($report);
+        
+        return response()->success($report->load(['admin','volunteer','village.subdistrict.city']));
     }
 
     /**

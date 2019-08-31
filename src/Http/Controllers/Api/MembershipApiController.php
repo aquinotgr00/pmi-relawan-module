@@ -10,6 +10,7 @@ use BajakLautMalaka\PmiRelawan\UnitVolunteer;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreMembershipRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateMembershipRequest;
 use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
+use BajakLautMalaka\PmiRelawan\Events\MembershipCreated;
 
 class MembershipApiController extends Controller
 {
@@ -76,6 +77,9 @@ class MembershipApiController extends Controller
     public function store(StoreMembershipRequest $request)
     {
       $membership = Membership::create($request->all());
+      if ($membership) {
+        broadcast(new MembershipCreated($membership));
+      }
       return response()->success($membership);
     }
 

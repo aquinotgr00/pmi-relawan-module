@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Routing\RouteRegistrar as Router;
 use Illuminate\Support\Facades\Broadcast;
+use BajakLautMalaka\PmiRelawan\PmiRelawanEventServiceProvider;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -18,7 +19,7 @@ class PmiRelawanServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->register(PmiRelawanEventServiceProvider::class);
     }
 
     /**
@@ -112,10 +113,12 @@ class PmiRelawanServiceProvider extends ServiceProvider
                     $query->when(
                         str_contains($attribute, '.'),
                         function (Builder $query) use ($attribute, $searchTerm) {
-                            [$relationName, $relationAttribute] = explode('.', $attribute);
+                            $relations = explode('.', $attribute);
+                            $columnName = array_pop($relations);
+                            $tables = implode('.', $relations);
         
-                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
-                                $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
+                            $query->orWhereHas($tables, function (Builder $query) use ($columnName, $searchTerm) {
+                                $query->where($columnName, 'LIKE', "%{$searchTerm}%");
                             });
                         },
                         function (Builder $query) use ($attribute, $searchTerm) {

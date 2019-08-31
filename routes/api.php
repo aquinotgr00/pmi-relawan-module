@@ -41,6 +41,7 @@ Route::prefix('app')->group(function () {
         Route::get('villages', 'VillageApiController@index')->name('village.list');
         Route::get('membership', 'MembershipApiController@index')->name('membership.list');
         Route::get('unit', 'UnitVolunteerApiController@index')->name('member.unit.list');
+        Route::get('check-for-update', 'SettingsApiController@checkForUpdate')->name('settings.check-for-update');
     });
 
     Route::prefix('events')->middleware('auth:api')->group(function() {
