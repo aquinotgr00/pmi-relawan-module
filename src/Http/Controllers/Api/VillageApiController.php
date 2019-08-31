@@ -25,7 +25,6 @@ class VillageApiController extends Controller
         $village = $this->handleOrder($request,$village);
         $village = $village->with('subdistrict.city.province');
         $village = $this->handlePaginate($request,$village);
-        $village = $filtering->merge($village);
         return response()->success($village);
     }
 
