@@ -25,14 +25,7 @@ class VillageApiController extends Controller
         $village = $this->handleOrder($request,$village);
         $village = $village->with('subdistrict.city.province');
         $village = $this->handlePaginate($request,$village);
-
-        $filtering  = collect([
-            'filter_city' => \BajakLautMalaka\PmiRelawan\City::select(['id','name'])->get(),
-            'filter_subdistrict' => \BajakLautMalaka\PmiRelawan\Subdistrict::getForFiltering($request),
-        ]);
-        
         $village = $filtering->merge($village);
-
         return response()->success($village);
     }
 
