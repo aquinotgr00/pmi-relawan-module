@@ -136,7 +136,9 @@ class VolunteerApiController extends Controller
     private function createVolunteer(StoreVolunteerRequest $request, User $user)
     {
         $volunteer = Volunteer::make($request->except('email','password','password_confirmation'));
-        $volunteer->image = $request->image->store('volunteers','public');
+        if ($request->image)
+            $volunteer->image = $request->image->store('volunteers','public');
+
         $volunteer->user_id = $user->id;
         $volunteer->save();
         $volunteer->qualifications()->saveMany(
