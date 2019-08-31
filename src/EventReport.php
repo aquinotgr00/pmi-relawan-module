@@ -3,6 +3,7 @@
 namespace BajakLautMalaka\PmiRelawan;
 
 use BajakLautMalaka\PmiRelawan\Scopes\OrderByLatestScope;
+use BajakLautMalaka\PmiRelawan\Jobs\SendEventReportStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
@@ -48,6 +49,11 @@ class EventReport extends Model
     public function getImageUrlAttribute()
     {
         return asset(Storage::url($this->image));
+    }
+
+    public function sendEventReportStatus($email, $data)
+    {
+        dispatch(new SendEventReportStatus($email, $data));
     }
 
 }

@@ -1,4 +1,4 @@
-@extends('donator::emails.mail-template')
+@extends('volunteer::emails.mail-template')
 
 @section('content')
 <!-- Start of main-banner -->
