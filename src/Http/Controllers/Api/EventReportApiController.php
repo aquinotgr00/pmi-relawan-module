@@ -99,13 +99,16 @@ class EventReportApiController extends Controller
      */
     public function store(StoreEventReportRequest $request)
     {
-        $rsvp = EventReport::make($request->input());
+        $rsvp      = EventReport::make($request->input());
         if($request->is('api/admin/*')) {
             $rsvp->admin_id = Auth::id();
             $rsvp->approved = true;    // automatically approved
+
+            $mail_to = Auth::user()->email;
         }
         else {
             $rsvp->volunteer_id = Auth::user()->volunteer->id;
+            $mail_to = Auth::user()->email;
         }
 
         // keep original file
@@ -120,6 +123,7 @@ class EventReportApiController extends Controller
         
         try {
             $rsvp->save();
+            $rsvp->sendEventReportStatus($mail_to,$rsvp);
             return response()->success($rsvp);
         } catch (Exception $e) {
             return response()->fail($e);
@@ -167,6 +171,10 @@ class EventReportApiController extends Controller
                 $report->archived = $report->id;
             }
             $report->save();
+            if (isset($report->volunteer->user->email)) {
+                $email = $report->volunteer->user->email;
+                $report->sendEventReportStatus($email, $report);
+            }
         }
         
         return response()->success($report->load(['admin','volunteer','village.subdistrict.city']));

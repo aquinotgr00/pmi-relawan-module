@@ -2,6 +2,7 @@
 
 namespace BajakLautMalaka\PmiRelawan;
 
+use BajakLautMalaka\PmiRelawan\Jobs\SendRegistrationStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
@@ -12,8 +13,8 @@ class Volunteer extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
-        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id', 'verified'
+    'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
+    'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id', 'verified'
     ];
     
     protected $appends = ['name','image_url', 'age', 'achievements', 'assignments', 'trainings'];
@@ -74,5 +75,10 @@ class Volunteer extends Model
     public function getImageUrlAttribute()
     {
         return asset(Storage::url($this->image));
+    }
+
+    public function sendRegistrationStatus($email, $data)
+    {
+        dispatch(new SendRegistrationStatus($email, $data));
     }
 }

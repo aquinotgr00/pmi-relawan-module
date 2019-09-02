@@ -118,16 +118,19 @@ class VolunteerApiController extends Controller
     public function store(StoreVolunteerRequest $request)
     {
         $user = null;
-        DB::transaction(function () use ($request, &$user) {
+        $volunteer = null;
+        DB::transaction(function () use ($request, &$user, &$volunteer) {
             $user = User::make($request->only('name','email'));
             $user->password = bcrypt($request->password);
             $user->save();
-            $this->createVolunteer($request, $user);
+            $volunteer = $this->createVolunteer($request, $user);
         });
         
-        if($user) {
+        if($volunteer) {
             return response()->success([
-                'access_token'=>$user->createToken('PMI')->accessToken
+                'access_token'=>$user->createToken('PMI')->accessToken,
+                'donator_id'=>null,
+                'volunteer_id'=>$volunteer->id
             ]);
         }
         
@@ -148,6 +151,8 @@ class VolunteerApiController extends Controller
                     'category'=>$qualification['category']]) ;
             })->all()
         );
+        return $volunteer;
+        $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
     }
 
     private function handleSearchKeyword(Request $request, $volunteer)
@@ -207,9 +212,15 @@ class VolunteerApiController extends Controller
         if ($request->has('image_file')) {
             $volunteer->image = $request->image->store('volunteers','public');
         }
+        
+        $previous_verifed = $volunteer->verified;
 
         $volunteer->update($request->input());
+
+        $this->sendRegistationStatusMail($request, $previous_verifed, $volunteer);
+        
         $this->rejectVolunteer($request->only(['verified', 'description']), $volunteer);
+
         return response()->success($volunteer);
     }
 
@@ -223,6 +234,15 @@ class VolunteerApiController extends Controller
     {
         if ($request['verified'] == 0) {
             $volunteer->delete();
+        }
+    }
+
+    private function sendRegistationStatusMail(Request $request, int $previous_verifed, $volunteer)
+    {
+        if ($request->has('verified')) {
+            if ($request->verified !== $previous_verifed) {
+                $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-@extends('donator::emails.mail-template')
+@extends('volunteer::emails.mail-template')
 
 @section('content')
 <!-- Start of main-banner -->
@@ -72,7 +72,16 @@
                                           <!-- Title -->
                                           <tr>
                                              <td style="font-family: 'Open Sans', sans-serif; font-size: 22px; color: #ED1C24; text-align:center; line-height: 30px;" st-title="fulltext-heading">
-                                                Hi Tegar
+                                                Hi 
+                                                @if(isset($report->volunteer->name))
+                                                   {{ $report->volunteer->name }}
+                                                @elseif(isset($report->admin->name))
+                                                   {{ $report->admin->name }}
+                                                @else
+                                                   Sahabat PMI
+                                                @endif
+
+
                                              </td>
                                           </tr>
                                           <!-- End of Title -->
@@ -97,7 +106,7 @@
                                           <tr>
                                              <td style="font-family: 'Open Sans', sans-serif; text-align:left; line-height: 30px;" st-content="fulltext-content">
                                                 <label style="font-size: 12px; font-weight: bold; color: #3E3E3E;">Judul:</label>
-                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">Banjir Wilayah Sunter</p>
+                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">{{ (isset($report->title))? $report->title : ''  }}</p>
                                              </td>
                                           </tr>
                                           <!-- spacing -->
@@ -108,7 +117,9 @@
                                           <tr>
                                              <td style="font-family: 'Open Sans', sans-serif; text-align:left; line-height: 30px;" st-content="fulltext-content">
                                                 <label style="font-size: 12px; font-weight: bold; color: #3E3E3E;">Kecamatan:</label>
-                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">Pulau Seribu</p>
+                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">
+                                                   {{ (isset($report->village->subdistrict))? $report->village->subdistrict->name : ''  }}
+                                                </p>
                                              </td>
                                           </tr>
                                           <!-- spacing -->
@@ -119,7 +130,9 @@
                                           <tr>
                                              <td style="font-family: 'Open Sans', sans-serif; text-align:left; line-height: 30px;" st-content="fulltext-content">
                                                 <label style="font-size: 12px; font-weight: bold; color: #3E3E3E;">Kelurahan:</label>
-                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">Pulau Seribu</p>
+                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">
+                                                   {{ (isset($report->village->name))? $report->village->name : ''  }}
+                                                </p>
                                              </td>
                                           </tr>
                                           <!-- spacing -->
@@ -130,7 +143,9 @@
                                           <tr>
                                              <td style="font-family: 'Open Sans', sans-serif; text-align:left; line-height: 30px;" st-content="fulltext-content">
                                                 <label style="font-size: 12px; font-weight: bold; color: #3E3E3E;">Kabupaten/Kota:</label>
-                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">Pulau Seribu</p>
+                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">
+                                                   {{ (isset($report->village->subdistrict->city))? $report->village->subdistrict->city->name : ''  }}
+                                                </p>
                                              </td>
                                           </tr>
                                           <!-- spacing -->
@@ -141,7 +156,9 @@
                                           <tr>
                                              <td style="font-family: 'Open Sans', sans-serif; text-align:left; line-height: 30px;" st-content="fulltext-content">
                                                 <label style="font-size: 12px; font-weight: bold; color: #3E3E3E;">Detail Kejadian:</label>
-                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">Korban tewas 430 orang, 7.202 terluka dan 23 orang hilang</p>
+                                                <p style="font-size: 12px; color: #3E3E3E; line-height: 20px;">
+                                                   {{ (isset($report->description))? $report->description : ''  }}
+                                                </p>
                                              </td>
                                           </tr>
                                           <!-- spacing -->
