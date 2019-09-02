@@ -165,7 +165,7 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
-        return response()->success($volunteer);
+        return response()->success(auth()->user()->volunteer);
     }
 
     public function print(Request $request, Volunteer $volunteers)
