@@ -139,7 +139,9 @@ class VolunteerApiController extends Controller
     private function createVolunteer(StoreVolunteerRequest $request, User $user)
     {
         $volunteer = Volunteer::make($request->except('email','password','password_confirmation'));
-        $volunteer->image = $request->image->store('volunteers','public');
+        if ($request->image)
+            $volunteer->image = $request->image->store('volunteers','public');
+
         $volunteer->user_id = $user->id;
         $volunteer->save();
         $volunteer->qualifications()->saveMany(
@@ -150,6 +152,7 @@ class VolunteerApiController extends Controller
             })->all()
         );
         return $volunteer;
+        $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
     }
 
     private function handleSearchKeyword(Request $request, $volunteer)
@@ -209,9 +212,15 @@ class VolunteerApiController extends Controller
         if ($request->has('image_file')) {
             $volunteer->image = $request->image->store('volunteers','public');
         }
+        
+        $previous_verifed = $volunteer->verified;
 
         $volunteer->update($request->input());
+
+        $this->sendRegistationStatusMail($request, $previous_verifed, $volunteer);
+        
         $this->rejectVolunteer($request->only(['verified', 'description']), $volunteer);
+
         return response()->success($volunteer);
     }
 
@@ -225,6 +234,15 @@ class VolunteerApiController extends Controller
     {
         if ($request['verified'] == 0) {
             $volunteer->delete();
+        }
+    }
+
+    private function sendRegistationStatusMail(Request $request, int $previous_verifed, $volunteer)
+    {
+        if ($request->has('verified')) {
+            if ($request->verified !== $previous_verifed) {
+                $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
+            }
         }
     }
 }
