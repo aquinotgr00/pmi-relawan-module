@@ -118,16 +118,19 @@ class VolunteerApiController extends Controller
     public function store(StoreVolunteerRequest $request)
     {
         $user = null;
-        DB::transaction(function () use ($request, &$user) {
+        $volunteer = null;
+        DB::transaction(function () use ($request, &$user, &$volunteer) {
             $user = User::make($request->only('name','email'));
             $user->password = bcrypt($request->password);
             $user->save();
-            $this->createVolunteer($request, $user);
+            $volunteer = $this->createVolunteer($request, $user);
         });
         
-        if($user) {
+        if($volunteer) {
             return response()->success([
-                'access_token'=>$user->createToken('PMI')->accessToken
+                'access_token'=>$user->createToken('PMI')->accessToken,
+                'donator_id'=>null,
+                'volunteer_id'=>$volunteer->id
             ]);
         }
         
@@ -146,6 +149,7 @@ class VolunteerApiController extends Controller
                     'category'=>$qualification['category']]) ;
             })->all()
         );
+        return $volunteer;
     }
 
     private function handleSearchKeyword(Request $request, $volunteer)
