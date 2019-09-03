@@ -4,6 +4,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use BajakLautMalaka\PmiRelawan\Membership;
 use BajakLautMalaka\PmiRelawan\UnitVolunteer;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreUnitRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateUnitRequest;
@@ -23,11 +24,9 @@ class UnitVolunteerApiController extends Controller
         $unit = $this->handleSearch($request,$unit);
         $unit = $this->handleByCityId($request,$unit);
         $unit = $this->handleByMembership($request,$unit);
-        
         $unit = $this->handleOrder($request,$unit);
         $unit = $unit->with('membership');
         $unit = $unit->with('city');
-        //$unit = $unit->with('volunteers');
         $unit = $this->handlePaginate($request, $unit);
         return response()->success($unit);
     }
@@ -57,7 +56,8 @@ class UnitVolunteerApiController extends Controller
     private function handleByMembership(Request $request,$unit)
     {
         if ($request->has('p_id')) {
-            $unit = $unit->where('membership_id',$request->p_id);
+            $membership = Membership::with('subMember')->where('parent_id',$request->p_id)->pluck('id');
+            $unit = $unit->where('membership_id',$request->p_id)->orWhereIn('membership_id',$membership);
         }
         return $unit;
     }

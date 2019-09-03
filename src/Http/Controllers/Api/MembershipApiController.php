@@ -23,9 +23,10 @@ class MembershipApiController extends Controller
     public function index(Request $request,Membership $membership)
     {
       $membership = $this->handleByLevel($request,$membership);
+      $membership = $this->handleByParentId($request,$membership);
       $membership = $this->handleSearch($request,$membership);
       $membership = $this->handleOrder($request,$membership);
-      $membership = $membership->with('subMember');
+      $membership = $this->handleDefault($request,$membership);
       $membership = $this->handlePaginate($request,$membership);
       $membership = $this->handleCircularCollection($request,$membership);
       return response()->success($membership);
@@ -46,15 +47,31 @@ class MembershipApiController extends Controller
     private function handleByLevel(Request $request,$membership)
     {
       if ($request->has('l')) {
-        if ($request->l > 0) {
-          $membership = $membership->where('parent_id',$request->l);
-        }else{
-          $membership = $membership->whereNull('parent_id');    
+        switch ($request->l) {
+          case '0':
+            $membership = $membership->whereNull('parent_id');
+            break;
+          case '1':
+            $membership = $membership->where('parent_id','<>',NULL)->with('parentMember');
+            break;
         }
-      }else{
-        $membership = $membership->whereNull('parent_id')->with('subMember');    
       }
+      return $membership;
+    }
 
+    public function handleByParentId(Request $request,$membership)
+    {
+      if ($request->has('p_id')) {
+        $membership = $membership->where('parent_id',$request->p_id);
+      }
+      return $membership;
+    }
+
+    public function handleDefault(Request $request,$membership)
+    {
+      if (!$request->has('p_id') && !$request->has('l')) {
+        $membership = $membership->whereNull('parent_id')->with('subMember');
+      }
       return $membership;
     }
 
@@ -161,6 +178,16 @@ class MembershipApiController extends Controller
               $sub = $obj->merge($sub);
               $data[] = $sub;
             }
+          }elseif (isset($value->parentMember->id)) {
+            $data[] = collect([
+              'circular' => $value->parentMember->name.' > '.$value->name,
+              'id' => $value->id,
+              'parent_id' => $value->parent_id,
+              'name' => $value->name,
+              'code' => $value->code,
+              'created_at' => $value->created_at,
+              'updated_at' => $value->updated_at,
+              ]);
           }else{
             $data[] = collect([
               'circular' => $value->name,
