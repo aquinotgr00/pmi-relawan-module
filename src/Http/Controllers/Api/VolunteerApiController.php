@@ -118,16 +118,19 @@ class VolunteerApiController extends Controller
     public function store(StoreVolunteerRequest $request)
     {
         $user = null;
-        DB::transaction(function () use ($request, &$user) {
+        $volunteer = null;
+        DB::transaction(function () use ($request, &$user, &$volunteer) {
             $user = User::make($request->only('name','email'));
             $user->password = bcrypt($request->password);
             $user->save();
-            $this->createVolunteer($request, $user);
+            $volunteer = $this->createVolunteer($request, $user);
         });
         
-        if($user) {
+        if($volunteer) {
             return response()->success([
-                'access_token'=>$user->createToken('PMI')->accessToken
+                'access_token'=>$user->createToken('PMI')->accessToken,
+                'donator_id'=>null,
+                'volunteer_id'=>$volunteer->id
             ]);
         }
         
@@ -136,7 +139,9 @@ class VolunteerApiController extends Controller
     private function createVolunteer(StoreVolunteerRequest $request, User $user)
     {
         $volunteer = Volunteer::make($request->except('email','password','password_confirmation'));
-        $volunteer->image = $request->image->store('volunteers','public');
+        if ($request->image)
+            $volunteer->image = $request->image->store('volunteers','public');
+
         $volunteer->user_id = $user->id;
         $volunteer->save();
         $volunteer->qualifications()->saveMany(
@@ -146,6 +151,7 @@ class VolunteerApiController extends Controller
                     'category'=>$qualification['category']]) ;
             })->all()
         );
+        return $volunteer;
         $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
     }
 
@@ -159,7 +165,7 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
-        return response()->success($volunteer);
+        return response()->success(auth()->user()->volunteer);
     }
 
     public function print(Request $request, Volunteer $volunteers)
