@@ -22,54 +22,77 @@ class MembershipApiController extends Controller
      */
     public function index(Request $request,Membership $membership)
     {
-      $membership = $this->handleByLevel($request,$membership);
-      $membership = $this->handleByParentId($request,$membership);
-      $membership = $this->handleSearch($request,$membership);
+      //$membership = $this->handleSearch($request,$membership);
       $membership = $this->handleOrder($request,$membership);
-      $membership = $this->handleDefault($request,$membership);
+      $membership = $this->handleByParentId($request,$membership);
       $membership = $this->handlePaginate($request,$membership);
-      $membership = $this->handleCircularCollection($request,$membership);
+      $membership = $this->handleByLevel($request,$membership);
       return response()->success($membership);
     }
 
-    private function handleSearch(Request $request,$membership)
+    private function handleExplodeString(string $membership)
+    {
+      $membership = trim(preg_replace('/\s\s+/', '', $membership));
+      $membership = explode('<br/>', $membership);
+      $data = [];
+      foreach ($membership as $key => $value) {
+        $pieces = explode('^', $value);
+        $id     = trim(preg_replace('/\s\s+/', '', $pieces[0]));
+        $id     = intval($id);
+
+        if ($id !== 0) {
+          $name   =  (isset($pieces[1]))? trim(preg_replace('/\s\s+/', '', $pieces[1])) : '';
+          $data[] = [ 'id' => $id , 'name' => $name ];
+        }
+      }
+      return $data;
+    }
+
+    private function handleSearch(Request $request,$collection)
     {
       if ($request->has('s')) {
-        $membership = $membership->where('name','like','%'.$request->s.'%')
-        ->orWhereHas('subMember', function ($query) use ($request) {
-          $query->where('name','like','%'.$request->s.'%');
-        })
-        ->orWhere('code','like','%'.$request->s.'%');
+        $keyword      = strtolower($request->s);
+        $collection   = $collection->reject(function($element) use ($keyword) {
+          return mb_strpos(strtolower($element['name']), $keyword) === false;
+        });
+        $collection = $collection->values(); 
+
       }
-      return $membership;
+      return $collection;
     }
 
     private function handleByLevel(Request $request,$membership)
     {
-      if ($request->has('l')) {
-        switch ($request->l) {
-          case '0':
-            $membership = $membership->whereNull('parent_id');
-            break;
-          case '1':
-            $membership = $membership->where('parent_id','<>',NULL)->with('parentMember');
-            break;
-        }
+      $level      = ($request->has('l') && !is_null(json_decode($request->l)))? json_decode($request->l) : [0,1];
+      $view       = view('volunteer::membership', compact('membership', 'level'))->render();
+      $items      = $this->handleExplodeString($view);
+      $value      = 'mark';
+      $data       = collect($items);
+      $data       = $this->handleSearch($request,$data);
+      if ($membership instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+        $data = [
+          'current_page' => $membership->currentPage(),
+          'data' => $data,
+          'first_page_url'=> $membership->onFirstPage(),
+          'from'=> $membership->firstItem(),
+          'last_page'=> $membership->lastPage(),
+          'last_page_url'=> $membership->lastPage(),
+          'next_page_url'=> $membership->nextPageUrl(),
+          'path'=> 'http://localhost:8000/api/admin/settings/village',
+          'per_page'=> 15,
+          'prev_page_url'=> null,
+          'to'=> 15,
+          'total'=> $membership->total()
+        ];
       }
-      return $membership;
+      return $data;
     }
 
-    public function handleByParentId(Request $request,$membership)
+    private function handleByParentId(Request $request,$membership)
     {
       if ($request->has('p_id')) {
         $membership = $membership->where('parent_id',$request->p_id);
-      }
-      return $membership;
-    }
-
-    public function handleDefault(Request $request,$membership)
-    {
-      if (!$request->has('p_id') && !$request->has('l')) {
+      }else{
         $membership = $membership->whereNull('parent_id')->with('subMember');
       }
       return $membership;
@@ -82,7 +105,7 @@ class MembershipApiController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -155,62 +178,6 @@ class MembershipApiController extends Controller
       return response()->success($membership);
     }
 
-    private function handleCircularCollection(Request $request,$membership)
-    {
-      if ($request->has('sub')) {
-        $data = [];
-        foreach ($membership as $key => $value) {
-          if ($value->subMember->count() > 0) {
-            $parent = collect([
-              'circular' => $value->name,
-              'id' => $value->id,
-              'parent_id' => $value->parent_id,
-              'name' => $value->name,
-              'code' => $value->code,
-              'created_at' => $value->created_at,
-              'updated_at' => $value->updated_at,
-              ]);
-            array_push($data, $parent);
-            foreach ($value->subMember as $index => $sub) {
-              $member     = $value->name;
-              $member    .=" > ".$sub->name;
-              $obj = collect(['circular' => $member]);
-              $sub = $obj->merge($sub);
-              $data[] = $sub;
-            }
-          }elseif (isset($value->parentMember->id)) {
-            $data[] = collect([
-              'circular' => $value->parentMember->name.' > '.$value->name,
-              'id' => $value->id,
-              'parent_id' => $value->parent_id,
-              'name' => $value->name,
-              'code' => $value->code,
-              'created_at' => $value->created_at,
-              'updated_at' => $value->updated_at,
-              ]);
-          }else{
-            $data[] = collect([
-              'circular' => $value->name,
-              'id' => $value->id,
-              'parent_id' => $value->parent_id,
-              'name' => $value->name,
-              'code' => $value->code,
-              'created_at' => $value->created_at,
-              'updated_at' => $value->updated_at,
-              ]);
-          }
-        }
-        $ori  = collect($membership);
-        if (isset($ori['data'])) {
-          $mixed       = collect(['data'=>$data]);
-          $membership  = $ori->merge($mixed);
-        }else{
-          $membership  = collect($data);
-        }
-      }   
-
-      return $membership;
-    }
 
     public function getAmountVolunteers(Membership $membership)
     {
@@ -221,7 +188,7 @@ class MembershipApiController extends Controller
         $subMember = $member->subMember->map(function($sub) {
 
           $send     = $sub->units->reduce(function ($count, $units) use($sub) {
-            
+
             $f      = $units->volunteers->where('gender','female')->count();
             $m      = $units->volunteers->where('gender','male')->count();
             $all    = $f + $m;
@@ -235,10 +202,10 @@ class MembershipApiController extends Controller
             return $count;
 
           }, [
-            'title' => $sub->name,
-            'f' => 0,
-            'm' => 0,
-            'all' => 0
+          'title' => $sub->name,
+          'f' => 0,
+          'm' => 0,
+          'all' => 0
           ]);
           
           return $send;
@@ -259,6 +226,6 @@ class MembershipApiController extends Controller
 
       });
 
-      return response()->success($membership);
-    }
-  }
+return response()->success($membership);
+}
+}
