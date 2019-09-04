@@ -10,6 +10,8 @@ class Village extends Model
     
     protected $appends = ['city_id'];
 
+    protected $hidden = ['created_at','updated_at'];
+
     public function subdistrict()
     {
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\Subdistrict');

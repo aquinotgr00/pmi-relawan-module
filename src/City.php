@@ -8,6 +8,8 @@ class City extends Model
 {
     protected $fillable = ['province_id','name','type','postal_code'];
 
+    protected $hidden = ['created_at','updated_at'];
+
     public function province()
     {
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\Province');
