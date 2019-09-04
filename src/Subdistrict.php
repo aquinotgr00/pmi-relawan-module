@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 class Subdistrict extends Model
 {
     protected $fillable = ['province_id','city_id','name','type'];
+
+    protected $hidden = ['type','created_at','updated_at'];
     
     public function city()
     {
