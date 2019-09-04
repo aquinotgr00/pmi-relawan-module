@@ -139,11 +139,7 @@ class EventReportApiController extends Controller
      */
     public function show(EventReport $report)
     {
-        $report->participants;
-        $report->activities;
-        if (isset($report->village)) {
-            $report->village->subdistrict->city->province;
-        }
+        $report->load('participants','activities','village.subdistrict.city');
         return response()->success($report);
     }
 
@@ -159,6 +155,9 @@ class EventReportApiController extends Controller
     public function update(UpdateEventReportRequest $request, EventReport $report)
     {
         //$this->handleChangeImage($request,$report,'event-images');
+        $report->fill($request->only('title','description','village_id'));
+        $report->save();
+
         if ($request->has('archived')) {
             $report->archived = $report->id;
             $report->save();
