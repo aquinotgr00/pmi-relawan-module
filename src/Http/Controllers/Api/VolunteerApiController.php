@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Hash;
 use PDF;
 
 use App\User;
@@ -212,6 +213,10 @@ class VolunteerApiController extends Controller
         if ($request->has('image_file')) {
             $volunteer->image = $request->image->store('volunteers','public');
         }
+
+        if ($request->has('password')) {
+            $this->handlePasswordChange($request->only(['old_password', 'password', 'password_confirmation']), $volunteer);
+        }
         
         $previous_verifed = $volunteer->verified;
 
@@ -228,6 +233,15 @@ class VolunteerApiController extends Controller
     {
         $volunteer->delete();
         return response()->success($volunteer);
+    }
+
+    private function handlePasswordChange($request, Volunteer $volunteer)
+    {
+        if (Hash::check($request['old_password'], $volunteer->user->password)) {
+            $newPassword = Hash::Make($request['password']);
+            $volunteer->user->password = $newPassword;
+            $volunteer->user->save();
+        }
     }
 
     private function rejectVolunteer($request, Volunteer $volunteer)
