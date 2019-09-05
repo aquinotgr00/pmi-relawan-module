@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Hash;
 use PDF;
 
 use App\User;
@@ -54,13 +55,9 @@ class VolunteerApiController extends Controller
     private function handleVolunteerType(Request $request, $volunteer)
     {
         if ($request->has('t')) {
-            $membershipId = null;
-            $membership = Membership::where('name', $request->t)->first();
-            if ($membership)
-                $membershipId = $membership->id;
-
+            $membershipId = $request->t;
             $volunteer = $volunteer->whereHas('unit.membership', function ($q) use ($membershipId) {
-                $q->where('parent_id', $membershipId);
+                $q->where('id', $membershipId)->orWhere('parent_id', $membershipId);
             });
         }
         return $volunteer;
@@ -165,7 +162,10 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
-        return response()->success(auth()->user()->volunteer);
+        if(!auth()->guard('admin')->check()){
+            $volunteer = auth()->user()->volunteer;
+        }
+        return response()->success($volunteer);
     }
 
     public function print(Request $request, Volunteer $volunteers)
@@ -212,6 +212,10 @@ class VolunteerApiController extends Controller
         if ($request->has('image_file')) {
             $volunteer->image = $request->image->store('volunteers','public');
         }
+
+        if ($request->has('password')) {
+            $this->handlePasswordChange($request->only(['old_password', 'password', 'password_confirmation']), $volunteer);
+        }
         
         $previous_verifed = $volunteer->verified;
 
@@ -230,6 +234,15 @@ class VolunteerApiController extends Controller
         return response()->success($volunteer);
     }
 
+    private function handlePasswordChange($request, Volunteer $volunteer)
+    {
+        if (Hash::check($request['old_password'], $volunteer->user->password)) {
+            $newPassword = Hash::Make($request['password']);
+            $volunteer->user->password = $newPassword;
+            $volunteer->user->save();
+        }
+    }
+
     private function rejectVolunteer($request, Volunteer $volunteer)
     {
         if ($request['verified'] == 0) {
@@ -244,5 +257,23 @@ class VolunteerApiController extends Controller
                 $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
             }
         }
+    }
+
+    public function printHtml(Request $request, Volunteer $volunteers)
+    {
+        $pdfTitle = 'Volunteers';
+        // get data with it's all filter
+        $volunteers = $this->handleVolunteerType($request, $volunteers);
+        $volunteers = $this->handleVolunteerSubType($request, $volunteers);
+        $volunteers = $this->handleVolunteerCity($request, $volunteers);
+        $volunteers = $this->handleVolunteerUnit($request, $volunteers);
+        $volunteers = $this->handleSearchKeyword($request, $volunteers);
+
+        $volunteers = $volunteers->get();
+        $html = view('volunteer::table-volunteers', [
+            'volunteers' => $volunteers
+        ])->render();
+
+        return response()->success(compact('html'));
     }
 }
