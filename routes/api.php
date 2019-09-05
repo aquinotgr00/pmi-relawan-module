@@ -56,6 +56,7 @@ Route::prefix('app')->group(function () {
     Route::prefix('volunteer')->group(function() {
         Route::post('signup', 'VolunteerApiController@store');
         Route::get('profile', 'VolunteerApiController@show')->middleware('auth:api');
+        Route::post('update/{volunteer}', 'VolunteerApiController@update')->middleware('auth:api');
     });
 
 });
