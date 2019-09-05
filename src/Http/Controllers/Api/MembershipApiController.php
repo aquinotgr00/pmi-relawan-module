@@ -22,7 +22,6 @@ class MembershipApiController extends Controller
      */
     public function index(Request $request,Membership $membership)
     {
-      //$membership = $this->handleSearch($request,$membership);
       $membership = $this->handleOrder($request,$membership);
       $membership = $this->handleByParentId($request,$membership);
       $membership = $this->handlePaginate($request,$membership);
@@ -66,11 +65,13 @@ class MembershipApiController extends Controller
       $level      = ($request->has('l') && !is_null(json_decode($request->l)))? json_decode($request->l) : [0,1];
       $view       = view('volunteer::membership', compact('membership', 'level'))->render();
       $items      = $this->handleExplodeString($view);
-      $value      = 'mark';
       $data       = collect($items);
       $data       = $this->handleSearch($request,$data);
       if ($membership instanceof \Illuminate\Pagination\LengthAwarePaginator) {
-        $data = [
+        $options  = $membership->getOptions();
+        $path     = $options['path'];
+        
+        $data     = [
           'current_page' => $membership->currentPage(),
           'data' => $data,
           'first_page_url'=> $membership->onFirstPage(),
@@ -78,10 +79,10 @@ class MembershipApiController extends Controller
           'last_page'=> $membership->lastPage(),
           'last_page_url'=> $membership->lastPage(),
           'next_page_url'=> $membership->nextPageUrl(),
-          'path'=> 'http://localhost:8000/api/admin/settings/village',
-          'per_page'=> 15,
-          'prev_page_url'=> null,
-          'to'=> 15,
+          'path'=> $path,
+          'per_page'=> $membership->perPage(),
+          'prev_page_url'=> $membership->previousPageUrl(),
+          'to'=> $membership->lastItem(),
           'total'=> $membership->total()
         ];
       }
