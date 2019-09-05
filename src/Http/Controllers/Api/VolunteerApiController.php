@@ -161,8 +161,10 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
-        $volunteer = (is_null(auth()->user()->volunteer))? $volunteer :  auth()->user()->volunteer;
-        return response()->success(auth()->user()->volunteer);
+        if(!auth()->guard('admin')->check()){
+            $volunteer = auth()->user()->volunteer;
+        }
+        return response()->success($volunteer);
     }
 
     public function print(Request $request, Volunteer $volunteers)

@@ -70,7 +70,6 @@ class MembershipApiController extends Controller
       if ($membership instanceof \Illuminate\Pagination\LengthAwarePaginator) {
         $options  = $membership->getOptions();
         $path     = $options['path'];
-        
         $data     = [
           'current_page' => $membership->currentPage(),
           'data' => $data,
