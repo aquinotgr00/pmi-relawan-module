@@ -22,78 +22,17 @@ class MembershipApiController extends Controller
      */
     public function index(Request $request,Membership $membership)
     {
+      $membership = $this->handleSearch($request,$membership);
       $membership = $this->handleOrder($request,$membership);
-      $membership = $this->handleByParentId($request,$membership);
+      $membership = $membership->with('parentMember','subMember');
       $membership = $this->handlePaginate($request,$membership);
-      $membership = $this->handleByLevel($request,$membership);
       return response()->success($membership);
     }
 
-    private function handleExplodeString(string $membership)
+    private function handleSearch(Request $request,$membership)
     {
-      $membership = trim(preg_replace('/\s\s+/', '', $membership));
-      $membership = explode('<br/>', $membership);
-      $data = [];
-      foreach ($membership as $key => $value) {
-        $pieces = explode('^', $value);
-        $id     = trim(preg_replace('/\s\s+/', '', $pieces[0]));
-        $id     = intval($id);
-
-        if ($id !== 0) {
-          $name   =  (isset($pieces[1]))? trim(preg_replace('/\s\s+/', '', $pieces[1])) : '';
-          $data[] = [ 'id' => $id , 'name' => $name ];
-        }
-      }
-      return $data;
-    }
-
-    private function handleSearch(Request $request,$collection)
-    {
-      if ($request->has('s')) {
-        $keyword      = strtolower($request->s);
-        $collection   = $collection->reject(function($element) use ($keyword) {
-          return mb_strpos(strtolower($element['name']), $keyword) === false;
-        });
-        $collection = $collection->values(); 
-
-      }
-      return $collection;
-    }
-
-    private function handleByLevel(Request $request,$membership)
-    {
-      $level      = ($request->has('l') && !is_null(json_decode($request->l)))? json_decode($request->l) : [0,1];
-      $view       = view('volunteer::membership', compact('membership', 'level'))->render();
-      $items      = $this->handleExplodeString($view);
-      $data       = collect($items);
-      $data       = $this->handleSearch($request,$data);
-      if ($membership instanceof \Illuminate\Pagination\LengthAwarePaginator) {
-        $options  = $membership->getOptions();
-        $path     = $options['path'];
-        $data     = [
-          'current_page' => $membership->currentPage(),
-          'data' => $data,
-          'first_page_url'=> $membership->onFirstPage(),
-          'from'=> $membership->firstItem(),
-          'last_page'=> $membership->lastPage(),
-          'last_page_url'=> $membership->lastPage(),
-          'next_page_url'=> $membership->nextPageUrl(),
-          'path'=> $path,
-          'per_page'=> $membership->perPage(),
-          'prev_page_url'=> $membership->previousPageUrl(),
-          'to'=> $membership->lastItem(),
-          'total'=> $membership->total()
-        ];
-      }
-      return $data;
-    }
-
-    private function handleByParentId(Request $request,$membership)
-    {
-      if ($request->has('p_id')) {
-        $membership = $membership->where('parent_id',$request->p_id);
-      }else{
-        $membership = $membership->whereNull('parent_id')->with('subMember');
+      if($request->has('s')) {
+        $membership = $membership->where('name','like','%'.$request->s.'%');
       }
       return $membership;
     }
@@ -225,7 +164,6 @@ class MembershipApiController extends Controller
         return $data;
 
       });
-
-return response()->success($membership);
-}
+    return response()->success($membership);
+  }
 }
