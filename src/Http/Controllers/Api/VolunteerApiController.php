@@ -54,13 +54,9 @@ class VolunteerApiController extends Controller
     private function handleVolunteerType(Request $request, $volunteer)
     {
         if ($request->has('t')) {
-            $membershipId = null;
-            $membership = Membership::where('name', $request->t)->first();
-            if ($membership)
-                $membershipId = $membership->id;
-
+            $membershipId = $request->t;
             $volunteer = $volunteer->whereHas('unit.membership', function ($q) use ($membershipId) {
-                $q->where('parent_id', $membershipId);
+                $q->where('id', $membershipId)->orWhere('parent_id', $membershipId);
             });
         }
         return $volunteer;
@@ -165,7 +161,10 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
-        return response()->success(auth()->user()->volunteer);
+        if(!auth()->guard('admin')->check()){
+            $volunteer = auth()->user()->volunteer;
+        }
+        return response()->success($volunteer);
     }
 
     public function print(Request $request, Volunteer $volunteers)
@@ -244,5 +243,23 @@ class VolunteerApiController extends Controller
                 $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
             }
         }
+    }
+
+    public function printHtml(Request $request, Volunteer $volunteers)
+    {
+        $pdfTitle = 'Volunteers';
+        // get data with it's all filter
+        $volunteers = $this->handleVolunteerType($request, $volunteers);
+        $volunteers = $this->handleVolunteerSubType($request, $volunteers);
+        $volunteers = $this->handleVolunteerCity($request, $volunteers);
+        $volunteers = $this->handleVolunteerUnit($request, $volunteers);
+        $volunteers = $this->handleSearchKeyword($request, $volunteers);
+
+        $volunteers = $volunteers->get();
+        $html = view('volunteer::table-volunteers', [
+            'volunteers' => $volunteers
+        ])->render();
+
+        return response()->success(compact('html'));
     }
 }
