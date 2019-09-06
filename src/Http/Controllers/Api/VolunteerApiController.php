@@ -18,6 +18,7 @@ use BajakLautMalaka\PmiRelawan\Membership;
 use BajakLautMalaka\PmiRelawan\Subdistrict;
 use BajakLautMalaka\PmiRelawan\City;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVolunteerRequest;
+use BajakLautMalaka\PmiRelawan\Jobs\SendRegistrationStatus;
 
 class VolunteerApiController extends Controller
 {
@@ -147,8 +148,10 @@ class VolunteerApiController extends Controller
                     'category'=>$qualification['category']]) ;
             })->all()
         );
+        
+        $email = $volunteer->user->email;
+        event(new SendRegistrationStatus($email, $volunteer));
         return $volunteer;
-        $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
     }
 
     private function handleSearchKeyword(Request $request, $volunteer)
@@ -240,7 +243,8 @@ class VolunteerApiController extends Controller
     {
         if ($request->has('verified')) {
             if ($request->verified !== $previous_verifed) {
-                $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
+                $email = $volunteer->user->email;
+                event(new SendRegistrationStatus($email, $volunteer));
             }
         }
     }

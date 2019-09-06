@@ -74,11 +74,7 @@ class Volunteer extends Model
     
     public function getImageUrlAttribute()
     {
-        return asset(Storage::url($this->image));
-    }
-
-    public function sendRegistrationStatus($email, $data)
-    {
-        dispatch(new SendRegistrationStatus($email, $data));
+        $image_url = (filter_var($this->image, FILTER_VALIDATE_URL))? $this->image : asset(Storage::url($this->image)); 
+        return $image_url;
     }
 }

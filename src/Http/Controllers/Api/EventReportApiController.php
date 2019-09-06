@@ -12,6 +12,7 @@ use BajakLautMalaka\PmiRelawan\Http\Requests\StoreEventReportRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateEventReportRequest;
 use BajakLautMalaka\PmiRelawan\Scopes\OrderByLatestScope;
 use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
+use BajakLautMalaka\PmiRelawan\Jobs\SendEventReportStatus;
 use Illuminate\Support\Facades\Auth;
 
 class EventReportApiController extends Controller
@@ -123,7 +124,7 @@ class EventReportApiController extends Controller
         
         try {
             $rsvp->save();
-            $rsvp->sendEventReportStatus($mail_to,$rsvp);
+            event(new SendEventReportStatus($rsvp));
             return response()->success($rsvp);
         } catch (Exception $e) {
             return response()->fail($e);
@@ -169,10 +170,8 @@ class EventReportApiController extends Controller
                 $report->reason_rejection = $request->reason_rejection;
                 $report->archived = $report->id;
             }
-            $report->save();
-            if (isset($report->volunteer->user->email)) {
-                $email = $report->volunteer->user->email;
-                $report->sendEventReportStatus($email, $report);
+            if ($report->save()) {
+                event(new SendEventReportStatus($report));
             }
         }
         
