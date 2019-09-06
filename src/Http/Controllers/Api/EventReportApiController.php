@@ -100,7 +100,7 @@ class EventReportApiController extends Controller
      */
     public function store(StoreEventReportRequest $request)
     {
-        $rsvp      = EventReport::make($request->input());
+        $rsvp = EventReport::make($request->input());
         if($request->is('api/admin/*')) {
             $rsvp->admin_id = Auth::id();
             $rsvp->approved = true;    // automatically approved
@@ -112,15 +112,7 @@ class EventReportApiController extends Controller
             $mail_to = Auth::user()->email;
         }
 
-        // keep original file
-        $request->image_file->store('event-reports/originals','public');
-
-        // ... and resize another one to 320x240
-        $rsvp->image = $request->image_file->store('event-reports','public');
-        $resized = Image::make($request->image_file)->resize(320, 240, function ($constraint) {
-            $constraint->aspectRatio();
-        })->encode();
-        Storage::disk('public')->put($rsvp->image, $resized);
+        $this->resizeEventImage($request, $rsvp);
         
         try {
             $rsvp->save();
@@ -155,27 +147,58 @@ class EventReportApiController extends Controller
      */
     public function update(UpdateEventReportRequest $request, EventReport $report)
     {
-        //$this->handleChangeImage($request,$report,'event-images');
-        $report->fill($request->only('title','description','village_id'));
-        $report->save();
-
         if ($request->has('archived')) {
-            $report->archived = $report->id;
+            $this->archive($report);
+        } else {
+            
+            if ($request->hasFile('image_file')) {
+                Storage::delete([$report->image,substr_replace($report->image,'originals/',14,0)]);
+                $this->resizeEventImage($request, $report);
+            }
+    
+            $report->fill($request->only('title','description','village_id'));
+            
+            if ($request->has('approved')) {
+                $this->processApprovalOrRejection($request, $report);
+            }
+    
             $report->save();
-            $report->delete();
-        }
-        if ($request->has('approved')) {
-            $report->approved = $request->approved;
-            if(!$request->approved) {
-                $report->reason_rejection = $request->reason_rejection;
-                $report->archived = $report->id;
-            }
-            if ($report->save()) {
-                event(new SendEventReportStatus($report));
-            }
+            
+            event(new SendEventReportStatus($report));
         }
         
         return response()->success($report->load(['admin','volunteer','village.subdistrict.city']));
+    }
+
+    private function resizeEventImage($request, &$rsvp) {
+        // keep original file
+        $request->image_file->store('event-reports/originals','public');
+
+        // ... and resize another one to 320x240
+        $rsvp->image = $request->image_file->store('event-reports','public');
+        $resized = Image::make($request->image_file)->resize(320, 240, function ($constraint) {
+            $constraint->aspectRatio();
+        })->encode();
+        Storage::disk('public')->put($rsvp->image, $resized);
+    }
+
+    private function archive($report) {
+        $report->archived = $report->id;
+        $report->save();
+        $report->delete();
+    }
+
+    private function processApprovalOrRejection($request, &$report) {
+        $report->approved = $request->approved;
+        if(!$request->approved) {
+            $report->reason_rejection = $request->reason_rejection;
+            $report->archived = $report->id;
+        }
+        
+        if (isset($report->volunteer->user->email)) {
+            $email = $report->volunteer->user->email;
+            $report->sendEventReportStatus($email, $report);
+        }
     }
 
     /**
