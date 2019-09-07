@@ -25,6 +25,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::get('/', 'VolunteerApiController@index')->name('list');
     Route::get('export-volunteers/print', 'VolunteerApiController@print')->name('print');
     Route::get('export-volunteers/print-profile/{volunteer}', 'VolunteerApiController@printProfile')->name('print-profile');
+    Route::get('export-volunteers/print-html', 'VolunteerApiController@printHtml')->name('print-html');
+    
     
     Route::apiResource('volunteers', 'VolunteerApiController');
 });        
