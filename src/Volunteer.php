@@ -74,7 +74,6 @@ class Volunteer extends Model
     
     public function getImageUrlAttribute()
     {
-        $image_url = (filter_var($this->image, FILTER_VALIDATE_URL))? $this->image : asset(Storage::url($this->image)); 
-        return $image_url;
+        return asset(Storage::url($this->image)); 
     }
 }

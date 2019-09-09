@@ -212,7 +212,7 @@ class VolunteerApiController extends Controller
 
     public function update(Request $request, Volunteer $volunteer)
     {
-        if ($request->has('image_file')) {
+        if ($request->hasFile('image_file')) {
             $volunteer->image = $request->image->store('volunteers','public');
         }
 
