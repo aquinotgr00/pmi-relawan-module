@@ -25,8 +25,8 @@ class SendReportApprovedNotification
      */
     public function handle(ReportApproved $event)
     {
-        $pushNotificationAppId      = config('donation.push_notification.app_id',env('ONESIGNAL_APP_ID'));
-        $pushNotificationRestApiKey = config('donation.push_notification.rest_api_key',env('ONESIGNAL_REST_API_KEY'));
+        $pushNotificationAppId      = config('volunteer.push_notification.app_id',env('ONESIGNAL_APP_ID'));
+        $pushNotificationRestApiKey = config('volunteer.push_notification.rest_api_key',env('ONESIGNAL_REST_API_KEY'));
         $pushNotificationClient     = new OneSignalClient($pushNotificationAppId, $pushNotificationRestApiKey, $pushNotificationRestApiKey);
         if (isset($event->report->volunteer->user->id)) {
             $userId = $event->report->volunteer->user->id;
