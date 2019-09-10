@@ -51,6 +51,7 @@ class StoreVolunteerRequest extends FormRequest
                 'required',
                 Rule::in(array_keys(config('volunteer.qualification.category')))
             ],
+            'unit_id'=>'required|exists:unit_volunteers,id'
         ];
     }
 }
