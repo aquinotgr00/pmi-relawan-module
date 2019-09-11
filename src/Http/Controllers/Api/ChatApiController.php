@@ -17,10 +17,10 @@ class ChatApiController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function showActivities(EventReport $eventReport)
+    public function showActivities($eventId)
     {
-        $eventReport->activities;
-        return response()->success($eventReport);
+        $activities = EventActivity::where('event_report_id', $eventId)->paginate(8);
+        return response()->success($activities);
     }
 
     public function storeActivity(Request $request)

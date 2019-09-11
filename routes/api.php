@@ -49,7 +49,7 @@ Route::prefix('app')->group(function () {
     Route::prefix('events')->middleware('auth:api')->group(function() {
         Route::apiResource('/report', 'EventReportApiController');
         Route::apiResource('/participants', 'EventParticipantApiController');
-        Route::get('messages/{eventReport}', 'ChatApiController@showActivities');
+        Route::get('messages/{eventId}', 'ChatApiController@showActivities');
         Route::post('message', 'ChatApiController@storeActivity');
     });
     
