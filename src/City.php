@@ -19,4 +19,9 @@ class City extends Model
     {
     	return $this->hasMany('BajakLautMalaka\PmiRelawan\Subdistrict');
     }
+
+    public function units()
+    {
+      return $this->hasMany('BajakLautMalaka\PmiRelawan\UnitVolunteer');
+    }
 }

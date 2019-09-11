@@ -23,6 +23,8 @@ class CityApiController extends Controller
         $city = $this->handleSearch($request,$city);
         $city = $this->handleOrder($request,$city);
         $city = $city->with('province');
+        $city = $city->with('units');
+        $city = $city->with('subdistricts.villages');
         $city = $this->handlePaginate($request,$city);
         return response()->success($city);
     }
