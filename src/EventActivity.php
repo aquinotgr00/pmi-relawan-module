@@ -13,6 +13,6 @@ class EventActivity extends Model
 
     public function event()
     {
-    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\EventReport');
+    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\EventReport','event_report_id');
     }
 }
