@@ -12,6 +12,9 @@ use BajakLautMalaka\PmiRelawan\Http\Requests\StoreEventReportRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateEventReportRequest;
 use BajakLautMalaka\PmiRelawan\Scopes\OrderByLatestScope;
 use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
+use BajakLautMalaka\PmiRelawan\Events\ReportSubmitted;
+use BajakLautMalaka\PmiRelawan\Events\ReportApproved;
+use BajakLautMalaka\PmiRelawan\Events\ReportRejected;
 use Illuminate\Support\Facades\Auth;
 
 class EventReportApiController extends Controller
@@ -115,7 +118,7 @@ class EventReportApiController extends Controller
         
         try {
             $rsvp->save();
-            $rsvp->sendEventReportStatus($mail_to,$rsvp);
+            event(new ReportSubmitted($rsvp));
             return response()->success($rsvp);
         } catch (Exception $e) {
             return response()->fail($e);
@@ -152,6 +155,7 @@ class EventReportApiController extends Controller
         if ($request->has('archived')) {
             $this->archive($report);
         } else {
+            
             if ($request->hasFile('image_file')) {
                 Storage::delete([$report->image,substr_replace($report->image,'originals/',14,0)]);
                 $this->resizeEventImage($request, $report);
@@ -189,14 +193,17 @@ class EventReportApiController extends Controller
 
     private function processApprovalOrRejection($request, &$report) {
         $report->approved = $request->approved;
-        if(!$request->approved) {
+        if($request->approved) {
+            event(new ReportApproved($report));
+        }else{
             $report->reason_rejection = $request->reason_rejection;
             $report->archived = $report->id;
+
+            event(new ReportRejected($report));
         }
         
         if (isset($report->volunteer->user->email)) {
-            $email = $report->volunteer->user->email;
-            $report->sendEventReportStatus($email, $report);
+            event(new ReportSubmitted($report));
         }
     }
 
@@ -211,51 +218,6 @@ class EventReportApiController extends Controller
         $report->delete();
         return response()->success($report);
     }
-
-    private function handleUploadImage(Request $request,string $hashName)
-    {
-        if ($request->hasFile('image_file')) {
-
-            try{
-
-                $file   = $request->file('image_file');
-                $path   = $file->hashName($hashName);
-                $image  = Image::make($file);
-
-                $image->resize(450, 350, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-
-                Storage::disk('public')->put($path, (string) $image->encode());
-                $pieces         = explode('/', $path);
-                $last_index     = count($pieces) - 1;
-                $file_name      = $pieces[$last_index];
-                $image_url      = url("storage/$path");
-
-                $request->merge([
-                    'image' => $image_url,
-                    'image_file_name' => $file_name
-                    ]);
-                
-            }catch(\Throwable $e) {
-                return response()->fail(['message'=>'gagal mengunggah gambar :(']);
-            }
-
-        }
-    }
-
-    private function handleChangeImage(Request $request,$report,string $hashName)
-    {
-        if ($request->hasFile('image_file')) {
-            $file_name  = $report->image_file_name;
-            $full_path  = storage_path("app/public/$hashName/$file_name");
-            if (file_exists($full_path)) {
-                unlink($full_path);
-                $this->handleUploadImage($request,$hashName);
-            }
-        }
-    }
-
 
     public function onlyTrashed(Request $request, EventReport $report)
     {

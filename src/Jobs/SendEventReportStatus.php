@@ -15,8 +15,6 @@ class SendEventReportStatus implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
-    protected $email;
-    
     protected $report;
 
     /**
@@ -24,9 +22,8 @@ class SendEventReportStatus implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(string $email,EventReport $report)
+    public function __construct(EventReport $report)
     {
-        $this->email    = $email;
         $this->report   = $report;
     }
 
@@ -37,8 +34,12 @@ class SendEventReportStatus implements ShouldQueue
      */
     public function handle()
     {
-         Mail::to($this->email)->send(
-            new EventReportStatus($this->report)
-        );
+        $report = $this->report;
+        if (isset($report->volunteer->user->email)) {
+            $email  = $report->volunteer->user->email;
+            Mail::to($email)->send(
+                new EventReportStatus($report)
+            );
+        }
     }
 }
