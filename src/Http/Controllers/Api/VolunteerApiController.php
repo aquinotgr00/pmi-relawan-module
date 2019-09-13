@@ -142,11 +142,21 @@ class VolunteerApiController extends Controller
 
         $volunteer->user_id = $user->id;
         $volunteer->save();
+
+        $this->saveQualifications($volunteer, $request);
+
+        return $volunteer;
+        $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
+    }
+
+    private function saveQualifications(Volunteer $volunteer, $request)
+    {
         $volunteer->qualifications()->saveMany(
             collect($request->qualifications)->map(function($qualification, $key) {
                 return new Qualification([
                     'description'=>$qualification['description'], 
-                    'category'=>$qualification['category']]) ;
+                    'category'=>$qualification['category']
+                ]);
             })->all()
         );
         
@@ -224,8 +234,13 @@ class VolunteerApiController extends Controller
 
         $volunteer->update($request->input());
 
+        if ($request->has('qualifications')) {
+            $volunteer->qualifications()->delete();
+            $this->saveQualifications($volunteer, $request);
+        }
+
         $this->sendRegistationStatusMail($request, $previous_verifed, $volunteer);
-        
+
         $this->rejectVolunteer($request->only(['verified', 'description']), $volunteer);
 
         return response()->success($volunteer);

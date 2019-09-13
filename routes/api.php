@@ -41,15 +41,15 @@ Route::prefix('app')->group(function () {
         Route::get('cities', 'CityApiController@index')->name('city.list');
         Route::get('subdistricts', 'SubdistrictApiController@index')->name('subdistrict.list');
         Route::get('villages', 'VillageApiController@index')->name('village.list');
-        Route::get('membership', 'MembershipApiController@index')->name('membership.list');
-        Route::get('unit', 'UnitVolunteerApiController@index')->name('member.unit.list');
+        Route::get('memberships', 'MembershipApiController@index')->name('membership.list');
+        Route::get('units', 'UnitVolunteerApiController@index')->name('member.unit.list');
         Route::get('check-for-update', 'SettingsApiController@checkForUpdate')->name('settings.check-for-update');
     });
 
     Route::prefix('events')->middleware('auth:api')->group(function() {
         Route::apiResource('/report', 'EventReportApiController');
         Route::apiResource('/participants', 'EventParticipantApiController');
-        Route::get('messages/{eventReport}', 'ChatApiController@showActivities');
+        Route::get('messages/{eventId}', 'ChatApiController@showActivities');
         Route::post('message', 'ChatApiController@storeActivity');
     });
     
