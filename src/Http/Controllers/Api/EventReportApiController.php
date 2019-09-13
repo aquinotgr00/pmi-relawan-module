@@ -132,10 +132,13 @@ class EventReportApiController extends Controller
      * @param  \BajakLautMalaka\PmiRelawan\EventReport  $event
      * @return \Illuminate\Http\Response
      */
-    public function show(EventReport $report)
+    public function show(int $id)
     {
-        $report->load('participants','activities','village.subdistrict.city');
-        return response()->success($report);
+        return response()->success(
+            EventReport::withTrashed()
+            ->with('participants','activities','village.subdistrict.city')
+            ->find($id)
+        );
     }
 
     /**

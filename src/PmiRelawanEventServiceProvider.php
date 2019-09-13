@@ -8,6 +8,7 @@ use BajakLautMalaka\PmiRelawan\Events\VolunteerRegistrationApproved;
 use BajakLautMalaka\PmiRelawan\Events\ReportApproved;
 use BajakLautMalaka\PmiRelawan\Events\ReportRejected;
 use BajakLautMalaka\PmiRelawan\Events\ReportSubmitted;
+use BajakLautMalaka\PmiRelawan\Events\CommentPosted;
 use BajakLautMalaka\PmiRelawan\Listeners\SendApprovedVolunteerRegistrationNotification;
 use BajakLautMalaka\PmiRelawan\Listeners\CreateAGroupEvent;
 use BajakLautMalaka\PmiRelawan\Listeners\SendReportApprovedMail;
@@ -16,6 +17,7 @@ use BajakLautMalaka\PmiRelawan\Listeners\SendReportRejectedMail;
 use BajakLautMalaka\PmiRelawan\Listeners\SendReportRejectedNotification;
 use BajakLautMalaka\PmiRelawan\Listeners\SendReportSubmittedMail;
 use BajakLautMalaka\PmiRelawan\Listeners\SendReportSubmittedNotification;
+use BajakLautMalaka\PmiRelawan\Listeners\SendNewCommentPostedNotification;
 
 class PmiRelawanEventServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,9 @@ class PmiRelawanEventServiceProvider extends ServiceProvider
             SendReportSubmittedMail::class,
             SendReportSubmittedNotification::class
         ],
+        CommentPosted::class => [
+            SendNewCommentPostedNotification::class,
+        ]
     ];
 
     /**

@@ -102,7 +102,7 @@ class PmiRelawanServiceProvider extends ServiceProvider
     {
         Broadcast::routes(['middleware' => ['auth:api', 'cors']]);
 
-        require base_path('routes/channels.php'); 
+        $this->loadRoutesFrom(__DIR__.'/../routes/channels.php');
     }
 
     private function loadWhereLikeMacro()
