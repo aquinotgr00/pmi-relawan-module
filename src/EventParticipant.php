@@ -14,4 +14,14 @@ class EventParticipant extends Model
     {
     	return $this->belongsTo('BajakLautMalaka\PmiRelawan\EventReport','event_report_id','id');
     }
+
+    public function volunteer()
+    {
+      return $this->belongsTo('BajakLautMalaka\PmiRelawan\Volunteer');
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('approved', 1);
+    }
 }
