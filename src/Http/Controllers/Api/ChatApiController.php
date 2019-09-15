@@ -31,7 +31,7 @@ class ChatApiController extends Controller
         ]);
         $activity = EventActivity::create($request->all());
 
-        broadcast(new CommentPosted($user, $activity))->toOthers();
+        //broadcast(new CommentPosted($user, $activity))->toOthers();
 
         return response()->success($activity);
     }
