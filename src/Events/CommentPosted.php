@@ -27,7 +27,6 @@ class CommentPosted implements ShouldBroadcast
      */
     public function __construct(User $user, EventActivity $comment)
     {
-        //
         $this->user = $user;
         $this->comment = $comment;
     }

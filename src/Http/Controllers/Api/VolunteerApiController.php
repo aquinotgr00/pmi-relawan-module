@@ -123,15 +123,12 @@ class VolunteerApiController extends Controller
             $user->save();
             $volunteer = $this->createVolunteer($request, $user);
         });
-        
+
         if($volunteer) {
             return response()->success([
-                'access_token'=>$user->createToken('PMI')->accessToken,
-                'donator_id'=>null,
-                'volunteer_id'=>$volunteer->id
+                'message' => 'Thank you for joining us, wait for us to verify you.'
             ]);
         }
-        
     }
     
     private function createVolunteer(StoreVolunteerRequest $request, User $user)
