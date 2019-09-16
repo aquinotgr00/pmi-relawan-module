@@ -5,10 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Hash;
 use PDF;
 
@@ -19,7 +16,9 @@ use BajakLautMalaka\PmiRelawan\Membership;
 use BajakLautMalaka\PmiRelawan\Subdistrict;
 use BajakLautMalaka\PmiRelawan\City;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVolunteerRequest;
-use BajakLautMalaka\PmiRelawan\Jobs\SendRegistrationStatus;
+use BajakLautMalaka\PmiRelawan\Events\PendingVolunteerRegistration;
+use BajakLautMalaka\PmiRelawan\Events\VolunteerVerified;
+use BajakLautMalaka\PmiRelawan\Events\VolunteerVerificationCompleted;
 
 class VolunteerApiController extends Controller
 {
@@ -125,25 +124,23 @@ class VolunteerApiController extends Controller
         });
 
         if($volunteer) {
-            return response()->success([
-                'message' => 'Thank you for joining us, wait for us to verify you.'
-            ]);
+            return response()->success($volunteer);
         }
     }
     
     private function createVolunteer(StoreVolunteerRequest $request, User $user)
     {
         $volunteer = Volunteer::make($request->except('email','password','password_confirmation'));
-        if ($request->image)
+        if ($request->has('image')) {
             $volunteer->image = $request->image->store('volunteers','public');
+        }
 
         $volunteer->user_id = $user->id;
         $volunteer->save();
 
         $this->saveQualifications($volunteer, $request);
-
+        event(new PendingVolunteerRegistration($volunteer));
         return $volunteer;
-        $volunteer->sendRegistrationStatus($volunteer->user->email,$volunteer);
     }
 
     private function saveQualifications(Volunteer $volunteer, $request)
@@ -156,10 +153,6 @@ class VolunteerApiController extends Controller
                 ]);
             })->all()
         );
-        
-        $email = $volunteer->user->email;
-        event(new SendRegistrationStatus($email, $volunteer));
-        return $volunteer;
     }
 
     private function handleSearchKeyword(Request $request, $volunteer)
@@ -233,18 +226,14 @@ class VolunteerApiController extends Controller
             $this->handlePasswordChange($request->only(['old_password', 'password', 'password_confirmation']), $volunteer);
         }
         
-        $previous_verifed = $volunteer->verified;
-
         $volunteer->update($request->input());
+
+        $this->volunteerVerification($request->only(['verified', 'description']), $volunteer);
 
         if ($request->has('qualifications')) {
             $volunteer->qualifications()->delete();
             $this->saveQualifications($volunteer, $request);
         }
-
-        $this->sendRegistationStatusMail($request, $previous_verifed, $volunteer);
-
-        $this->rejectVolunteer($request->only(['verified', 'description']), $volunteer);
 
         return response()->success($volunteer);
     }
@@ -264,21 +253,15 @@ class VolunteerApiController extends Controller
         }
     }
 
-    private function rejectVolunteer($request, Volunteer $volunteer)
+    private function volunteerVerification($request, Volunteer $volunteer)
     {
         if ($request['verified'] == 0) {
             $volunteer->delete();
         }
-    }
-
-    private function sendRegistationStatusMail(Request $request, int $previous_verifed, $volunteer)
-    {
-        if ($request->has('verified')) {
-            if ($request->verified !== $previous_verifed) {
-                $email = $volunteer->user->email;
-                event(new SendRegistrationStatus($email, $volunteer));
-            }
+        else {
+            event(new VolunteerVerified($volunteer));
         }
+        event(new VolunteerVerificationCompleted($volunteer));
     }
 
     public function printHtml(Request $request, Volunteer $volunteers)

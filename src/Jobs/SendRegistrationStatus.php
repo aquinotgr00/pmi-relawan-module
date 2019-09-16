@@ -15,8 +15,6 @@ class SendRegistrationStatus implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
-    protected $email;
-    
     protected $volunteer;
 
     /**
@@ -24,10 +22,9 @@ class SendRegistrationStatus implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(string $email,Volunteer $volunteer)
+    public function __construct($volunteer)
     {
-        $this->email    = $email;
-        $this->volunteer   = $volunteer;
+        $this->volunteer = $volunteer;
     }
 
     /**
@@ -37,7 +34,7 @@ class SendRegistrationStatus implements ShouldQueue
      */
     public function handle()
     {
-         Mail::to($this->email)->send(
+        Mail::to($this->volunteer->user->email)->send(
             new RegistrationStatus($this->volunteer)
         );
     }
