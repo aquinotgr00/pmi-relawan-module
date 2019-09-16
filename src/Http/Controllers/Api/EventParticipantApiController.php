@@ -3,7 +3,7 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
-use BajakLautMalaka\PmiRelawan\EventPartisipant;
+use BajakLautMalaka\PmiRelawan\EventParticipant;
 use BajakLautMalaka\PmiRelawan\EventReport;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreParticipantRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateParticipantRequest;
@@ -23,7 +23,7 @@ class EventParticipantApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, EventPartisipant $participants)
+    public function index(Request $request, EventParticipant $participants)
     {
         $user               = auth()->user();
         $participants       = $participants->where('volunteer_id',$user->id);
@@ -87,7 +87,7 @@ class EventParticipantApiController extends Controller
         $event  = EventReport::find($request->event_report_id);
         if (!is_null($event)) {
             if ($event->approved === 1) {
-                $participants = EventPartisipant::firstOrCreate(
+                $participants = EventParticipant::firstOrCreate(
                     [
                     'event_report_id' => $request->event_report_id 
                     ],
@@ -107,10 +107,10 @@ class EventParticipantApiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \BajakLautMalaka\PmiRelawan\EventPartisipant  $participants
+     * @param  \BajakLautMalaka\PmiRelawan\EventParticipant  $participants
      * @return \Illuminate\Http\Response
      */
-    public function show(EventPartisipant $participants)
+    public function show(EventParticipant $participants)
     {
         //
     }
@@ -119,10 +119,10 @@ class EventParticipantApiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \BajakLautMalaka\PmiRelawan\EventPartisipant  $participants
+     * @param  \BajakLautMalaka\PmiRelawan\EventParticipant  $participants
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateParticipantRequest $request, EventPartisipant $participants)
+    public function update(UpdateParticipantRequest $request, EventParticipant $participants)
     {
         $participants->request_join = $request->request_join;
         $participants->admin_id     = auth()->user()->id;
@@ -135,10 +135,10 @@ class EventParticipantApiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \BajakLautMalaka\PmiRelawan\EventPartisipant  $participants
+     * @param  \BajakLautMalaka\PmiRelawan\EventParticipant  $participants
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EventPartisipant $participants)
+    public function destroy(EventParticipant $participants)
     {
         //
     }

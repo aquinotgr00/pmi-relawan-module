@@ -123,15 +123,12 @@ class VolunteerApiController extends Controller
             $user->save();
             $volunteer = $this->createVolunteer($request, $user);
         });
-        
+
         if($volunteer) {
             return response()->success([
-                'access_token'=>$user->createToken('PMI')->accessToken,
-                'donator_id'=>null,
-                'volunteer_id'=>$volunteer->id
+                'message' => 'Thank you for joining us, wait for us to verify you.'
             ]);
         }
-        
     }
     
     private function createVolunteer(StoreVolunteerRequest $request, User $user)
@@ -175,10 +172,16 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
+        $user = auth()->user();
+        $response = [];
         if(!auth()->guard('admin')->check()){
-            $volunteer = auth()->user()->volunteer;
+            $response['user'] =$user;
+            $response['volunteer'] = $user->volunteer;
+            if ($user->has('donator')) {
+              $response['donator'] = $user->donator;
+            }
         }
-        return response()->success($volunteer);
+        return response()->success($response);
     }
 
     public function print(Request $request, Volunteer $volunteers)
