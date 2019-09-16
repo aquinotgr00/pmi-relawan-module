@@ -4,12 +4,16 @@ namespace BajakLautMalaka\PmiRelawan;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use BajakLautMalaka\PmiRelawan\Events\VolunteerRegistrationApproved;
+use BajakLautMalaka\PmiRelawan\Events\PendingVolunteerRegistration;
+use BajakLautMalaka\PmiRelawan\Events\VolunteerVerified;
+use BajakLautMalaka\PmiRelawan\Events\VolunteerVerificationCompleted;
 use BajakLautMalaka\PmiRelawan\Events\ReportApproved;
 use BajakLautMalaka\PmiRelawan\Events\ReportRejected;
 use BajakLautMalaka\PmiRelawan\Events\ReportSubmitted;
 use BajakLautMalaka\PmiRelawan\Events\CommentPosted;
-use BajakLautMalaka\PmiRelawan\Listeners\SendApprovedVolunteerRegistrationNotification;
+use BajakLautMalaka\PmiRelawan\Listeners\SendPendingRegistrationNotification;
+use BajakLautMalaka\PmiRelawan\Listeners\SendRegistrationCompleteNotification;
+use BajakLautMalaka\PmiRelawan\Listeners\JoinGeneralDiscussion;
 use BajakLautMalaka\PmiRelawan\Listeners\CreateAGroupEvent;
 use BajakLautMalaka\PmiRelawan\Listeners\SendReportApprovedMail;
 use BajakLautMalaka\PmiRelawan\Listeners\SendReportApprovedNotification;
@@ -27,8 +31,16 @@ class PmiRelawanEventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        VolunteerRegistrationApproved::class => [
-            SendApprovedVolunteerRegistrationNotification::class,
+        PendingVolunteerRegistration::class=>[
+            // TODO : send new volunteer registration notification to admin
+            // NotifyAdmin::class,
+            SendPendingRegistrationNotification::class
+        ],
+        VolunteerVerified::class => [
+            JoinGeneralDiscussion::class,
+        ],
+        VolunteerVerificationCompleted::class => [
+            SendRegistrationCompleteNotification::class
         ],
         ReportApproved::class => [
             CreateAGroupEvent::class,

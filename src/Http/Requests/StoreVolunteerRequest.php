@@ -45,7 +45,7 @@ class StoreVolunteerRequest extends FormRequest
             'blood_type'=>Rule::in(config('volunteer.bloodType')),
             'dob'=>'date_format:Y-m-d',
             'postal_code'=>'numeric',
-            'image_file'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'qualifications.*.description'=>'required',
             'qualifications.*.category'=>[
                 'required',
