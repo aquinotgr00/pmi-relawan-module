@@ -16,7 +16,6 @@ use BajakLautMalaka\PmiRelawan\Membership;
 use BajakLautMalaka\PmiRelawan\Subdistrict;
 use BajakLautMalaka\PmiRelawan\City;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreVolunteerRequest;
-use BajakLautMalaka\PmiRelawan\Jobs\SendRegistrationStatus;
 use BajakLautMalaka\PmiRelawan\Events\PendingVolunteerRegistration;
 use BajakLautMalaka\PmiRelawan\Events\VolunteerVerified;
 use BajakLautMalaka\PmiRelawan\Events\VolunteerVerificationCompleted;
@@ -123,11 +122,10 @@ class VolunteerApiController extends Controller
             $user->save();
             $volunteer = $this->createVolunteer($request, $user);
         });
-        
+
         if($volunteer) {
             return response()->success($volunteer);
         }
-        
     }
     
     private function createVolunteer(StoreVolunteerRequest $request, User $user)
@@ -151,7 +149,8 @@ class VolunteerApiController extends Controller
             collect($request->qualifications)->map(function($qualification, $key) {
                 return new Qualification([
                     'description'=>$qualification['description'], 
-                    'category'=>$qualification['category']]) ;
+                    'category'=>$qualification['category']
+                ]);
             })->all()
         );
     }
@@ -166,10 +165,16 @@ class VolunteerApiController extends Controller
 
     public function show(Volunteer $volunteer)
     {
+        $user = auth()->user();
+        $response = [];
         if(!auth()->guard('admin')->check()){
-            $volunteer = auth()->user()->volunteer;
+            $response['user'] =$user;
+            $response['volunteer'] = $user->volunteer;
+            if ($user->has('donator')) {
+              $response['donator'] = $user->donator;
+            }
         }
-        return response()->success($volunteer);
+        return response()->success($response);
     }
 
     public function print(Request $request, Volunteer $volunteers)
@@ -225,6 +230,11 @@ class VolunteerApiController extends Controller
 
         $this->volunteerVerification($request->only(['verified', 'description']), $volunteer);
 
+        if ($request->has('qualifications')) {
+            $volunteer->qualifications()->delete();
+            $this->saveQualifications($volunteer, $request);
+        }
+
         return response()->success($volunteer);
     }
 
@@ -252,16 +262,6 @@ class VolunteerApiController extends Controller
             event(new VolunteerVerified($volunteer));
         }
         event(new VolunteerVerificationCompleted($volunteer));
-    }
-
-    private function sendRegistationStatusMail(Request $request, int $previous_verifed, $volunteer)
-    {
-        if ($request->has('verified')) {
-            if ($request->verified !== $previous_verifed) {
-                $email = $volunteer->user->email;
-                event(new SendRegistrationStatus($email, $volunteer));
-            }
-        }
     }
 
     public function printHtml(Request $request, Volunteer $volunteers)

@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use BajakLautMalaka\PmiRelawan\EventParticipant;
 use BajakLautMalaka\PmiRelawan\EventReport;
+use BajakLautMalaka\PmiRelawan\EventActivity;
 
 class EventReportsTableSeeder extends Seeder
 {
@@ -25,10 +26,19 @@ class EventReportsTableSeeder extends Seeder
             ]
         );
 
-        factory(EventReport::class, 200)->create()->each(function ($rsvp) {
+        factory(EventReport::class, 5)->create()->each(function ($rsvp) {
 			if ($rsvp->approved) {
                 $rsvp->participants()->saveMany(
-                    factory(EventParticipant::class, rand(0,15))->make(['event_report_id'=>$rsvp->id])
+					factory(EventParticipant::class, rand(0,3))
+					->make(['event_report_id'=>$rsvp->id])
+					->each(function ($participant) use ($rsvp) {
+						if ($participant->approved) {
+							$participant->volunteer->activities()->saveMany(
+								factory(EventActivity::class, rand(1, 3))
+								->make(['event_report_id' => $rsvp->id, 'volunteer_id' => $participant->volunteer->id])
+							);
+						}
+					})
                 );
                 $archived = (bool)random_int(0, 1);
 				if ($archived) {

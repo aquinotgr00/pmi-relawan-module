@@ -71,6 +71,16 @@ class Volunteer extends Model
     {
         return $this->hasMany('BajakLautMalaka\PmiRelawan\Qualification');
     }
+
+    public function participants()
+    {
+        return $this->hasMany('BajakLautMalaka\PmiRelawan\EventParticipant');
+    }
+
+    public function activities()
+    {
+        return $this->hasMany('BajakLautMalaka\PmiRelawan\EventActivity');
+    }
     
     public function getImageUrlAttribute()
     {

@@ -10,7 +10,6 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-use App\User;
 use BajakLautMalaka\PmiRelawan\EventActivity;
 
 class CommentPosted implements ShouldBroadcast
@@ -25,9 +24,8 @@ class CommentPosted implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(User $user, EventActivity $comment)
+    public function __construct($user, EventActivity $comment)
     {
-        //
         $this->user = $user;
         $this->comment = $comment;
     }

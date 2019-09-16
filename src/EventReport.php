@@ -45,6 +45,11 @@ class EventReport extends Model
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\Village','village_id','id');
     }
 
+    public function scopeApproved($query)
+    {
+        return $query->where('approved', 1);
+    }
+
     public function getImageUrlAttribute()
     {
         return asset(Storage::url($this->image));

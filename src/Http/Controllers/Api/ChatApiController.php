@@ -12,27 +12,35 @@ use BajakLautMalaka\PmiRelawan\Events\CommentPosted;
 
 class ChatApiController extends Controller
 {
-    public function __construct()
+    public function showActivities($eventId)
     {
-        $this->middleware('auth:api');
-    }
-
-    public function showActivities(EventReport $eventReport)
-    {
-        $eventReport->activities;
-        return response()->success($eventReport);
+        $activities = EventActivity::where('event_report_id', $eventId)->paginate(8);
+        return response()->success($activities);
     }
 
     public function storeActivity(Request $request)
     {
         $user = auth()->user();
-        $request->request->add([
-            'volunteer_id' => $user->id
-        ]);
+        if (auth()->guard('admin')->check()) {
+            $request->request->add([
+                'admin_id' => $user->id
+            ]);
+        } if ($user->volunteer) {
+            $request->request->add([
+                'volunteer_id' => $user->id
+            ]);
+        }
         $activity = EventActivity::create($request->all());
 
         broadcast(new CommentPosted($user, $activity))->toOthers();
 
         return response()->success($activity);
+    }
+
+    public function delete(EventActivity $eventActivity)
+    {
+        $eventActivity->delete();
+
+        return response()->success($eventActivity);
     }
 }
