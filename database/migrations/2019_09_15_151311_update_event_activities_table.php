@@ -15,7 +15,7 @@ class UpdateEventActivitiesTable extends Migration
     {
         Schema::table('event_activities', function (Blueprint $table) {
             $table->unsignedBigInteger('volunteer_id')->nullable()->change();
-            $table->unsignedBigInteger('admin_id')->nullable();
+            $table->unsignedInteger('admin_id')->nullable();
         });
     }
 

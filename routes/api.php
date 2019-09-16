@@ -19,6 +19,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         Route::apiResource('/report', 'EventReportApiController');
         Route::get('/report-only-transed', 'EventReportApiController@onlyTrashed')->name('event-report.only-transed');
         Route::put('/participants/{participants}', 'EventParticipantApiController@update')->name('event-participant.update');
+        Route::post('/comment', 'ChatApiController@storeActivity');
     });
 
     
