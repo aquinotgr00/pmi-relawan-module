@@ -36,4 +36,11 @@ class ChatApiController extends Controller
 
         return response()->success($activity);
     }
+
+    public function delete(EventActivity $eventActivity)
+    {
+        $eventActivity->delete();
+
+        return response()->success($eventActivity);
+    }
 }

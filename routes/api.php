@@ -20,6 +20,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         Route::get('/report-only-transed', 'EventReportApiController@onlyTrashed')->name('event-report.only-transed');
         Route::put('/participants/{participants}', 'EventParticipantApiController@update')->name('event-participant.update');
         Route::post('/comment', 'ChatApiController@storeActivity');
+        Route::post('/comment/{eventActivity}/delete', 'ChatApiController@delete');
     });
 
     
