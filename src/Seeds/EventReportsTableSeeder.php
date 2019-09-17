@@ -26,14 +26,14 @@ class EventReportsTableSeeder extends Seeder
         //     ]
         // );
 
-        factory(EventReport::class, 5)->create()->each(function ($rsvp) {
+        factory(EventReport::class, 10)->create()->each(function ($rsvp) {
 			if ($rsvp->approved) {
                 $rsvp->participants()->saveMany(
-					factory(EventParticipant::class, rand(0,3))
+					factory(EventParticipant::class, 6)
 					->make(['event_report_id'=>$rsvp->id])
 				);
-				$rsvp->participants()->activities()->saveMany(
-					factory(EventActivity::class)
+				$rsvp->activities()->saveMany(
+					factory(EventActivity::class, 8)
 					->make(['event_report_id' => $rsvp->id])
 				);
                 $archived = (bool)random_int(0, 1);
