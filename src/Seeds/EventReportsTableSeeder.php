@@ -16,15 +16,15 @@ class EventReportsTableSeeder extends Seeder
      */
     public function run()
     {
-        // DB::table('event_reports')->insert(
-        //     [
-        //         'title'=>'Diskusi Umum',
-        //         'description'=>'Diskusi umum Palang Merah Indonesia - DKI Jakarta',
-        //         'image'=>'',
-        //         'approved'=>true,
-        //         'created_at'=>'2038-01-18 23:59:59'
-        //     ]
-        // );
+        DB::table('event_reports')->insert(
+            [
+                'title'=>'Diskusi Umum',
+                'description'=>'Diskusi umum Palang Merah Indonesia - DKI Jakarta',
+                'image'=>'',
+                'approved'=>true,
+                'created_at'=>'2038-01-18 23:59:59'
+            ]
+        );
 
         factory(EventReport::class, 10)->create()->each(function ($rsvp) {
 			if ($rsvp->approved) {
