@@ -16,7 +16,7 @@ $factory->define(EventReport::class, function (Faker $faker) {
         'volunteer_id'=>$rsvpIsCreatedByAdmin?null:Volunteer::verified()->get()->random()->id,
         'admin_id'=>$rsvpIsCreatedByAdmin?Admin::active()->get()->random()->id:null,
         'village_id'=> $randomVillage?$randomVillage->id:null,
-        'partisipant_pic_id'=> Volunteer::verified()->get()->random()->id,
+        'moderator_id'=> Volunteer::verified()->get()->random()->id,
         'title'=> $faker->sentence,
         'description'=> $faker->paragraph(),
         'image'=>$faker->imageUrl(640,480),
