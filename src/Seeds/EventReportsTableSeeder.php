@@ -16,30 +16,26 @@ class EventReportsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('event_reports')->insert(
-            [
-                'title'=>'Diskusi Umum',
-                'description'=>'Diskusi umum Palang Merah Indonesia - DKI Jakarta',
-                'image'=>'',
-                'approved'=>true,
-                'created_at'=>'2038-01-18 23:59:59'
-            ]
-        );
+        // DB::table('event_reports')->insert(
+        //     [
+        //         'title'=>'Diskusi Umum',
+        //         'description'=>'Diskusi umum Palang Merah Indonesia - DKI Jakarta',
+        //         'image'=>'',
+        //         'approved'=>true,
+        //         'created_at'=>'2038-01-18 23:59:59'
+        //     ]
+        // );
 
         factory(EventReport::class, 5)->create()->each(function ($rsvp) {
 			if ($rsvp->approved) {
                 $rsvp->participants()->saveMany(
 					factory(EventParticipant::class, rand(0,3))
 					->make(['event_report_id'=>$rsvp->id])
-					->each(function ($participant) use ($rsvp) {
-						if ($participant->approved) {
-							$participant->volunteer->activities()->saveMany(
-								factory(EventActivity::class, rand(1, 3))
-								->make(['event_report_id' => $rsvp->id, 'volunteer_id' => $participant->volunteer->id])
-							);
-						}
-					})
-                );
+				);
+				$rsvp->participants()->activities()->saveMany(
+					factory(EventActivity::class)
+					->make(['event_report_id' => $rsvp->id])
+				);
                 $archived = (bool)random_int(0, 1);
 				if ($archived) {
                     $rsvp->update(['archived'=>$rsvp->id]);

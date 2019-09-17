@@ -12,12 +12,17 @@ class EventParticipant extends Model
 
     public function event()
     {
-    	return $this->belongsTo('BajakLautMalaka\PmiRelawan\EventReport','event_report_id','id');
+        return $this->belongsTo('BajakLautMalaka\PmiRelawan\EventReport','event_report_id','id');
     }
 
     public function volunteer()
     {
-      return $this->belongsTo('BajakLautMalaka\PmiRelawan\Volunteer');
+        return $this->belongsTo('BajakLautMalaka\PmiRelawan\Volunteer');
+    }
+
+    public function activities()
+    {
+        return $this->hasManyThrough('BajakLautMalaka\PmiRelawan\EventActivity', 'BajakLautMalaka\PmiRelawan\Volunteer');
     }
 
     public function scopeApproved($query)
