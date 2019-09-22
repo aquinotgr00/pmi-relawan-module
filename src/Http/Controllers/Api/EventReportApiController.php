@@ -104,7 +104,6 @@ class EventReportApiController extends Controller
     private function handleJoinRequest(Request $request, $report)
     {
         if ($request->has('j')) {
-            
             $report = $report
                 ->where('id','!=',self::GENERAL_DISCUSSION)
                 ->when($request->j==='approved', function($query) {
@@ -113,6 +112,18 @@ class EventReportApiController extends Controller
                             $subQuery
                                 ->where('volunteer_id',auth()->user()->volunteer->id)
                                 ->where('approved',1);
+                        });
+                    });
+                })
+                ->when($request->j==='other',function($query) {
+                    return $query->where(function($subQuery) {
+                        $subQuery->where('approved',1)
+                        ->whereDoesntHave('participants', function(Builder $query) {
+                            $query->where(function($subQuery) {
+                                $subQuery
+                                ->where('volunteer_id',auth()->user()->volunteer->id)
+                                ->where('approved',1);
+                            });
                         });
                     });
                 });
