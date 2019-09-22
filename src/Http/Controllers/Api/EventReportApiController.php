@@ -69,7 +69,10 @@ class EventReportApiController extends Controller
             $report = $report->where('approved',$request->ap);
             $report = $report->where('archived',0);
         }elseif ($request->has('p')) {
-            $report = $report->whereNull('approved');
+            $report = $report->whereNull('approved')
+            ->when(auth()->user()->volunteer, function($query) {
+                return $query->where('volunteer_id', auth()->user()->volunteer->id);
+            });
         }
         return $report;
     }
