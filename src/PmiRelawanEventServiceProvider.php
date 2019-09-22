@@ -11,6 +11,7 @@ use BajakLautMalaka\PmiRelawan\Events\ReportApproved;
 use BajakLautMalaka\PmiRelawan\Events\ReportRejected;
 use BajakLautMalaka\PmiRelawan\Events\ReportSubmitted;
 use BajakLautMalaka\PmiRelawan\Events\CommentPosted;
+use BajakLautMalaka\PmiRelawan\Events\PendingParticipant;
 use BajakLautMalaka\PmiRelawan\Listeners\SendPendingRegistrationNotification;
 use BajakLautMalaka\PmiRelawan\Listeners\SendRegistrationCompleteNotification;
 use BajakLautMalaka\PmiRelawan\Listeners\JoinGeneralDiscussion;
@@ -20,7 +21,7 @@ use BajakLautMalaka\PmiRelawan\Listeners\SendReportApprovedNotification;
 use BajakLautMalaka\PmiRelawan\Listeners\SendReportRejectedMail;
 use BajakLautMalaka\PmiRelawan\Listeners\SendReportRejectedNotification;
 use BajakLautMalaka\PmiRelawan\Listeners\SendReportSubmittedMail;
-use BajakLautMalaka\PmiRelawan\Listeners\SendReportSubmittedNotification;
+use BajakLautMalaka\PmiRelawan\Listeners\ShouldSendReportSubmittedNotification;
 use BajakLautMalaka\PmiRelawan\Listeners\SendNewCommentPostedNotification;
 
 class PmiRelawanEventServiceProvider extends ServiceProvider
@@ -53,11 +54,12 @@ class PmiRelawanEventServiceProvider extends ServiceProvider
         ],
         ReportSubmitted::class => [
             SendReportSubmittedMail::class,
-            SendReportSubmittedNotification::class
+            ShouldSendReportSubmittedNotification::class
         ],
         CommentPosted::class => [
             SendNewCommentPostedNotification::class,
-        ]
+        ],
+        PendingParticipant::class => []
     ];
 
     /**

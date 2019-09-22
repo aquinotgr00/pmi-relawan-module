@@ -22,7 +22,7 @@ class EventParticipant extends Model
 
     public function activities()
     {
-        return $this->hasManyThrough('BajakLautMalaka\PmiRelawan\EventActivity', 'BajakLautMalaka\PmiRelawan\Volunteer');
+        return $this->hasManyThrough('BajakLautMalaka\PmiRelawan\EventActivity', 'BajakLautMalaka\PmiRelawan\EventReport','id','event_report_id','event_report_id')->latest();
     }
 
     public function scopeApproved($query)

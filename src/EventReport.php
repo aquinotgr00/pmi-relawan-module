@@ -26,6 +26,10 @@ class EventReport extends Model
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\Volunteer','volunteer_id');
     }
 
+    public function appUser() {
+        return $this->hasOneThrough('App\User','BajakLautMalaka\PmiRelawan\Volunteer','id','id','volunteer_id','user_id');
+    }
+
     public function admin() {
         return $this->belongsTo('BajakLautMalaka\PmiAdmin\Admin','admin_id');
     }

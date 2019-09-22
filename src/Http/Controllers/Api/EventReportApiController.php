@@ -3,10 +3,15 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
+
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+
 use BajakLautMalaka\PmiRelawan\EventReport;
 use BajakLautMalaka\PmiRelawan\Http\Requests\StoreEventReportRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateEventReportRequest;
@@ -15,10 +20,11 @@ use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
 use BajakLautMalaka\PmiRelawan\Events\ReportSubmitted;
 use BajakLautMalaka\PmiRelawan\Events\ReportApproved;
 use BajakLautMalaka\PmiRelawan\Events\ReportRejected;
-use Illuminate\Support\Facades\Auth;
 
 class EventReportApiController extends Controller
 {
+    private const GENERAL_DISCUSSION = 1;
+
     use RelawanTrait;
     /**
      * Display a listing of the resource.
@@ -33,15 +39,16 @@ class EventReportApiController extends Controller
         $report = $this->handleApprovedStatus($request,$report);
         $report = $this->handleEmergencyStatus($request,$report);
         $report = $this->handleArchivedStatus($request,$report);
-        $report = $report->withCount([
-            'participants',
-            'participants AS approved_participants'=>function($query) {
-                $query->where('approved',true);
-            }]
-        )->with(['admin','volunteer','village.subdistrict.city']);
-        // TODO : hide all "qualifications" attributes in BajakLautMalaka\PmiRelawan\Volunteer
+        $report = $this->handleJoinRequest($request,$report);
+        
+        $report = $report
+            ->withCount([
+                'participants',
+                'participants AS approved_participants'=>function($query) {
+                    $query->where('approved',true);
+                }])
+            ->with(['admin','appUser','village.subdistrict.city']);
         $report = $report->paginate();
-
         return response()->success($report);
     }
 
@@ -86,11 +93,31 @@ class EventReportApiController extends Controller
         return $report;
     }
 
-    public function handleByVolunteerID(Request $request, $report)
+    private function handleByVolunteerID(Request $request, $report)
     {
         if ($request->has('v_id')) {
             $report = $report->where('volunteer_id',$request->v_id);
         }
+        return $report;
+    }
+
+    private function handleJoinRequest(Request $request, $report)
+    {
+        if ($request->has('j')) {
+            
+            $report = $report
+                ->where('id','!=',self::GENERAL_DISCUSSION)
+                ->when($request->j==='approved', function($query) {
+                    return $query->whereHas('participants',function(Builder $query) {
+                        $query->where(function($subQuery) {
+                            $subQuery
+                                ->where('volunteer_id',auth()->user()->volunteer->id)
+                                ->where('approved',1);
+                        });
+                    });
+                });
+        }
+        
         return $report;
     }
 
@@ -106,16 +133,13 @@ class EventReportApiController extends Controller
         if($request->is('api/admin/*')) {
             $rsvp->admin_id = Auth::id();
             $rsvp->approved = true;    // automatically approved
-
-            $mail_to = Auth::user()->email;
         }
         else {
             $rsvp->volunteer_id = Auth::user()->volunteer->id;
-            $mail_to = Auth::user()->email;
         }
 
         $this->resizeEventImage($request, $rsvp);
-        
+
         try {
             $rsvp->save();
             event(new ReportSubmitted($rsvp));
