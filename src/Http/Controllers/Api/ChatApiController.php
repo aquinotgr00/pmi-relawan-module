@@ -3,44 +3,42 @@
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
 use Illuminate\Routing\Controller;
-use Illuminate\Http\Request;
 
-use BajakLautMalaka\PmiRelawan\EventReport;
 use BajakLautMalaka\PmiRelawan\EventActivity;
 
 use BajakLautMalaka\PmiRelawan\Events\CommentPosted;
+use BajakLautMalaka\PmiRelawan\Http\Requests\StoreEventActivityRequest;
 
 class ChatApiController extends Controller
 {
-    public function showActivities($eventId)
+    public function index()
     {
-        $activities = EventActivity::where('event_report_id', $eventId)->paginate(8);
-        return response()->success($activities);
+        return response()->success(EventActivity::where('event_report_id',request('e'))->latest()->paginate(8));
     }
 
-    public function storeActivity(Request $request)
+    public function store(StoreEventActivityRequest $request)
     {
         $user = auth()->user();
-        if (auth()->guard('admin')->check()) {
-            $request->request->add([
-                'admin_id' => $user->id
-            ]);
-        } if ($user->volunteer) {
-            $request->request->add([
-                'volunteer_id' => $user->id
-            ]);
+
+        $activity = EventActivity::make($request->input());
+
+        if($request->has('media')) {
+            $activity->comment_attachment = $request->media->store('activities','public');
         }
-        $activity = EventActivity::create($request->all());
+                
+        $activity->admin_id = $user->volunteer?null:$user->id;
+        $activity->volunteer_id = $user->volunteer?$user->volunteer->id:null;
+        $activity->save();
 
         broadcast(new CommentPosted($user, $activity))->toOthers();
 
         return response()->success($activity);
     }
 
-    public function delete(EventActivity $eventActivity)
+    public function destroy(EventActivity $comment)
     {
-        $eventActivity->delete();
+        $comment->delete();
 
-        return response()->success($eventActivity);
+        return response()->success($comment);
     }
 }

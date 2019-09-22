@@ -4,10 +4,13 @@ namespace BajakLautMalaka\PmiRelawan;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class EventActivity extends Model
 {
     use SoftDeletes;
+
+    protected $appends = ['media_url'];
     
     protected $guarded = [];
 
@@ -19,5 +22,10 @@ class EventActivity extends Model
     public function volunteer()
     {
         return $this->belongsTo('BajakLautMalaka\PmiRelawan\Volunteer');
+    }
+
+    public function getMediaUrlAttribute()
+    {
+        return asset(Storage::url($this->comment_attachment)); 
     }
 }
