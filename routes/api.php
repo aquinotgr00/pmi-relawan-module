@@ -3,12 +3,14 @@
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
 
     Route::prefix('settings')->group(function() {
-        Route::apiResource('province', 'ProvinceApiController');
-        Route::apiResource('city', 'CityApiController');
-        Route::apiResource('subdistrict', 'SubdistrictApiController');
-        Route::apiResource('village', 'VillageApiController');
-        Route::apiResource('membership', 'MembershipApiController');
-        Route::apiResource('unit', 'UnitVolunteerApiController');
+        Route::apiResources([
+            'province'=>'ProvinceApiController',
+            'city'=>'CityApiController',
+            'subdistrict'=>'SubdistrictApiController',
+            'village'=>'VillageApiController',
+            'membership'=>'MembershipApiController',
+            'unit'=>'UnitVolunteerApiController'
+        ]);
     });
 
     Route::prefix('dashboard')->group(function() {
@@ -16,10 +18,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     });
 
     Route::prefix('events')->group(function() {
-        Route::apiResource('report', 'EventReportApiController');
-        Route::apiResource('comment','ChatApiController');
-        Route::put('/participants/{participants}', 'EventParticipantApiController@update')->name('event-participant.update');
-        
+        Route::apiResources([
+            'report'=>'EventReportApiController',
+            'participants'=>'EventParticipantApiController',
+            'comment'=>'ChatApiController'
+        ]);
     });
 
     

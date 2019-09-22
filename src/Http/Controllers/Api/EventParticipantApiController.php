@@ -36,7 +36,7 @@ class EventParticipantApiController extends Controller
         $eventParticipants = $eventParticipants->where('event_report_id',$request->input('e',1));
         
         $eventParticipants = $this->handleRequestJoinStatus($request, $eventParticipants);
-        return response()->success($eventParticipants->paginate(5));
+        return response()->success($eventParticipants->with('volunteer')->paginate(10));
     }
 
     private function handleRequestJoinStatus(Request $request,$eventParticipants)
