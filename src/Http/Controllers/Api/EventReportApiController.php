@@ -40,6 +40,7 @@ class EventReportApiController extends Controller
         $report = $this->handleEmergencyStatus($request,$report);
         $report = $this->handleArchivedStatus($request,$report);
         $report = $this->handleJoinRequest($request,$report);
+        $report = $this->shouldGetLastComment($request,$report);
         
         $report = $report
             ->withCount([
@@ -104,7 +105,6 @@ class EventReportApiController extends Controller
     private function handleJoinRequest(Request $request, $report)
     {
         if ($request->has('j')) {
-            
             $report = $report
                 ->where('id','!=',self::GENERAL_DISCUSSION)
                 ->when($request->j==='approved', function($query) {
@@ -115,9 +115,42 @@ class EventReportApiController extends Controller
                                 ->where('approved',1);
                         });
                     });
+                })
+                ->when($request->j==='other',function($query) {
+                    return $query->where(function($subQuery) {
+                        $subQuery->where('approved',1)
+                        ->whereDoesntHave('participants', function(Builder $query) {
+                            $query->where(function($subQuery) {
+                                $subQuery
+                                ->where('volunteer_id',auth()->user()->volunteer->id)
+                                ->where('approved',1);
+                            });
+                        });
+                    });
                 });
         }
         
+        return $report;
+    }
+
+    private function shouldGetLastComment(Request $request, $report)
+    {
+        if ($request->has('lc')) {
+            $latestComments = DB::table('event_activities')
+                ->select('event_report_id', DB::raw('MAX(id) AS last_comment_id'))
+                ->whereNull('deleted_at')
+                ->groupBy('event_report_id');
+
+            $report = $report
+                ->with(['activities'=>function($query) use ($latestComments) {
+                    $query->joinSub($latestComments, 'latest_comments', function ($join) {
+                        $join->on('id', '=', 'latest_comments.last_comment_id');
+                    });
+                }]);
+
+            $report = $report;
+        }
+
         return $report;
     }
 
