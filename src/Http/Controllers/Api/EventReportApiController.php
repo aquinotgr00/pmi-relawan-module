@@ -40,6 +40,7 @@ class EventReportApiController extends Controller
         $report = $this->handleEmergencyStatus($request,$report);
         $report = $this->handleArchivedStatus($request,$report);
         $report = $this->handleJoinRequest($request,$report);
+        $report = $this->shouldGetLastComment($request,$report);
         
         $report = $report
             ->withCount([
@@ -129,6 +130,27 @@ class EventReportApiController extends Controller
                 });
         }
         
+        return $report;
+    }
+
+    private function shouldGetLastComment(Request $request, $report)
+    {
+        if ($request->has('lc')) {
+            $latestComments = DB::table('event_activities')
+                ->select('event_report_id', DB::raw('MAX(id) AS last_comment_id'))
+                ->whereNull('deleted_at')
+                ->groupBy('event_report_id');
+
+            $report = $report
+                ->with(['activities'=>function($query) use ($latestComments) {
+                    $query->joinSub($latestComments, 'latest_comments', function ($join) {
+                        $join->on('id', '=', 'latest_comments.last_comment_id');
+                    });
+                }]);
+
+            $report = $report;
+        }
+
         return $report;
     }
 
