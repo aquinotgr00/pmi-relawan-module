@@ -33,24 +33,7 @@ class EventParticipantApiController extends Controller
      */
     public function index(Request $request, EventParticipant $eventParticipants)
     {
-        if($request->is('api/admin/*')) {
-            $eventParticipants = $eventParticipants->where('event_report_id',$request->input('e',1));
-        } else {
-            $latestComments = DB::table('event_activities')
-                ->select('event_report_id', DB::raw('MAX(id) AS last_comment_id'))
-                ->whereNull('deleted_at')
-                ->groupBy('event_report_id');
-
-            $eventParticipants = $eventParticipants->where('volunteer_id',auth()->user()->volunteer->id)
-                ->with(['event.activities'=>function($query) use ($latestComments) {
-                    $query->joinSub($latestComments, 'latest_comments', function ($join) {
-                        $join->on('id', '=', 'latest_comments.last_comment_id');
-                    });
-                }])
-                ->whereHas('event', function(Builder $query) {
-                    $query->where('id', '!=', self::GENERAL_DISCUSSION);
-                });
-        }
+        $eventParticipants = $eventParticipants->where('event_report_id',$request->input('e',1));
         
         $eventParticipants = $this->handleRequestJoinStatus($request, $eventParticipants);
         return response()->success($eventParticipants->paginate(5));
