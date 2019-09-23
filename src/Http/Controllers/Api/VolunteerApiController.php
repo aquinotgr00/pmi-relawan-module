@@ -173,18 +173,10 @@ class VolunteerApiController extends Controller
         return response()->success($volunteer);
     }
 
-    public function profile(Volunteer $volunteer)
+    public function profile()
     {
-        $user = auth()->user();
-        $response = [];
-        if(!auth()->guard('admin')->check()){
-            $response['user'] =$user;
-            $response['volunteer'] = $user->volunteer;
-            if ($user->has('donator')) {
-                $response['donator'] = $user->donator;
-            }
-        }
-        return response()->success($response);
+        $user = User::where('email', auth()->user()->email)->with('donator', 'volunteer')->first();
+        return response()->success($user);
     }
 
     public function print(Request $request, Volunteer $volunteers)
