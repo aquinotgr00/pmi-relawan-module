@@ -117,9 +117,14 @@ class VolunteerApiController extends Controller
         $user = null;
         $volunteer = null;
         DB::transaction(function () use ($request, &$user, &$volunteer) {
-            $user = User::make($request->only('name','email'));
-            $user->password = bcrypt($request->password);
-            $user->save();
+            $user = User::where('email', $request->email)->first();
+            
+            if ($user === null) {
+                $user = User::make($request->only('name','email'));
+                $user->password = bcrypt($request->password);
+                $user->save();
+            }
+
             $volunteer = $this->createVolunteer($request, $user);
         });
 
