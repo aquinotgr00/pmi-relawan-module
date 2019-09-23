@@ -2,16 +2,24 @@
 
 namespace BajakLautMalaka\PmiRelawan\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+
 use BajakLautMalaka\PmiRelawan\EventParticipant;
 use BajakLautMalaka\PmiRelawan\EventReport;
-use BajakLautMalaka\PmiRelawan\Http\Requests\StoreParticipantRequest;
+use BajakLautMalaka\PmiRelawan\Http\Requests\StoreEventParticipantRequest;
 use BajakLautMalaka\PmiRelawan\Http\Requests\UpdateParticipantRequest;
-use Illuminate\Http\Request;
 use BajakLautMalaka\PmiRelawan\Traits\RelawanTrait;
+use BajakLautMalaka\PmiRelawan\Events\PendingParticipant;
+
 
 class EventParticipantApiController extends Controller
 {
+    private const GENERAL_DISCUSSION = 1;
+
     use RelawanTrait;
     /**
      * Display a listing of the resource.
@@ -23,56 +31,24 @@ class EventParticipantApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, EventParticipant $participants)
+    public function index(Request $request, EventParticipant $eventParticipants)
     {
-        $user               = auth()->user();
-        $participants       = $participants->where('volunteer_id',$user->id);
-        $participants       = $this->handleRequestJoinStatus($request,$participants);
+        $eventParticipants = $eventParticipants->where('event_report_id',$request->input('e',1));
         
-        $events_id          = [];    
-        if ($participants->count() > 0) {
-            foreach ($participants->get() as $key => $value) {
-                $events_id[] = $value->event_report_id;
-            }
-        }
-        $events             = EventReport::whereIn('id',$events_id)->where('approved',1);
-        $events             = $this->handleArchivedStatus($request,$events); 
-        $events             = $this->handleSearch($request,$events);
-        $events             = $this->handleOrder($request,$events);
-        $events             = $events->paginate();
-        return response()->success($events);
+        $eventParticipants = $this->handleRequestJoinStatus($request, $eventParticipants);
+        return response()->success($eventParticipants->with('volunteer')->paginate(10));
     }
 
-    private function handleRequestJoinStatus(Request $request,$participants)
+    private function handleRequestJoinStatus(Request $request,$eventParticipants)
     {
         if ($request->has('j')) {
-
-            $participants = $participants->where('request_join',intval($request->j));
-        }else{
-            $participants = $participants->whereNull('request_join');    
+            if($request->j==='approved') {
+                $eventParticipants = $eventParticipants->where('approved',1);
+            } else {
+                $eventParticipants = $eventParticipants->whereNull('approved');
+            }
         }
-        return $participants;
-    }
-
-    private function handleArchivedStatus(Request $request,$events)
-    {
-        if ($request->has('ar')) {
-            $events = $events->where('archived',$request->ar);
-        }else{
-            $events = $events->where('archived',0);
-        }
-        return $events;
-    }
-
-    private function handleSearch(Request $request,$events)
-    {
-        if ($request->has('s')) {
-            $events = $events->where('title','like','%'.$request->s.'%')
-            ->orWhere('description','like','%'.$request->s.'%')
-            ->orWhere('type','like','%'.$request->s.'%')
-            ->orWhere('location','like','%'.$request->s.'%');
-        }
-        return $events;
+        return $eventParticipants;
     }
 
     /**
@@ -81,27 +57,16 @@ class EventParticipantApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreParticipantRequest $request)
+    public function store(StoreEventParticipantRequest $request)
     {
-        $user   = auth()->user();
-        $event  = EventReport::find($request->event_report_id);
-        if (!is_null($event)) {
-            if ($event->approved === 1) {
-                $participants = EventParticipant::firstOrCreate(
-                    [
-                    'event_report_id' => $request->event_report_id 
-                    ],
-                    [
-                    'event_report_id' => $request->event_report_id,
-                    'volunteer_id' => $user->id
-                    ]
-                    );
+        $rsvp = EventReport::find($request->event_report_id);
+        
+        $eventParticipation = $rsvp->participants()->create(['volunteer_id'=>Auth::user()->volunteer->id]);
 
-                $participants->event;
-                return response()->success($participants);
-            }
-        }
-        return response()->fail($event);
+        event(new PendingParticipant($eventParticipation));
+        
+        return response()->success($eventParticipation);
+        
     }
 
     /**
@@ -125,7 +90,7 @@ class EventParticipantApiController extends Controller
     public function update(UpdateParticipantRequest $request, EventParticipant $participants)
     {
         $participants->request_join = $request->request_join;
-        $participants->admin_id     = auth()->user()->id;
+        $participants->admin_id = auth()->user()->id;
         $participants->save();
         $participants->event;
         return response()->success($participants);

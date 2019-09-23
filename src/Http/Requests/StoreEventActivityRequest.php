@@ -5,7 +5,7 @@ namespace BajakLautMalaka\PmiRelawan\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreParticipantRequest extends FormRequest
+class StoreEventActivityRequest extends FormRequest
 {
 	/**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,12 @@ class StoreParticipantRequest extends FormRequest
     public function rules()
     {
         return [
-            'event_report_id' => 'required|exists:event_reports,id',
+            'event_report_id' => [
+                'required',
+                Rule::exists('event_reports','id')->where(function ($query) {
+                    $query->where('approved', 1)->whereNull('deleted_at');
+                })
+            ]
         ];
     }
 
