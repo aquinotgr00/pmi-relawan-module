@@ -17,8 +17,8 @@ class Volunteer extends Model
     'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id', 'verified'
     ];
     
-    protected $appends = ['name','image_url', 'age', 'achievements', 'assignments', 'trainings'];
-
+    //protected $appends = ['name','image_url', 'age', 'achievements', 'assignments', 'trainings'];
+    protected $appends = ['name','image_url', 'age'];
     protected $hidden = ['qualifications'];
 
     /**

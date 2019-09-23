@@ -13,7 +13,12 @@ class ChatApiController extends Controller
 {
     public function index()
     {
-        return response()->success(EventActivity::where('event_report_id',request('e'))->latest()->paginate(8));
+        return response()->success(
+            EventActivity::where('event_report_id',request('e'))
+                ->with(['volunteer','admin'])
+                ->latest()
+                ->paginate(8)
+        );
     }
 
     public function store(StoreEventActivityRequest $request)
@@ -30,7 +35,7 @@ class ChatApiController extends Controller
         $activity->volunteer_id = $user->volunteer?$user->volunteer->id:null;
         $activity->save();
 
-        broadcast(new CommentPosted($user, $activity))->toOthers();
+        broadcast(new CommentPosted($activity))->toOthers();
 
         return response()->success($activity);
     }

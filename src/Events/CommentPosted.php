@@ -16,7 +16,6 @@ class CommentPosted implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
     public $comment;
 
     /**
@@ -24,10 +23,9 @@ class CommentPosted implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($user, EventActivity $comment)
+    public function __construct(EventActivity $comment)
     {
-        $this->user = $user;
-        $this->comment = $comment;
+        $this->comment = $comment->load('volunteer','admin');
     }
 
     /**
