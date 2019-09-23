@@ -38,7 +38,18 @@ class VolunteerApiController extends Controller
         $volunteer = $this->handleVolunteerUnit($request, $volunteer);
         $volunteer = $this->handleVolunteerSubdistrict($request, $volunteer);
         $volunteer = $this->handleSearchKeyword($request, $volunteer);
-        $admins = $volunteer->with(['unit.membership.parentMember','qualifications'])->paginate();
+        $admins = $volunteer->with([
+            'unit.membership.parentMember',
+            'achievements'=>function($query) {
+                $query->where('category',1);
+            },
+            'assignments'=>function($query) {
+                $query->where('category',2);
+            },
+            'trainings'=>function($query) {
+                $query->where('category',3);
+            }
+        ])->paginate();
 
         return response()->success(compact('admins'));
     }

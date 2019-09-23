@@ -47,19 +47,19 @@ class Volunteer extends Model
         return Carbon::parse($this->dob)->age;
     }
     
-    public function getAchievementsAttribute()
+    public function achievements()
     {
-        return $this->qualifications->where('category', 1)->values();
+        return $this->hasMany('BajakLautMalaka\PmiRelawan\Qualification');
     }
     
-    public function getAssignmentsAttribute()
+    public function assignments()
     {
-        return $this->qualifications->where('category', 2)->values();
+        return $this->hasMany('BajakLautMalaka\PmiRelawan\Qualification');
     }
     
-    public function getTrainingsAttribute()
+    public function trainings()
     {
-        return $this->qualifications->where('category', 3)->values();
+        return $this->hasMany('BajakLautMalaka\PmiRelawan\Qualification');
     }
 
     public function unit()
