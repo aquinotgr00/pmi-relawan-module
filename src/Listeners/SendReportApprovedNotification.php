@@ -7,14 +7,15 @@ use Berkayk\OneSignal\OneSignalClient;
 
 class SendReportApprovedNotification
 {
+    private $pushNotificationClient;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(OneSignalClient $pushNotificationClient)
     {
-        //
+        $this->pushNotificationClient = $pushNotificationClient;
     }
 
     /**
@@ -25,12 +26,11 @@ class SendReportApprovedNotification
      */
     public function handle(ReportApproved $event)
     {
-        $pushNotificationAppId      = config('volunteer.push_notification.app_id',env('ONESIGNAL_APP_ID'));
-        $pushNotificationRestApiKey = config('volunteer.push_notification.rest_api_key',env('ONESIGNAL_REST_API_KEY'));
-        $pushNotificationClient     = new OneSignalClient($pushNotificationAppId, $pushNotificationRestApiKey, $pushNotificationRestApiKey);
-        if (isset($event->report->volunteer->user->id)) {
-            $userId = $event->report->volunteer->user->id;
-            $pushNotificationClient->sendNotificationToUser($event->report->title, $userId,null, null, null, null);
-        }
+        $this->pushNotificationClient->sendNotificationToUser(
+            'Laporan Darurat/Event "'.$event->report->title.'" telah disetujui. Selamat berpartisipasi!',
+            $event->report->volunteer->user->device_id,
+            null,
+            ['approval'=>['title'=>$event->report->title]]
+        );
     }
 }

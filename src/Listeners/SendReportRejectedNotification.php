@@ -7,14 +7,15 @@ use Berkayk\OneSignal\OneSignalClient;
 
 class SendReportRejectedNotification
 {
+    private $pushNotificationClient;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(OneSignalClient $pushNotificationClient)
     {
-        //
+        $this->pushNotificationClient = $pushNotificationClient;
     }
 
     /**
@@ -25,12 +26,11 @@ class SendReportRejectedNotification
      */
     public function handle(ReportRejected $event)
     {
-        $pushNotificationAppId      = config('volunteer.push_notification.app_id',env('ONESIGNAL_APP_ID'));
-        $pushNotificationRestApiKey = config('volunteer.push_notification.rest_api_key',env('ONESIGNAL_REST_API_KEY'));
-        $pushNotificationClient     = new OneSignalClient($pushNotificationAppId, $pushNotificationRestApiKey, $pushNotificationRestApiKey);
-        if (isset($event->report->volunteer->user->id)) {
-            $userId = $event->report->volunteer->user->id;
-            $pushNotificationClient->sendNotificationToUser($event->report->title, $userId,null, null, null, null);
-        }
+        $this->pushNotificationClient->sendNotificationToUser(
+            'Mohon maaf, Laporan Darurat/Event "'.$event->report->title.'" belum bisa disetujui karena : '.$event->report->reason_rejection,
+            $event->report->volunteer->user->device_id,
+            null,
+            ['rejection'=>['title'=>$event->report->title]]
+        );
     }
 }
