@@ -48,7 +48,8 @@ class EventReportApiController extends Controller
                 'participants AS approved_participants'=>function($query) {
                     $query->where('approved',true);
                 }])
-            ->with(['admin','appUser','village.subdistrict.city']);
+            ->with(['admin','appUser','village.subdistrict.city'])
+            ->has('appUser');
         $report = $report->paginate();
         return response()->success($report);
     }
@@ -69,10 +70,12 @@ class EventReportApiController extends Controller
             $report = $report->where('approved',$request->ap);
             $report = $report->where('archived',0);
         }elseif ($request->has('p')) {
-            $report = $report->whereNull('approved')
-            ->when(auth()->user()->volunteer, function($query) {
-                return $query->where('volunteer_id', auth()->user()->volunteer->id);
-            });
+            $report = $report
+                ->withTrashed()
+                ->whereNull('approved')
+                ->when(auth()->user()->volunteer, function($query) {
+                    return $query->where('volunteer_id', auth()->user()->volunteer->id);
+                });
         }
         return $report;
     }

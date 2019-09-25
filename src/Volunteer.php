@@ -13,11 +13,11 @@ class Volunteer extends Model
     use SoftDeletes;
 
     protected $fillable = [
-    'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
-    'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership', 'user_id', 'verified'
+        'phone', 'image', 'dob', 'birthplace', 'gender', 'religion', 'blood_type', 'unit_id',
+        'address', 'province', 'city', 'subdistrict', 'subdivision', 'postal_code', 'membership',
+        'user_id', 'verified', 'device_id'
     ];
     
-    //protected $appends = ['name','image_url', 'age', 'achievements', 'assignments', 'trainings'];
     protected $appends = ['name','image_url', 'age'];
     protected $hidden = ['qualifications'];
 
