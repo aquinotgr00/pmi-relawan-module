@@ -25,7 +25,7 @@ class StoreMembershipRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:memberships',
+            'name' => 'required',
         ];
     }
 

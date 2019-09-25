@@ -57,10 +57,6 @@ class SubdistrictApiController extends Controller
     public function store(StoreSubdistrictRequest $request)
     {
         $subdistrict = Subdistrict::create($request->all());
-        if (isset($subdistrict->city)) {
-            $subdistrict->city;
-            $subdistrict->city->province;
-        }
         return response()->success($subdistrict);
     }
 
@@ -89,10 +85,6 @@ class SubdistrictApiController extends Controller
     public function update(UpdateSubdistrictRequest $request, Subdistrict $subdistrict)
     {
         $subdistrict->update($request->all());
-        $subdistrict->city;
-        if (isset($subdistrict->villages)) {
-            $subdistrict->villages;
-        }
         return response()->success($subdistrict);
     }
 

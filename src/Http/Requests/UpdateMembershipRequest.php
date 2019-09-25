@@ -25,7 +25,7 @@ class UpdateMembershipRequest extends FormRequest
     public function rules()
     {           
         return [            
-            'name' => 'required|unique:memberships,name,' .$this->membership->id. ',id',
+            'name' => 'required',
         ];
     }
 

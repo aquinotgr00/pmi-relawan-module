@@ -57,8 +57,7 @@ class CityApiController extends Controller
     public function store(StoreCityRequest $request)
     {
         $city = City::create($request->all());
-        $city->province;
-        return response()->success($city);
+        return response()->success($city->load('province'));
     }
 
     /**
@@ -69,11 +68,6 @@ class CityApiController extends Controller
      */
     public function show(City $city)
     {
-        
-        //$city->province;
-        /*if (isset($city->subdistricts)) {
-            $city->subdistricts;
-        }*/
         return response()->success($city);
     }
     /**
@@ -86,8 +80,7 @@ class CityApiController extends Controller
     public function update(UpdateCityRequest $request, City $city)
     {
         $city->update($request->all());
-        $city->province;
-        return response()->success($city);
+        return response()->success($city->load('province'));
     }
 
     /**
