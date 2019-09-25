@@ -70,10 +70,6 @@ class MembershipApiController extends Controller
      */
     public function show(Membership $membership)
     {
-      if (isset($membership->subMember->units)) {
-        $membership->subMember;
-        $membership->subMember->units;
-      }
       return response()->success($membership);
     }
 
@@ -98,10 +94,6 @@ class MembershipApiController extends Controller
     public function update(UpdateMembershipRequest $request, Membership $membership)
     {
       $membership->update($request->only('name','parent_id'));
-      if (isset($membership->subMember->units)) {
-        $membership->subMember;
-        $membership->subMember->units;
-      }
       return response()->success($membership);
     }
 

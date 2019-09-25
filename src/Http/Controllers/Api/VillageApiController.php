@@ -67,10 +67,6 @@ class VillageApiController extends Controller
     public function store(StoreVillageRequest $request)
     {
         $village = Village::create($request->except('city_id'));
-        if (isset($village->subdistrict)) {
-            $village->subdistrict;
-            $village->subdistrict->city->province;
-        }
         return response()->success($village);
     }
 

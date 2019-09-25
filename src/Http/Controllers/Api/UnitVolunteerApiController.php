@@ -25,7 +25,7 @@ class UnitVolunteerApiController extends Controller
         $unit = $this->handleByCityId($request,$unit);
         $unit = $this->handleByMembership($request,$unit);
         $unit = $this->handleOrder($request,$unit);
-        $unit = $unit->with('membership');
+        $unit = $unit->with('membership.parentMember');
         $unit = $unit->with('city');
         $unit = $this->handlePaginate($request, $unit);
         return response()->success($unit);
@@ -85,10 +85,6 @@ class UnitVolunteerApiController extends Controller
      */
     public function show(UnitVolunteer $unit)
     {
-        if (isset($unit->membership)) {
-            $unit->membership;
-        }
-        $unit->city;
         return response()->success($unit);
     }
 
@@ -102,13 +98,6 @@ class UnitVolunteerApiController extends Controller
     public function update(UpdateUnitRequest $request, UnitVolunteer $unit)
     {
         $unit->update($request->only('name','city_id','membership_id'));
-        if (isset($unit->membership)) {
-            $unit->membership;
-        }
-        if (isset($unit->subMembership)) {
-            $unit->subMembership;
-        }
-        $unit->city;
         return response()->success($unit);
     }
 
