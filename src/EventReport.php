@@ -5,6 +5,7 @@ namespace BajakLautMalaka\PmiRelawan;
 use BajakLautMalaka\PmiRelawan\Scopes\OrderByLatestScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class EventReport extends Model
@@ -37,6 +38,12 @@ class EventReport extends Model
     public function participants()
     {
     	return $this->hasMany('BajakLautMalaka\PmiRelawan\EventParticipant');
+    }
+
+    public function joinStatus()
+    {
+        $user = Auth::user()->load('volunteer');
+        return $this->hasOne('BajakLautMalaka\PmiRelawan\EventParticipant')->where('volunteer_id',$user->volunteer->id);
     }
 
     public function activities()
