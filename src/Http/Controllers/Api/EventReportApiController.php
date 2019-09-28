@@ -197,9 +197,14 @@ class EventReportApiController extends Controller
      */
     public function show(int $id)
     {
+        $requestByAppUser = request()->is('api/app/*');
+        
         return response()->success(
             EventReport::withTrashed()
             ->with('participants','activities','village.subdistrict.city')
+            ->when($requestByAppUser,function($query) {
+                return $query->with('joinStatus');
+            })
             ->find($id)
         );
     }
