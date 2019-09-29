@@ -43,7 +43,7 @@ class StoreVolunteerRequest extends FormRequest
             'gender'=>'in:male,female',
             'religion'=>Rule::in(config('volunteer.religion')),
             'blood_type'=>Rule::in(config('volunteer.bloodType')),
-            'dob'=>'string|required',
+            'dob'=>'date_format:Y-m-d',
             'postal_code'=>'numeric',
             'image'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'qualifications.*.description'=>'required',
