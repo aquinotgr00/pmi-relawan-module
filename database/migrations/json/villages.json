@@ -1,0 +1,1875 @@
+{
+	"table": "urban_villages",
+	"rows":
+	[
+		{
+			"id": 1,
+			"subdistrict_id": 2095,
+			"name": "Cempaka Putih Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 2,
+			"subdistrict_id": 2095,
+			"name": "Cempaka Putih Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 3,
+			"subdistrict_id": 2095,
+			"name": "Rawasari",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 4,
+			"subdistrict_id": 2096,
+			"name": "Cideng",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 5,
+			"subdistrict_id": 2096,
+			"name": "Duri Pulo",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 6,
+			"subdistrict_id": 2096,
+			"name": "Gambir",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 7,
+			"subdistrict_id": 2096,
+			"name": "Kebon Kelapa",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 8,
+			"subdistrict_id": 2096,
+			"name": "Petojo Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 9,
+			"subdistrict_id": 2096,
+			"name": "Petojo Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 10,
+			"subdistrict_id": 2097,
+			"name": "Galur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 11,
+			"subdistrict_id": 2097,
+			"name": "Johar Baru",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 12,
+			"subdistrict_id": 2097,
+			"name": "Kampung Rawa",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 13,
+			"subdistrict_id": 2097,
+			"name": "Tanah Tinggi",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 14,
+			"subdistrict_id": 2098,
+			"name": "Cempaka Baru",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 15,
+			"subdistrict_id": 2098,
+			"name": "Gunung Sahari Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 16,
+			"subdistrict_id": 2098,
+			"name": "Harapan Mulya",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 17,
+			"subdistrict_id": 2098,
+			"name": "Kebon Kosong",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 18,
+			"subdistrict_id": 2098,
+			"name": "Kemayoran",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 19,
+			"subdistrict_id": 2098,
+			"name": "Serdang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 20,
+			"subdistrict_id": 2098,
+			"name": "Sumur Batu",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 21,
+			"subdistrict_id": 2098,
+			"name": "Utan Panjang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 22,
+			"subdistrict_id": 2099,
+			"name": "Cikini",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 23,
+			"subdistrict_id": 2099,
+			"name": "Gondangdia",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 24,
+			"subdistrict_id": 2099,
+			"name": "Kebon Sirih",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 25,
+			"subdistrict_id": 2099,
+			"name": "Menteng",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 26,
+			"subdistrict_id": 2099,
+			"name": "Pegangsaan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 27,
+			"subdistrict_id": 2100,
+			"name": "Gunung Sahari Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 28,
+			"subdistrict_id": 2100,
+			"name": "Karang Anyar",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 29,
+			"subdistrict_id": 2100,
+			"name": "Kartini",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 30,
+			"subdistrict_id": 2100,
+			"name": "Mangga Dua Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 31,
+			"subdistrict_id": 2100,
+			"name": "Pasar Baru",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 32,
+			"subdistrict_id": 2101,
+			"name": "Bungur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 33,
+			"subdistrict_id": 2101,
+			"name": "Kenari",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 34,
+			"subdistrict_id": 2101,
+			"name": "Kramat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 35,
+			"subdistrict_id": 2101,
+			"name": "Kwitang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 36,
+			"subdistrict_id": 2101,
+			"name": "Paseban",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 37,
+			"subdistrict_id": 2101,
+			"name": "Senen",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 38,
+			"subdistrict_id": 2102,
+			"name": "Bendungan Hilir",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 39,
+			"subdistrict_id": 2102,
+			"name": "Gelora",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 40,
+			"subdistrict_id": 2102,
+			"name": "Kampung Bali",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 41,
+			"subdistrict_id": 2102,
+			"name": "Karet Tengsin",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 42,
+			"subdistrict_id": 2102,
+			"name": "Kebon Kacang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 43,
+			"subdistrict_id": 2102,
+			"name": "Kebon Melati",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 44,
+			"subdistrict_id": 2102,
+			"name": "Petamburan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 45,
+			"subdistrict_id": 2123,
+			"name": "Cilincing",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 46,
+			"subdistrict_id": 2123,
+			"name": "Kalibaru",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 47,
+			"subdistrict_id": 2123,
+			"name": "Marunda",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 48,
+			"subdistrict_id": 2123,
+			"name": "Rorotan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 49,
+			"subdistrict_id": 2123,
+			"name": "Semper Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 50,
+			"subdistrict_id": 2123,
+			"name": "Semper Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 51,
+			"subdistrict_id": 2123,
+			"name": "Sukapura",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 52,
+			"subdistrict_id": 2124,
+			"name": "Kelapa Gading Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 53,
+			"subdistrict_id": 2124,
+			"name": "Kelapa Gading Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 54,
+			"subdistrict_id": 2124,
+			"name": "Pegangsaan Dua",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 55,
+			"subdistrict_id": 2125,
+			"name": "Koja",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 56,
+			"subdistrict_id": 2125,
+			"name": "Lagoa",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 57,
+			"subdistrict_id": 2125,
+			"name": "Rawa Badak Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 58,
+			"subdistrict_id": 2125,
+			"name": "Rawa Badak Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 59,
+			"subdistrict_id": 2125,
+			"name": "Tugu Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 60,
+			"subdistrict_id": 2125,
+			"name": "Tugu Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 61,
+			"subdistrict_id": 2126,
+			"name": "Ancol",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 62,
+			"subdistrict_id": 2126,
+			"name": "Pademangan Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 63,
+			"subdistrict_id": 2126,
+			"name": "Pademangan Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 64,
+			"subdistrict_id": 2127,
+			"name": "Kamal Muara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 65,
+			"subdistrict_id": 2127,
+			"name": "Kapuk Muara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 66,
+			"subdistrict_id": 2127,
+			"name": "Pejagalan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 67,
+			"subdistrict_id": 2127,
+			"name": "Penjaringan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 68,
+			"subdistrict_id": 2127,
+			"name": "Pluit",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 69,
+			"subdistrict_id": 2128,
+			"name": "Kebon Bawang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 70,
+			"subdistrict_id": 2128,
+			"name": "Papanggo",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 71,
+			"subdistrict_id": 2128,
+			"name": "Sungai Bambu",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 72,
+			"subdistrict_id": 2128,
+			"name": "Sunter Agung",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 73,
+			"subdistrict_id": 2128,
+			"name": "Sunter Jaya",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 74,
+			"subdistrict_id": 2128,
+			"name": "Tanjung Priok",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 75,
+			"subdistrict_id": 2128,
+			"name": "Warakas",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 76,
+			"subdistrict_id": 2113,
+			"name": "Cakung Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 77,
+			"subdistrict_id": 2113,
+			"name": "Cakung Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 78,
+			"subdistrict_id": 2113,
+			"name": "Jatinegara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 79,
+			"subdistrict_id": 2113,
+			"name": "Penggilingan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 80,
+			"subdistrict_id": 2113,
+			"name": "Pulo Gebang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 81,
+			"subdistrict_id": 2113,
+			"name": "Rawa Terate",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 82,
+			"subdistrict_id": 2113,
+			"name": "Ujung Menteng",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 83,
+			"subdistrict_id": 2114,
+			"name": "Bambu Apus",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 84,
+			"subdistrict_id": 2114,
+			"name": "Ceger",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 85,
+			"subdistrict_id": 2114,
+			"name": "Cilangkap",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 86,
+			"subdistrict_id": 2114,
+			"name": "Cipayung",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 87,
+			"subdistrict_id": 2114,
+			"name": "Lubang Buaya",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 88,
+			"subdistrict_id": 2114,
+			"name": "Munjul",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 89,
+			"subdistrict_id": 2114,
+			"name": "Pondok Ranggon",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 90,
+			"subdistrict_id": 2114,
+			"name": "Setu",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 91,
+			"subdistrict_id": 2115,
+			"name": "Cibubur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 92,
+			"subdistrict_id": 2115,
+			"name": "Ciracas",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 93,
+			"subdistrict_id": 2115,
+			"name": "Kelapa Dua Wetan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 94,
+			"subdistrict_id": 2115,
+			"name": "Rambutan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 95,
+			"subdistrict_id": 2115,
+			"name": "Susukan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 96,
+			"subdistrict_id": 2116,
+			"name": "Duren Sawit",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 97,
+			"subdistrict_id": 2116,
+			"name": "Klender",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 98,
+			"subdistrict_id": 2116,
+			"name": "Malaka Jaya",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 99,
+			"subdistrict_id": 2116,
+			"name": "Malaka Sari",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 100,
+			"subdistrict_id": 2116,
+			"name": "Pondok Bambu",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 101,
+			"subdistrict_id": 2116,
+			"name": "Pondok Kelapa",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 102,
+			"subdistrict_id": 2116,
+			"name": "Pondok Kopi",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 103,
+			"subdistrict_id": 2117,
+			"name": "Bali Mester",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 104,
+			"subdistrict_id": 2117,
+			"name": "Bidara Cina",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 105,
+			"subdistrict_id": 2117,
+			"name": "Cipinang Besar Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 106,
+			"subdistrict_id": 2117,
+			"name": "Cipinang Besar Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 107,
+			"subdistrict_id": 2117,
+			"name": "Cipinang Cempedak",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 108,
+			"subdistrict_id": 2117,
+			"name": "Cipinang Muara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 109,
+			"subdistrict_id": 2117,
+			"name": "Kampung Melayu",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 110,
+			"subdistrict_id": 2117,
+			"name": "Rawa Bunga",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 111,
+			"subdistrict_id": 2118,
+			"name": "Balekambang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 112,
+			"subdistrict_id": 2118,
+			"name": "Batu Ampar",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 113,
+			"subdistrict_id": 2118,
+			"name": "Cawang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 114,
+			"subdistrict_id": 2118,
+			"name": "Cililitan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 115,
+			"subdistrict_id": 2118,
+			"name": "Dukuh",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 116,
+			"subdistrict_id": 2118,
+			"name": "Kramat Jati",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 117,
+			"subdistrict_id": 2118,
+			"name": "Tengah",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 118,
+			"subdistrict_id": 2119,
+			"name": "Cipinang Melayu",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 119,
+			"subdistrict_id": 2119,
+			"name": "Halim Perdana Kusuma",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 120,
+			"subdistrict_id": 2119,
+			"name": "Kebon Pala",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 121,
+			"subdistrict_id": 2119,
+			"name": "Makasar",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 122,
+			"subdistrict_id": 2119,
+			"name": "Pinang Ranti",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 123,
+			"subdistrict_id": 2120,
+			"name": "Kayu Manis",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 124,
+			"subdistrict_id": 2120,
+			"name": "Kebon Manggis",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 125,
+			"subdistrict_id": 2120,
+			"name": "Pal Meriam",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 126,
+			"subdistrict_id": 2120,
+			"name": "Pisangan Baru",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 127,
+			"subdistrict_id": 2120,
+			"name": "Utan Kayu Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 128,
+			"subdistrict_id": 2120,
+			"name": "Utan Kayu Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 129,
+			"subdistrict_id": 2121,
+			"name": "Baru",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 130,
+			"subdistrict_id": 2121,
+			"name": "Cijantung",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 131,
+			"subdistrict_id": 2121,
+			"name": "Gedong",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 132,
+			"subdistrict_id": 2121,
+			"name": "Kalisari",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 133,
+			"subdistrict_id": 2121,
+			"name": "Pekayon",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 134,
+			"subdistrict_id": 2122,
+			"name": "Cipinang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 135,
+			"subdistrict_id": 2122,
+			"name": "Jati",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 136,
+			"subdistrict_id": 2122,
+			"name": "Jatinegara Kaum",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 137,
+			"subdistrict_id": 2122,
+			"name": "Kayu Putih",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 138,
+			"subdistrict_id": 2122,
+			"name": "Pisangan Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 139,
+			"subdistrict_id": 2122,
+			"name": "Pulo Gadung",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 140,
+			"subdistrict_id": 2122,
+			"name": "Rawamangun",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 141,
+			"subdistrict_id": 2103,
+			"name": "Cilandak Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 142,
+			"subdistrict_id": 2103,
+			"name": "Cipete Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 143,
+			"subdistrict_id": 2103,
+			"name": "Gandaria Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 144,
+			"subdistrict_id": 2103,
+			"name": "Lebak Bulus",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 145,
+			"subdistrict_id": 2103,
+			"name": "Pondok Labu",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 146,
+			"subdistrict_id": 2104,
+			"name": "Ciganjur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 147,
+			"subdistrict_id": 2104,
+			"name": "Cipedak",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 148,
+			"subdistrict_id": 2104,
+			"name": "Jagakarsa",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 149,
+			"subdistrict_id": 2104,
+			"name": "Lenteng Agung",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 150,
+			"subdistrict_id": 2104,
+			"name": "Srengseng Sawah",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 151,
+			"subdistrict_id": 2104,
+			"name": "Tanjung Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 152,
+			"subdistrict_id": 2105,
+			"name": "Cipete Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 153,
+			"subdistrict_id": 2105,
+			"name": "Gandaria Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 154,
+			"subdistrict_id": 2105,
+			"name": "Gunung",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 155,
+			"subdistrict_id": 2105,
+			"name": "Kramat Pela",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 156,
+			"subdistrict_id": 2105,
+			"name": "Melawai",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 157,
+			"subdistrict_id": 2105,
+			"name": "Petogogan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 158,
+			"subdistrict_id": 2105,
+			"name": "Pulo",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 159,
+			"subdistrict_id": 2105,
+			"name": "Rawa Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 160,
+			"subdistrict_id": 2105,
+			"name": "Selong",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 161,
+			"subdistrict_id": 2105,
+			"name": "Senayan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 162,
+			"subdistrict_id": 2106,
+			"name": "Cipulir",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 163,
+			"subdistrict_id": 2106,
+			"name": "Grogol Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 164,
+			"subdistrict_id": 2106,
+			"name": "Grogol Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 165,
+			"subdistrict_id": 2106,
+			"name": "Kebayoran Lama Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 166,
+			"subdistrict_id": 2106,
+			"name": "Kebayoran Lama Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 167,
+			"subdistrict_id": 2106,
+			"name": "Pondok Pinang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 168,
+			"subdistrict_id": 2107,
+			"name": "Bangka",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 169,
+			"subdistrict_id": 2107,
+			"name": "Kuningan Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 170,
+			"subdistrict_id": 2107,
+			"name": "Mampang Prapatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 171,
+			"subdistrict_id": 2107,
+			"name": "Pela Mampang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 172,
+			"subdistrict_id": 2107,
+			"name": "Tegal Parang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 173,
+			"subdistrict_id": 2108,
+			"name": "Cikoko",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 174,
+			"subdistrict_id": 2108,
+			"name": "Duren Tiga",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 175,
+			"subdistrict_id": 2108,
+			"name": "Kalibata",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 176,
+			"subdistrict_id": 2108,
+			"name": "Pancoran",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 177,
+			"subdistrict_id": 2108,
+			"name": "Pengadegan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 178,
+			"subdistrict_id": 2108,
+			"name": "Rawajati",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 179,
+			"subdistrict_id": 2109,
+			"name": "Cilandak Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 180,
+			"subdistrict_id": 2109,
+			"name": "Jati Padang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 181,
+			"subdistrict_id": 2109,
+			"name": "Kebagusan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 182,
+			"subdistrict_id": 2109,
+			"name": "Pasar Minggu",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 183,
+			"subdistrict_id": 2109,
+			"name": "Pejaten Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 184,
+			"subdistrict_id": 2109,
+			"name": "Pejaten Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 185,
+			"subdistrict_id": 2109,
+			"name": "Ragunan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 186,
+			"subdistrict_id": 2110,
+			"name": "Bintaro",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 187,
+			"subdistrict_id": 2110,
+			"name": "Pesanggrahan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 188,
+			"subdistrict_id": 2110,
+			"name": "Petukangan Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 189,
+			"subdistrict_id": 2110,
+			"name": "Petukangan Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 190,
+			"subdistrict_id": 2110,
+			"name": "Ulujami",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 191,
+			"subdistrict_id": 2111,
+			"name": "Guntur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 192,
+			"subdistrict_id": 2111,
+			"name": "Karet Kuningan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 193,
+			"subdistrict_id": 2111,
+			"name": "Karet Semanggi",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 194,
+			"subdistrict_id": 2111,
+			"name": "Karet",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 195,
+			"subdistrict_id": 2111,
+			"name": "Kuningan Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 196,
+			"subdistrict_id": 2111,
+			"name": "Menteng Atas",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 197,
+			"subdistrict_id": 2111,
+			"name": "Pasar Manggis",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 198,
+			"subdistrict_id": 2111,
+			"name": "Setiabudi",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 199,
+			"subdistrict_id": 2112,
+			"name": "Bukit Duri",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 200,
+			"subdistrict_id": 2112,
+			"name": "Kebon Baru",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 201,
+			"subdistrict_id": 2112,
+			"name": "Manggarai Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 202,
+			"subdistrict_id": 2112,
+			"name": "Manggarai",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 203,
+			"subdistrict_id": 2112,
+			"name": "Menteng Dalam",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 204,
+			"subdistrict_id": 2112,
+			"name": "Tebet Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 205,
+			"subdistrict_id": 2112,
+			"name": "Tebet Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 206,
+			"subdistrict_id": 2087,
+			"name": "Cengkareng Barat",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 207,
+			"subdistrict_id": 2087,
+			"name": "Cengkareng Timur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 208,
+			"subdistrict_id": 2087,
+			"name": "Duri Kosambi",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 209,
+			"subdistrict_id": 2087,
+			"name": "Kapuk",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 210,
+			"subdistrict_id": 2087,
+			"name": "Kedaung Kali Angke",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 211,
+			"subdistrict_id": 2087,
+			"name": "Rawa Buaya",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 212,
+			"subdistrict_id": 2088,
+			"name": "Grogol",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 213,
+			"subdistrict_id": 2088,
+			"name": "Jelambar Baru",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 214,
+			"subdistrict_id": 2088,
+			"name": "Jelambar",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 215,
+			"subdistrict_id": 2088,
+			"name": "Tanjung Duren Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 216,
+			"subdistrict_id": 2088,
+			"name": "Tanjung Duren Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 217,
+			"subdistrict_id": 2088,
+			"name": "Tomang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 218,
+			"subdistrict_id": 2088,
+			"name": "Wijaya Kusuma",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 219,
+			"subdistrict_id": 2093,
+			"name": "Glodok",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 220,
+			"subdistrict_id": 2093,
+			"name": "Keagungan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 221,
+			"subdistrict_id": 2093,
+			"name": "Krukut",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 222,
+			"subdistrict_id": 2093,
+			"name": "Mangga Besar",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 223,
+			"subdistrict_id": 2093,
+			"name": "Maphar",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 224,
+			"subdistrict_id": 2093,
+			"name": "Pinangsia",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 225,
+			"subdistrict_id": 2093,
+			"name": "Taman Sari",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 226,
+			"subdistrict_id": 2093,
+			"name": "Tangki",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 227,
+			"subdistrict_id": 2094,
+			"name": "Angke",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 228,
+			"subdistrict_id": 2094,
+			"name": "Duri Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 229,
+			"subdistrict_id": 2094,
+			"name": "Duri Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 230,
+			"subdistrict_id": 2094,
+			"name": "Jembatan Besi",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 231,
+			"subdistrict_id": 2094,
+			"name": "Jembatan Lima",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 232,
+			"subdistrict_id": 2094,
+			"name": "Kali Anyar",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 233,
+			"subdistrict_id": 2094,
+			"name": "Krendang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 234,
+			"subdistrict_id": 2094,
+			"name": "Pekojan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 235,
+			"subdistrict_id": 2094,
+			"name": "Roa Malaka",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 236,
+			"subdistrict_id": 2094,
+			"name": "Tambora",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 237,
+			"subdistrict_id": 2094,
+			"name": "Tanah Sereal",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 238,
+			"subdistrict_id": 2090,
+			"name": "Duri Kepa",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 239,
+			"subdistrict_id": 2090,
+			"name": "Kebon Jeruk",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 240,
+			"subdistrict_id": 2090,
+			"name": "Kedoya Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 241,
+			"subdistrict_id": 2090,
+			"name": "Kedoya Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 242,
+			"subdistrict_id": 2090,
+			"name": "Kelapa Dua",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 243,
+			"subdistrict_id": 2090,
+			"name": "Sukabumi Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 244,
+			"subdistrict_id": 2090,
+			"name": "Sukabumi Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 245,
+			"subdistrict_id": 2089,
+			"name": "Kalideres",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 246,
+			"subdistrict_id": 2089,
+			"name": "Kamal",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 247,
+			"subdistrict_id": 2089,
+			"name": "Pegadungan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 248,
+			"subdistrict_id": 2089,
+			"name": "Semanan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 249,
+			"subdistrict_id": 2089,
+			"name": "Tegal Alur",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 250,
+			"subdistrict_id": 2092,
+			"name": "Jatipulo",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 251,
+			"subdistrict_id": 2092,
+			"name": "Kemanggisan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 252,
+			"subdistrict_id": 2092,
+			"name": "Kota Bambu Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 253,
+			"subdistrict_id": 2092,
+			"name": "Kota Bambu Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 254,
+			"subdistrict_id": 2092,
+			"name": "Palmerah",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 255,
+			"subdistrict_id": 2092,
+			"name": "Slipi",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 256,
+			"subdistrict_id": 2091,
+			"name": "Joglo",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 257,
+			"subdistrict_id": 2091,
+			"name": "Kembangan Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 258,
+			"subdistrict_id": 2091,
+			"name": "Kembangan Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 259,
+			"subdistrict_id": 2091,
+			"name": "Meruya Selatan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 260,
+			"subdistrict_id": 2091,
+			"name": "Meruya Utara",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 261,
+			"subdistrict_id": 2091,
+			"name": "Srengseng",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 262,
+			"subdistrict_id": 2623,
+			"name": "Pulau Harapan",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 263,
+			"subdistrict_id": 2623,
+			"name": "Pulau Kelapa",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 264,
+			"subdistrict_id": 2623,
+			"name": "Pulau Panggang",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 265,
+			"subdistrict_id": 2622,
+			"name": "Pulau Pari",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 266,
+			"subdistrict_id": 2622,
+			"name": "Pulau Tidung",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		},
+		{
+			"id": 267,
+			"subdistrict_id": 2622,
+			"name": "Pulau Untung Jawa",
+			"created_at": "2019-08-08 17:18:01",
+			"updated_at": "2019-08-08 17:18:01"
+		}
+	]
+}

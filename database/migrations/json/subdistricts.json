@@ -1,0 +1,358 @@
+{
+	"table": "subdistricts",
+	"rows":
+	[
+		{
+			"id": 2087,
+			"city_id": 151,
+			"name": "Cengkareng",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2088,
+			"city_id": 151,
+			"name": "Grogol Petamburan",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2089,
+			"city_id": 151,
+			"name": "Kalideres",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2090,
+			"city_id": 151,
+			"name": "Kebon Jeruk",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2091,
+			"city_id": 151,
+			"name": "Kembangan",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2092,
+			"city_id": 151,
+			"name": "Palmerah",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2093,
+			"city_id": 151,
+			"name": "Taman Sari",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2094,
+			"city_id": 151,
+			"name": "Tambora",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2095,
+			"city_id": 152,
+			"name": "Cempaka Putih",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2096,
+			"city_id": 152,
+			"name": "Gambir",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2097,
+			"city_id": 152,
+			"name": "Johar Baru",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2098,
+			"city_id": 152,
+			"name": "Kemayoran",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2099,
+			"city_id": 152,
+			"name": "Menteng",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2100,
+			"city_id": 152,
+			"name": "Sawah Besar",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2101,
+			"city_id": 152,
+			"name": "Senen",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2102,
+			"city_id": 152,
+			"name": "Tanah Abang",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2103,
+			"city_id": 153,
+			"name": "Cilandak",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2104,
+			"city_id": 153,
+			"name": "Jagakarsa",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2105,
+			"city_id": 153,
+			"name": "Kebayoran Baru",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2106,
+			"city_id": 153,
+			"name": "Kebayoran Lama",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2107,
+			"city_id": 153,
+			"name": "Mampang Prapatan",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2108,
+			"city_id": 153,
+			"name": "Pancoran",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2109,
+			"city_id": 153,
+			"name": "Pasar Minggu",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2110,
+			"city_id": 153,
+			"name": "Pesanggrahan",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2111,
+			"city_id": 153,
+			"name": "Setia Budi",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2112,
+			"city_id": 153,
+			"name": "Tebet",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2113,
+			"city_id": 154,
+			"name": "Cakung",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2114,
+			"city_id": 154,
+			"name": "Cipayung",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2115,
+			"city_id": 154,
+			"name": "Ciracas",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2116,
+			"city_id": 154,
+			"name": "Duren Sawit",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2117,
+			"city_id": 154,
+			"name": "Jatinegara",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2118,
+			"city_id": 154,
+			"name": "Kramat Jati",
+			"type": null,
+			"created_at": "2018-03-04 04:57:56",
+			"updated_at": "2018-03-04 04:57:56"
+		},
+		{
+			"id": 2119,
+			"city_id": 154,
+			"name": "Makasar",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2120,
+			"city_id": 154,
+			"name": "Matraman",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2121,
+			"city_id": 154,
+			"name": "Pasar Rebo",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2122,
+			"city_id": 154,
+			"name": "Pulo Gadung",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2123,
+			"city_id": 155,
+			"name": "Cilincing",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2124,
+			"city_id": 155,
+			"name": "Kelapa Gading",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2125,
+			"city_id": 155,
+			"name": "Koja",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2126,
+			"city_id": 155,
+			"name": "Pademangan",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2127,
+			"city_id": 155,
+			"name": "Penjaringan",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2128,
+			"city_id": 155,
+			"name": "Tanjung Priok",
+			"type": null,
+			"created_at": "2018-03-04 04:57:57",
+			"updated_at": "2018-03-04 04:57:57"
+		},
+		{
+			"id": 2622,
+			"city_id": 189,
+			"name": "Kepulauan Seribu Selatan",
+			"type": null,
+			"created_at": "2018-03-04 04:58:00",
+			"updated_at": "2018-03-04 04:58:00"
+		},
+		{
+			"id": 2623,
+			"city_id": 189,
+			"name": "Kepulauan Seribu Utara",
+			"type": null,
+			"created_at": "2018-03-04 04:58:00",
+			"updated_at": "2018-03-04 04:58:00"
+		}
+	]
+}
